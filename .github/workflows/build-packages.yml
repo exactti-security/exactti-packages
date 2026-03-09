@@ -1,0 +1,94 @@
+name: Exact-Ti — Geração de Pacotes (.deb/.rpm)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versão do pacote (ex: 4.10.0)'
+        required: true
+        default: '4.10.0'
+      revision:
+        description: 'Revisão (ex: 1)'
+        required: true
+        default: '1'
+      package_type:
+        description: 'Tipo de pacote'
+        required: true
+        default: 'deb'
+        type: choice
+        options:
+          - deb
+          - rpm
+          - both
+  schedule:
+    - cron: '0 4 * * 1'
+
+jobs:
+  sync-upstream:
+    name: 🔄 Sync Packages Upstream
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "Exact-Ti Bot"
+          git config user.email "devops@exactti.com"
+
+      - name: Sync upstream
+        run: |
+          git remote add upstream https://github.com/wazuh/wazuh-packages.git || true
+          git fetch upstream master
+          LOCAL=$(git rev-parse HEAD)
+          UPSTREAM=$(git rev-parse upstream/master)
+          if [ "$LOCAL" != "$UPSTREAM" ]; then
+            git merge upstream/master --no-edit --strategy-option=ours || true
+            git push origin master
+          fi
+
+  prepare-build:
+    name: 📦 Preparar Build Exact-Ti
+    needs: sync-upstream
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Renomear pacotes para Exact-Ti
+        run: |
+          VERSION=${{ github.event.inputs.version || '4.10.0' }}
+          REVISION=${{ github.event.inputs.revision || '1' }}
+          echo "📦 Preparando pacotes Exact-Ti v$VERSION-$REVISION"
+
+          # Substituir nomes nos scripts de empacotamento
+          find . -type f \( -name '*.sh' -o -name '*.spec' -o -name 'control' \) \
+            -not -path '*/.git/*' \
+            -exec sed -i 's/wazuh-manager/exactti-server/g' {} \;
+          find . -type f \( -name '*.sh' -o -name '*.spec' -o -name 'control' \) \
+            -not -path '*/.git/*' \
+            -exec sed -i 's/wazuh-agent/exactti-agent/g' {} \;
+          find . -type f \( -name '*.sh' -o -name '*.spec' -o -name 'control' \) \
+            -not -path '*/.git/*' \
+            -exec sed -i 's/wazuh-dashboard/exactti-dashboard/g' {} \;
+
+          echo "EXACTTI_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "EXACTTI_REVISION=$REVISION" >> $GITHUB_ENV
+
+      - name: Build summary
+        run: |
+          echo "## 📦 Build Exact-Ti Packages" >> $GITHUB_STEP_SUMMARY
+          echo "| Campo | Valor |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Versão | `${{ github.event.inputs.version || '4.10.0' }}` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tipo | `${{ github.event.inputs.package_type || 'deb' }}` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Pacotes | exactti-server, exactti-dashboard, exactti-agent |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Scripts de empacotamento renomeados para Exact-Ti" >> $GITHUB_STEP_SUMMARY
+          echo "⚙️ Para build completo, configure um runner self-hosted com Docker." >> $GITHUB_STEP_SUMMARY
