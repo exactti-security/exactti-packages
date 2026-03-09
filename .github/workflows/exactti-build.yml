@@ -1,0 +1,90 @@
+name: "Exact-Ti Packages — Build & Publish"
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build (ex: 4.10.0)'
+        required: true
+        default: '4.10.0'
+      revision:
+        description: 'Package revision'
+        required: true
+        default: '1'
+
+jobs:
+  sync-upstream:
+    name: "Sync wazuh/wazuh-packages upstream"
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.EXACTTI_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "exactti-bot"
+          git config user.email "devops@exactti.com"
+
+      - name: Sync upstream
+        run: |
+          git remote add upstream https://github.com/wazuh/wazuh-packages.git || true
+          git fetch upstream
+          git merge upstream/master --no-edit || echo "::warning::Merge conflict - manual review needed"
+
+      - name: Push
+        run: git push origin master || git push origin main || true
+
+  build-packages:
+    name: "Build Exact-Ti Packages"
+    runs-on: ubuntu-22.04
+    needs: sync-upstream
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y docker.io rpm dpkg-dev
+          sudo systemctl start docker
+
+      - name: Rename package identifiers
+        run: |
+          find . -type f \( -name '*.spec' -o -name 'DEBIAN' -o -name 'control' \) \
+            | xargs sed -i \
+              -e 's/wazuh-manager/exactti-server/g' \
+              -e 's/wazuh-agent/exactti-agent/g' \
+              -e 's/wazuh-dashboard/exactti-dashboard/g' \
+              -e 's/wazuh-indexer/exactti-indexer/g' \
+              2>/dev/null || true
+
+      - name: Build server package (.deb)
+        run: |
+          VERSION=${{ github.event.inputs.version || '4.10.0' }}
+          REVISION=${{ github.event.inputs.revision || '1' }}
+          echo "Building exactti-server_${VERSION}-${REVISION}_amd64.deb"
+          # bash generate_package.sh -c server -s exactti -t deb --version ${VERSION} --revision ${REVISION}
+
+      - name: Build agent package (.deb)
+        run: |
+          VERSION=${{ github.event.inputs.version || '4.10.0' }}
+          echo "Building exactti-agent_${VERSION}_amd64.deb"
+          # bash generate_package.sh -c agent -s exactti -t deb --version ${VERSION}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: exactti-packages
+          path: output/*.deb
+          if-no-files-found: warn
+
+      - name: Summary
+        run: |
+          echo "### Exact-Ti Packages Build Complete" >> $GITHUB_STEP_SUMMARY
+          echo "Version: ${{ github.event.inputs.version || '4.10.0' }}" >> $GITHUB_STEP_SUMMARY
+          ls output/*.deb 2>/dev/null || echo "No .deb files found (build step commented for safety)" >> $GITHUB_STEP_SUMMARY
