@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Wazuh package builder
-# Copyright (C) 2022, Wazuh Inc.
+# Exact-Ti package builder
+# Copyright (C) 2022, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -12,7 +12,7 @@ set -ex
 
 # Script parameters to build the package
 keypath="/root/.abuild"
-export target="wazuh-agent"
+export target="exactti-agent"
 export reference=$1
 export architecture=$2
 export revision=$3

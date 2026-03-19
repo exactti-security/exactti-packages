@@ -1,11 +1,11 @@
-Wazuh RPM packages for IBM AIX
+Exact-Ti RPM packages for IBM AIX
 ==============================
 
-In this repository, you can find the necessary tools to build a Wazuh package for AIX.
+In this repository, you can find the necessary tools to build a Exact-Ti package for AIX.
 
 ## Building AIX packages
 
-Please, visit the following link for the full AIX packages building documentation: [Generate Wazuh AIX packages.](https://documentation.wazuh.com/current/development/packaging/generate-aix-package.html)
+Please, visit the following link for the full AIX packages building documentation: [Generate Exact-Ti AIX packages.](https://documentation.exactti.com/current/development/packaging/generate-aix-package.html)
 
 ## More Packages
 
@@ -28,4 +28,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

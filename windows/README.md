@@ -1,10 +1,10 @@
-# Wazuh Windows packages
+# Exact-Ti Windows packages
 
-In this repository, you can find the necessary tools to build a Wazuh msi package for Windows.
+In this repository, you can find the necessary tools to build a Exact-Ti msi package for Windows.
 
 ## Building Windows packages
 
-Please, visit the following link for the full Windows packages building documentation: [Generate Wazuh Windows packages.](https://documentation.wazuh.com/current/development/packaging/generate-windows-package.html)
+Please, visit the following link for the full Windows packages building documentation: [Generate Exact-Ti Windows packages.](https://documentation.exactti.com/current/development/packaging/generate-windows-package.html)
 
 ## More Packages
 
@@ -27,4 +27,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

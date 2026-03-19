@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Wazuh-indexer securityadmin wrapper
-# Copyright (C) 2022, Wazuh Inc.
+# Exact-Ti-indexer securityadmin wrapper
+# Copyright (C) 2022, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
 # License (version 2) as published by the FSF - Free Software
 # Foundation.
 
-CONFIG_PATH="/etc/wazuh-indexer"
+CONFIG_PATH="/etc/exactti-indexer"
 
 if [ ! -d "${CONFIG_PATH}" ]; then
     echo "ERROR: it was not possible to find ${CONFIG_PATH}"
@@ -22,7 +22,7 @@ if [ ! -f "${CONFIG_FILE}" ]; then
     exit 1
 fi
 
-INSTALL_PATH="/usr/share/wazuh-indexer"
+INSTALL_PATH="/usr/share/exactti-indexer"
 
 if [ ! -d "${INSTALL_PATH}" ]; then
         echo "ERROR: it was not possible to find ${INSTALL_PATH}"
@@ -43,9 +43,9 @@ trap ctrl_c INT
 clean(){
 
     exit_code=$1
-    indexer_process_id=$(pgrep -f wazuh-indexer -c)
+    indexer_process_id=$(pgrep -f exactti-indexer -c)
     if [ "${indexer_process_id}" -gt 1 ]; then
-        pkill -n -f wazuh-indexer
+        pkill -n -f exactti-indexer
     fi
     exit "${exit_code}"
 
@@ -109,9 +109,9 @@ securityadmin() {
     fi
 
     if [ -f "${WAZUH_INDEXER_ADMIN_PATH}/admin.pem" ] && [ -f "${WAZUH_INDEXER_ADMIN_PATH}/admin-key.pem" ] && [ -f "${WAZUH_INDEXER_ROOT_CA}" ]; then
-        OPENSEARCH_CONF_DIR="${CONFIG_PATH}" JAVA_HOME="${INSTALL_PATH}/jdk" runuser wazuh-indexer --shell="/bin/bash" --command="${SECURITY_PATH}/tools/securityadmin.sh -cd ${SECURITY_CONFIG_PATH} -cacert ${WAZUH_INDEXER_ROOT_CA} -cert ${WAZUH_INDEXER_ADMIN_PATH}/admin.pem -key ${WAZUH_INDEXER_ADMIN_PATH}/admin-key.pem -h ${HOST} -p ${PORT} ${OPTIONS}"
+        OPENSEARCH_CONF_DIR="${CONFIG_PATH}" JAVA_HOME="${INSTALL_PATH}/jdk" runuser exactti-indexer --shell="/bin/bash" --command="${SECURITY_PATH}/tools/securityadmin.sh -cd ${SECURITY_CONFIG_PATH} -cacert ${WAZUH_INDEXER_ROOT_CA} -cert ${WAZUH_INDEXER_ADMIN_PATH}/admin.pem -key ${WAZUH_INDEXER_ADMIN_PATH}/admin-key.pem -h ${HOST} -p ${PORT} ${OPTIONS}"
     else
-        echo "ERROR: this tool try to find admin.pem and admin-key.pem in ${WAZUH_INDEXER_ADMIN_PATH} but it couldn't. In this case, you must run manually the Indexer security initializer by running the command: JAVA_HOME="/usr/share/wazuh-indexer/jdk" runuser wazuh-indexer --shell="/bin/bash" --command="/usr/share/wazuh-indexer/plugins/opensearch-security/tools/securityadmin.sh -cd /etc/wazuh-indexer/opensearch-security -cacert /path/to/root-ca.pem -cert /path/to/admin.pem -key /path/to/admin-key.pem -h ${HOST} -p ${PORT} ${OPTIONS}" replacing /path/to/ by your certificates path."
+        echo "ERROR: this tool try to find admin.pem and admin-key.pem in ${WAZUH_INDEXER_ADMIN_PATH} but it couldn't. In this case, you must run manually the Indexer security initializer by running the command: JAVA_HOME="/usr/share/exactti-indexer/jdk" runuser exactti-indexer --shell="/bin/bash" --command="/usr/share/exactti-indexer/plugins/opensearch-security/tools/securityadmin.sh -cd /etc/exactti-indexer/opensearch-security -cacert /path/to/root-ca.pem -cert /path/to/admin.pem -key /path/to/admin-key.pem -h ${HOST} -p ${PORT} ${OPTIONS}" replacing /path/to/ by your certificates path."
         exit 1
     fi
 
@@ -122,7 +122,7 @@ help() {
     echo "Usage: $0 [OPTIONS]"
     echo
     echo "    -ho, --host <host>    [Optional] Target IP or DNS to configure security."
-    echo "    -p,  --port <port>    [Optional] wazuh-indexer security port."
+    echo "    -p,  --port <port>    [Optional] exactti-indexer security port."
     echo "    --options <options>   [Optional] Custom securityadmin options."
     echo "    -h,  --help           Show this help."
     echo

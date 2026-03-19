@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Wazuh package generator
-# Copyright (C) 2023, Wazuh Inc.
+# Exact-Ti package generator
+# Copyright (C) 2023, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -56,7 +56,7 @@ help() {
     echo
     echo -e ""
     echo -e "NAME"
-    echo -e "        $(basename "${0}") - Build Wazuh Puppet module."
+    echo -e "        $(basename "${0}") - Build Exact-Ti Puppet module."
     echo -e ""
     echo -e "SYNOPSIS"
     echo -e "        $(basename "${0}") [OPTIONS]"

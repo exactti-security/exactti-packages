@@ -1,8 +1,8 @@
 #!/bin/bash
-# Created by Wazuh, Inc. <info@wazuh.com>.
-# Copyright (C) 2015, Wazuh Inc.
+# Created by Exact-Ti, Inc. <info@wazuh.com>.
+# Copyright (C) 2015, Exact-Ti Inc.
 # This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2
-# Wazuh Solaris 11 Package builder.
+# Exact-Ti Solaris 11 Package builder.
 
 REPOSITORY="https://github.com/wazuh/wazuh"
 wazuh_branch="master"
@@ -62,15 +62,15 @@ build_environment() {
     /opt/csw/bin/pkgutil -y -i gcc5g++
 
     # Compile GCC-5.5 and CMake
-    curl -L http://packages.wazuh.com/utils/gcc/gcc-5.5.0.tar.gz | gtar xz
+    curl -L http://packages.exactti.com/utils/gcc/gcc-5.5.0.tar.gz | gtar xz
     cd gcc-5.5.0
-    curl -L http://packages.wazuh.com/utils/gcc/mpfr-2.4.2.tar.bz2 | gtar xj
+    curl -L http://packages.exactti.com/utils/gcc/mpfr-2.4.2.tar.bz2 | gtar xj
     mv mpfr-2.4.2 mpfr
-    curl -L http://packages.wazuh.com/utils/gcc/gmp-4.3.2.tar.bz2 | gtar xj
+    curl -L http://packages.exactti.com/utils/gcc/gmp-4.3.2.tar.bz2 | gtar xj
     mv gmp-4.3.2 gmp
-    curl -L http://packages.wazuh.com/utils/gcc/mpc-0.8.1.tar.gz | gtar xz
+    curl -L http://packages.exactti.com/utils/gcc/mpc-0.8.1.tar.gz | gtar xz
     mv mpc-0.8.1 mpc
-    curl -L http://packages.wazuh.com/utils/gcc/isl-0.14.tar.bz2 | gtar xj
+    curl -L http://packages.exactti.com/utils/gcc/isl-0.14.tar.bz2 | gtar xj
     mv isl-0.14 isl
     unset CPLUS_INCLUDE_PATH
     unset LD_LIBRARY_PATH
@@ -89,7 +89,7 @@ build_environment() {
     rm -rf gcc-*
     ln -sf /usr/local/gcc-5.5.0/bin/g++ /usr/bin/g++
 
-    curl -sL http://packages.wazuh.com/utils/cmake/cmake-3.18.3.tar.gz | gtar xz
+    curl -sL http://packages.exactti.com/utils/cmake/cmake-3.18.3.tar.gz | gtar xz
     cd cmake-3.18.3
     ./bootstrap
     gmake -j$(nproc) && gmake install
@@ -126,7 +126,7 @@ check_version(){
     fi
 }
 
-#Compile and install wazuh-agent
+#Compile and install exactti-agent
 compile() {
     export PATH=/usr/local/gcc-5.5.0/bin:/usr/sbin:/usr/bin:/usr/ccs/bin:/opt/csw/bin
     export CPLUS_INCLUDE_PATH=/usr/local/gcc-5.5.0/include/c++/5.5.0
@@ -168,50 +168,50 @@ create_package() {
     ver=$VERSION
     if [ $(echo $VERSION | grep "v") ]; then
         ver=`echo $VERSION | cut -c 2-`
-        sed "s/<VERSION>/$ver/" ${current_path}/wazuh-agent.mog-template > ${current_path}/wazuh-agent.mog-aux
+        sed "s/<VERSION>/$ver/" ${current_path}/exactti-agent.mog-template > ${current_path}/exactti-agent.mog-aux
     else
-        sed "s/<VERSION>/$VERSION/" ${current_path}/wazuh-agent.mog-template > ${current_path}/wazuh-agent.mog-aux
+        sed "s/<VERSION>/$VERSION/" ${current_path}/exactti-agent.mog-template > ${current_path}/exactti-agent.mog-aux
     fi
-    sed "s/<TAG>/$VERSION/" ${current_path}/wazuh-agent.mog-aux > ${current_path}/wazuh-agent.mog
+    sed "s/<TAG>/$VERSION/" ${current_path}/exactti-agent.mog-aux > ${current_path}/exactti-agent.mog
 
-    echo "Building the package wazuh-agent_$VERSION-sol11-${arch}.p5p"
+    echo "Building the package exactti-agent_$VERSION-sol11-${arch}.p5p"
 
     set_control_binary
 
 
     # Package generation process
-    pkgsend generate ${install_path} | pkgfmt > wazuh-agent.p5m.1
+    pkgsend generate ${install_path} | pkgfmt > exactti-agent.p5m.1
     sed "s|<INSTALL_PATH>|${install_path}|" ${current_path}/postinstall.sh > ${current_path}/postinstall.sh.new
     mv ${current_path}/postinstall.sh.new ${current_path}/postinstall.sh
 
-    python solaris_fix.py -t SPECS/template_agent.json -p wazuh-agent.p5m.1 # Fix p5m.1 file
-    mv wazuh-agent.p5m.1.aux.fixed wazuh-agent.p5m.1
+    python solaris_fix.py -t SPECS/template_agent.json -p exactti-agent.p5m.1 # Fix p5m.1 file
+    mv exactti-agent.p5m.1.aux.fixed exactti-agent.p5m.1
     # Add the preserve=install-only tag to the configuration files
     for file in etc/ossec.conf etc/local_internal_options.conf etc/client.keys; do
-        sed "s:file $file.*:& preserve=install-only:"  wazuh-agent.p5m.1 > wazuh-agent.p5m.1.aux_sed
-        mv wazuh-agent.p5m.1.aux_sed wazuh-agent.p5m.1
+        sed "s:file $file.*:& preserve=install-only:"  exactti-agent.p5m.1 > exactti-agent.p5m.1.aux_sed
+        mv exactti-agent.p5m.1.aux_sed exactti-agent.p5m.1
     done
     # Add service files
-    echo "file smf_manifest.xml path=lib/svc/manifest/site/post-install.xml owner=root group=sys mode=0744 restart_fmri=svc:/system/manifest-import:default" >> wazuh-agent.p5m.1
-    echo "dir  path=var/ossec/installation_scripts owner=root group=bin mode=0755" >> wazuh-agent.p5m.1
-    echo "file postinstall.sh path=var/ossec/installation_scripts/postinstall.sh owner=root group=bin mode=0744" >> wazuh-agent.p5m.1
-    echo "file wazuh-agent path=etc/init.d/wazuh-agent owner=root group=sys mode=0744" >> wazuh-agent.p5m.1
-    echo "file S97wazuh-agent path=etc/rc2.d/S97wazuh-agent owner=root group=sys mode=0744" >> wazuh-agent.p5m.1
-    echo "file S97wazuh-agent path=etc/rc3.d/S97wazuh-agent owner=root group=sys mode=0744" >> wazuh-agent.p5m.1
+    echo "file smf_manifest.xml path=lib/svc/manifest/site/post-install.xml owner=root group=sys mode=0744 restart_fmri=svc:/system/manifest-import:default" >> exactti-agent.p5m.1
+    echo "dir  path=var/ossec/installation_scripts owner=root group=bin mode=0755" >> exactti-agent.p5m.1
+    echo "file postinstall.sh path=var/ossec/installation_scripts/postinstall.sh owner=root group=bin mode=0744" >> exactti-agent.p5m.1
+    echo "file exactti-agent path=etc/init.d/exactti-agent owner=root group=sys mode=0744" >> exactti-agent.p5m.1
+    echo "file S97exactti-agent path=etc/rc2.d/S97exactti-agent owner=root group=sys mode=0744" >> exactti-agent.p5m.1
+    echo "file S97exactti-agent path=etc/rc3.d/S97exactti-agent owner=root group=sys mode=0744" >> exactti-agent.p5m.1
 
     # Add user and group wazuh
-    echo "group groupname=wazuh" >> wazuh-agent.p5m.1
-    echo "user username=wazuh group=wazuh" >> wazuh-agent.p5m.1
+    echo "group groupname=wazuh" >> exactti-agent.p5m.1
+    echo "user username=wazuh group=wazuh" >> exactti-agent.p5m.1
 
     # Necessary to upgrade from < 4.3 versions
-    echo "group groupname=ossec" >> wazuh-agent.p5m.1
-    echo "user username=ossec group=ossec" >> wazuh-agent.p5m.1
+    echo "group groupname=ossec" >> exactti-agent.p5m.1
+    echo "user username=ossec group=ossec" >> exactti-agent.p5m.1
 
-    pkgmogrify -DARCH=`uname -p` wazuh-agent.p5m.1 wazuh-agent.mog | pkgfmt > wazuh-agent.p5m.2
-    pkgsend -s http://localhost:9001 publish -d ${install_path} -d /etc/init.d -d /etc/rc2.d -d /etc/rc3.d -d ${current_path} wazuh-agent.p5m.2 > pack
+    pkgmogrify -DARCH=`uname -p` exactti-agent.p5m.1 exactti-agent.mog | pkgfmt > exactti-agent.p5m.2
+    pkgsend -s http://localhost:9001 publish -d ${install_path} -d /etc/init.d -d /etc/rc2.d -d /etc/rc3.d -d ${current_path} exactti-agent.p5m.2 > pack
     package=`cat pack | grep wazuh | cut -c 13-` # This extracts the name of the package generated in the previous step
     rm -f *.p5p
-    pkg_name="wazuh-agent_$VERSION-sol11-${arch}.p5p"
+    pkg_name="exactti-agent_$VERSION-sol11-${arch}.p5p"
     pkgrecv -s http://localhost:9001 -a -d ${pkg_name} $package
 
     mkdir -p ${target_dir}
@@ -258,8 +258,8 @@ uninstall() {
     echo ${current_path}
     ${current_path}/uninstall.sh ${install_path} ${control_binary}
     rm -f `find /etc | grep wazuh`
-    rm -f /etc/rc3.d/S97wazuh-agent
-    rm -f /etc/rc2.d/S97wazuh-agent
+    rm -f /etc/rc3.d/S97exactti-agent
+    rm -f /etc/rc2.d/S97exactti-agent
 }
 
 clean() {
@@ -270,9 +270,9 @@ clean() {
     zfs destroy rpool/wazuh
     rm -rf /wazuh
     rm -rf $SOURCE/wazuh
-    rm -f wazuh-agent.p5m*
-    rm -f wazuh-agent.mog
-    rm -f wazuh-agent.mog-aux
+    rm -f exactti-agent.p5m*
+    rm -f exactti-agent.mog
+    rm -f exactti-agent.mog-aux
     rm -f pack
 }
 

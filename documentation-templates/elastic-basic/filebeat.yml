@@ -1,4 +1,4 @@
-# Wazuh - Filebeat configuration file
+# Exact-Ti - Filebeat configuration file
 output.elasticsearch.hosts: <elasticsearch_ip>:9200
 output.elasticsearch.password: <elasticsearch_password>
 

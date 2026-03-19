@@ -1,5 +1,5 @@
-# Wazuh installer - main functions
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer - main functions
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -10,23 +10,23 @@ function getHelp() {
 
     echo -e ""
     echo -e "NAME"
-    echo -e "        $(basename "$0") - Install and configure Wazuh central components: Wazuh server, Wazuh indexer, and Wazuh dashboard."
+    echo -e "        $(basename "$0") - Install and configure Exact-Ti central components: Exact-Ti server, Exact-Ti indexer, and Exact-Ti dashboard."
     echo -e ""
     echo -e "SYNOPSIS"
     echo -e "        $(basename "$0") [OPTIONS] -a | -c | -s | -wi <indexer-node-name> | -wd <dashboard-node-name> | -ws <server-node-name>"
     echo -e ""
     echo -e "DESCRIPTION"
     echo -e "        -a,  --all-in-one"
-    echo -e "                Install and configure Wazuh server, Wazuh indexer, Wazuh dashboard."
+    echo -e "                Install and configure Exact-Ti server, Exact-Ti indexer, Exact-Ti dashboard."
     echo -e ""
     echo -e "        -c,  --config-file <path-to-config-yml>"
-    echo -e "                Path to the configuration file used to generate wazuh-install-files.tar file containing the files that will be needed for installation. By default, the Wazuh installation assistant will search for a file named config.yml in the same path as the script."
+    echo -e "                Path to the configuration file used to generate wazuh-install-files.tar file containing the files that will be needed for installation. By default, the Exact-Ti installation assistant will search for a file named config.yml in the same path as the script."
     echo -e ""
     echo -e "        -dw,  --download-wazuh <deb|rpm>"
     echo -e "                Download all the packages necessary for offline installation. Type of packages to download for offline installation (rpm, deb)"
     echo -e ""
     echo -e "        -fd,  --force-install-dashboard"
-    echo -e "                Force Wazuh dashboard installation to continue even when it is not capable of connecting to the Wazuh indexer."
+    echo -e "                Force Exact-Ti dashboard installation to continue even when it is not capable of connecting to the Exact-Ti indexer."
     echo -e ""
     echo -e "        -g,  --generate-config-files"
     echo -e "                Generate wazuh-install-files.tar file containing the files that will be needed for installation from config.yml. In distributed deployments you will need to copy this file to all hosts."
@@ -47,31 +47,31 @@ function getHelp() {
     echo -e "                Perform an offline installation. This option must be used with -a, -ws, -wi, or -wd."
     echo -e ""
     echo -e "        -p,  --port"
-    echo -e "                Specifies the Wazuh web user interface port. By default is the 443 TCP port. Recommended ports are: 8443, 8444, 8080, 8888, 9000."
+    echo -e "                Specifies the Exact-Ti web user interface port. By default is the 443 TCP port. Recommended ports are: 8443, 8444, 8080, 8888, 9000."
     echo -e ""
     echo -e "        -s,  --start-cluster"
-    echo -e "                Initialize Wazuh indexer cluster security settings."
+    echo -e "                Initialize Exact-Ti indexer cluster security settings."
     echo -e ""
     echo -e "        -t,  --tar <path-to-certs-tar>"
-    echo -e "                Path to tar file containing certificate files. By default, the Wazuh installation assistant will search for a file named wazuh-install-files.tar in the same path as the script."
+    echo -e "                Path to tar file containing certificate files. By default, the Exact-Ti installation assistant will search for a file named wazuh-install-files.tar in the same path as the script."
     echo -e ""
     echo -e "        -u,  --uninstall"
-    echo -e "                Uninstalls all Wazuh components. This will erase all the existing configuration and data."
+    echo -e "                Uninstalls all Exact-Ti components. This will erase all the existing configuration and data."
     echo -e ""
     echo -e "        -v,  --verbose"
     echo -e "                Shows the complete installation output."
     echo -e ""
     echo -e "        -V,  --version"
-    echo -e "                Shows the version of the script and Wazuh packages."
+    echo -e "                Shows the version of the script and Exact-Ti packages."
     echo -e ""
-    echo -e "        -wd,  --wazuh-dashboard <dashboard-node-name>"
-    echo -e "                Install and configure Wazuh dashboard, used for distributed deployments."
+    echo -e "        -wd,  --exactti-dashboard <dashboard-node-name>"
+    echo -e "                Install and configure Exact-Ti dashboard, used for distributed deployments."
     echo -e ""
-    echo -e "        -wi,  --wazuh-indexer <indexer-node-name>"
-    echo -e "                Install and configure Wazuh indexer, used for distributed deployments."
+    echo -e "        -wi,  --exactti-indexer <indexer-node-name>"
+    echo -e "                Install and configure Exact-Ti indexer, used for distributed deployments."
     echo -e ""
     echo -e "        -ws,  --wazuh-server <server-node-name>"
-    echo -e "                Install and configure Wazuh manager and Filebeat, used for distributed deployments."
+    echo -e "                Install and configure Exact-Ti manager and Filebeat, used for distributed deployments."
     exit 1
 
 }
@@ -165,9 +165,9 @@ function main() {
                 showVersion=1
                 shift 1
                 ;;
-            "-wd"|"--wazuh-dashboard")
+            "-wd"|"--exactti-dashboard")
                 if [ -z "${2}" ]; then
-                    common_logger -e "Error on arguments. Probably missing <node-name> after -wd|---wazuh-dashboard"
+                    common_logger -e "Error on arguments. Probably missing <node-name> after -wd|---exactti-dashboard"
                     getHelp
                     exit 1
                 fi
@@ -175,9 +175,9 @@ function main() {
                 dashname="${2}"
                 shift 2
                 ;;
-            "-wi"|"--wazuh-indexer")
+            "-wi"|"--exactti-indexer")
                 if [ -z "${2}" ]; then
-                    common_logger -e "Arguments contain errors. Probably missing <node-name> after -wi|--wazuh-indexer."
+                    common_logger -e "Arguments contain errors. Probably missing <node-name> after -wi|--exactti-indexer."
                     getHelp
                     exit 1
                 fi
@@ -218,13 +218,13 @@ function main() {
     fi
 
     if [ -n "${showVersion}" ]; then
-        common_logger "Wazuh version: ${wazuh_version}"
+        common_logger "Exact-Ti version: ${wazuh_version}"
         common_logger "Filebeat version: ${filebeat_version}"
-        common_logger "Wazuh installation assistant version: ${wazuh_install_version}"
+        common_logger "Exact-Ti installation assistant version: ${wazuh_install_version}"
         exit 0
     fi
 
-    common_logger "Starting Wazuh installation assistant. Wazuh version: ${wazuh_version}"
+    common_logger "Starting Exact-Ti installation assistant. Exact-Ti version: ${wazuh_version}"
     common_logger "Verbose logging redirected to ${logfile}"
 
 # -------------- Uninstall case  ------------------------------------
@@ -279,7 +279,7 @@ function main() {
         installCommon_installDependencies
     fi
 
-# --------------  Wazuh repo  ----------------------
+# --------------  Exact-Ti repo  ----------------------
 
     # Offline installation case: extract the compressed files
     if [ -n "${offline_install}" ]; then
@@ -290,7 +290,7 @@ function main() {
     if [ -n "${AIO}" ] || [ -n "${indexer}" ] || [ -n "${dashboard}" ] || [ -n "${wazuh}" ]; then
         check_curlVersion
         if [ -z "${offline_install}" ]; then
-            installCommon_addWazuhRepo
+            installCommon_addExact-TiRepo
         fi
     fi
 
@@ -317,18 +317,18 @@ function main() {
         installCommon_removeAssistantDependencies
     fi
 
-# -------------- Wazuh indexer case -------------------------------
+# -------------- Exact-Ti indexer case -------------------------------
 
     if [ -n "${indexer}" ]; then
-        common_logger "--- Wazuh indexer ---"
+        common_logger "--- Exact-Ti indexer ---"
         indexer_install
         indexer_configure
-        installCommon_startService "wazuh-indexer"
+        installCommon_startService "exactti-indexer"
         indexer_initialize
         installCommon_removeAssistantDependencies
     fi
 
-# -------------- Start Wazuh indexer cluster case  ------------------
+# -------------- Start Exact-Ti indexer cluster case  ------------------
 
     if [ -n "${start_indexer_cluster}" ]; then
         indexer_startCluster
@@ -336,29 +336,29 @@ function main() {
         installCommon_removeAssistantDependencies
     fi
 
-# -------------- Wazuh dashboard case  ------------------------------
+# -------------- Exact-Ti dashboard case  ------------------------------
 
     if [ -n "${dashboard}" ]; then
-        common_logger "--- Wazuh dashboard ----"
+        common_logger "--- Exact-Ti dashboard ----"
         dashboard_install
         dashboard_configure
-        installCommon_startService "wazuh-dashboard"
+        installCommon_startService "exactti-dashboard"
         installCommon_changePasswords
         dashboard_initialize
         installCommon_removeAssistantDependencies
 
     fi
 
-# -------------- Wazuh server case  ---------------------------------------
+# -------------- Exact-Ti server case  ---------------------------------------
 
     if [ -n "${wazuh}" ]; then
-        common_logger "--- Wazuh server ---"
+        common_logger "--- Exact-Ti server ---"
         manager_install
         manager_configure
         if [ -n "${server_node_types[*]}" ]; then
             manager_startCluster
         fi
-        installCommon_startService "wazuh-manager"
+        installCommon_startService "exactti-server"
         filebeat_install
         filebeat_configure
         installCommon_changePasswords
@@ -370,22 +370,22 @@ function main() {
 
     if [ -n "${AIO}" ]; then
 
-        common_logger "--- Wazuh indexer ---"
+        common_logger "--- Exact-Ti indexer ---"
         indexer_install
         indexer_configure
-        installCommon_startService "wazuh-indexer"
+        installCommon_startService "exactti-indexer"
         indexer_initialize
-        common_logger "--- Wazuh server ---"
+        common_logger "--- Exact-Ti server ---"
         manager_install
         manager_configure
-        installCommon_startService "wazuh-manager"
+        installCommon_startService "exactti-server"
         filebeat_install
         filebeat_configure
         installCommon_startService "filebeat"
-        common_logger "--- Wazuh dashboard ---"
+        common_logger "--- Exact-Ti dashboard ---"
         dashboard_install
         dashboard_configure
-        installCommon_startService "wazuh-dashboard"
+        installCommon_startService "exactti-dashboard"
         installCommon_changePasswords
         dashboard_initializeAIO
         installCommon_removeAssistantDependencies
@@ -403,14 +403,14 @@ function main() {
 # -------------------------------------------------------------------
 
     if [ -z "${configurations}" ] && [ -z "${download}" ] && [ -z "${offline_install}" ]; then
-        installCommon_restoreWazuhrepo
+        installCommon_restoreExact-Tirepo
     fi
 
     if [ -n "${AIO}" ] || [ -n "${indexer}" ] || [ -n "${dashboard}" ] || [ -n "${wazuh}" ]; then
         eval "rm -rf /tmp/wazuh-install-files ${debug}"
         common_logger "Installation finished."
     elif [ -n "${start_indexer_cluster}" ]; then
-        common_logger "Wazuh indexer cluster started."
+        common_logger "Exact-Ti indexer cluster started."
     fi
 
 }

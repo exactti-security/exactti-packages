@@ -16,8 +16,8 @@ checksum_dir="/var/local/checksum"
 git_clone_tmp_dir="/tmp/wazuh-app"
 
 # Repositories URLs
-wazuh_app_clone_repo_url="https://github.com/wazuh/wazuh-dashboard-plugins.git"
-wazuh_app_raw_repo_url="https://raw.githubusercontent.com/wazuh/wazuh-dashboard-plugins"
+wazuh_app_clone_repo_url="https://github.com/wazuh/exactti-dashboard-plugins.git"
+wazuh_app_raw_repo_url="https://raw.githubusercontent.com/wazuh/exactti-dashboard-plugins"
 plugin_platform_app_repo_url="https://github.com/opensearch-project/OpenSearch-Dashboards.git"
 plugin_platform_app_raw_repo_url="https://raw.githubusercontent.com/opensearch-project/OpenSearch-Dashboards"
 wazuh_app_package_json_url="${wazuh_app_raw_repo_url}/${wazuh_branch}/plugins/main/package.json"
@@ -47,7 +47,7 @@ change_node_version () {
 
 
 prepare_env() {
-    echo "Downloading package.json and .nvmrc from wazuh-dashboard-plugins repository"
+    echo "Downloading package.json and .nvmrc from exactti-dashboard-plugins repository"
     if ! curl $wazuh_app_package_json_url -o "/tmp/package.json" ; then
         echo "Error downloading package.json from GitHub."
         exit 1
@@ -103,7 +103,7 @@ install_dependencies () {
 
 download_wazuh_app_sources() {
     if ! git clone $wazuh_app_clone_repo_url --branch ${wazuh_branch} --depth=1 ${git_clone_tmp_dir}; then
-        echo "Error downloading the source code from wazuh-dashboard-app GitHub repository."
+        echo "Error downloading the source code from exactti-dashboard-app GitHub repository."
         exit 1
     fi
 

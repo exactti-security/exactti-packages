@@ -1,5 +1,5 @@
-# Wazuh installer - common.sh functions.
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer - common.sh functions.
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -44,9 +44,9 @@ function installCommon_cleanExit() {
 
 }
 
-function installCommon_addWazuhRepo() {
+function installCommon_addExact-TiRepo() {
 
-    common_logger -d "Adding the Wazuh repository."
+    common_logger -d "Adding the Exact-Ti repository."
 
     if [ -n "${development}" ]; then
         if [ "${sys_type}" == "yum" ]; then
@@ -60,15 +60,15 @@ function installCommon_addWazuhRepo() {
         if [ "${sys_type}" == "yum" ]; then
             eval "rpm --import ${repogpg} ${debug}"
             if [ "${PIPESTATUS[0]}" != 0 ]; then
-                common_logger -e "Cannot import Wazuh GPG key"
+                common_logger -e "Cannot import Exact-Ti GPG key"
                 exit 1
             fi
-            eval "(echo -e '[wazuh]\ngpgcheck=1\ngpgkey=${repogpg}\nenabled=1\nname=EL-\${releasever} - Wazuh\nbaseurl='${repobaseurl}'/yum/\nprotect=1' | tee /etc/yum.repos.d/wazuh.repo)" "${debug}"
+            eval "(echo -e '[wazuh]\ngpgcheck=1\ngpgkey=${repogpg}\nenabled=1\nname=EL-\${releasever} - Exact-Ti\nbaseurl='${repobaseurl}'/yum/\nprotect=1' | tee /etc/yum.repos.d/wazuh.repo)" "${debug}"
             eval "chmod 644 /etc/yum.repos.d/wazuh.repo ${debug}"
         elif [ "${sys_type}" == "apt-get" ]; then
             eval "common_curl -s ${repogpg} --max-time 300 --retry 5 --retry-delay 5 --fail | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import - ${debug}"
             if [ "${PIPESTATUS[0]}" != 0 ]; then
-                common_logger -e "Cannot import Wazuh GPG key"
+                common_logger -e "Cannot import Exact-Ti GPG key"
                 exit 1
             fi
             eval "chmod 644 /usr/share/keyrings/wazuh.gpg ${debug}"
@@ -77,13 +77,13 @@ function installCommon_addWazuhRepo() {
             eval "chmod 644 /etc/apt/sources.list.d/wazuh.list ${debug}"
         fi
     else
-        common_logger -d "Wazuh repository already exists. Skipping addition."
+        common_logger -d "Exact-Ti repository already exists. Skipping addition."
     fi
 
     if [ -n "${development}" ]; then
-        common_logger "Wazuh development repository added."
+        common_logger "Exact-Ti development repository added."
     else
-        common_logger "Wazuh repository added."
+        common_logger "Exact-Ti repository added."
     fi
 }
 
@@ -157,7 +157,7 @@ function installCommon_changePasswordApi() {
 
 function installCommon_createCertificates() {
 
-    common_logger -d "Creating Wazuh certificates."
+    common_logger -d "Creating Exact-Ti certificates."
     if [ -n "${AIO}" ]; then
         eval "installCommon_getConfig certificate/config_aio.yml ${config_file} ${debug}"
     fi
@@ -211,7 +211,7 @@ function installCommon_createInstallFiles() {
         eval "tar -zcf '${tar_file}' -C '/tmp/' wazuh-install-files/ ${debug}"
         eval "rm -rf '/tmp/wazuh-install-files' ${debug}"
         eval "rm -rf ${config_file} ${debug}"
-        common_logger "Created ${tar_file_name}. It contains the Wazuh cluster key, certificates, and passwords necessary for installation."
+        common_logger "Created ${tar_file_name}. It contains the Exact-Ti cluster key, certificates, and passwords necessary for installation."
     else
         common_logger -e "Unable to create /tmp/wazuh-install-files"
         exit 1
@@ -220,7 +220,7 @@ function installCommon_createInstallFiles() {
 
 function installCommon_changePasswords() {
 
-    common_logger -d "Setting Wazuh indexer cluster passwords."
+    common_logger -d "Setting Exact-Ti indexer cluster passwords."
     if [ -f "${tar_file}" ]; then
         eval "tar -xf ${tar_file} -C /tmp wazuh-install-files/wazuh-passwords.txt ${debug}"
         p_file="/tmp/wazuh-install-files/wazuh-passwords.txt"
@@ -306,7 +306,7 @@ function installCommon_determinePorts {
 
 function installCommon_extractConfig() {
 
-    common_logger -d "Extracting Wazuh configuration."
+    common_logger -d "Extracting Exact-Ti configuration."
     if ! tar -tf "${tar_file}" | grep -q wazuh-install-files/config.yml; then
         common_logger -e "There is no config.yml file in ${tar_file}."
         exit 1
@@ -395,13 +395,13 @@ function installCommon_readPasswordFileUsers() {
     if [[ "${filecorrect}" -ne 1 ]]; then
         common_logger -e "The password file does not have a correct format or password uses invalid characters. Allowed characters: A-Za-z0-9.*+?
 
-For Wazuh indexer users, the file must have this format:
+For Exact-Ti indexer users, the file must have this format:
 
 # Description
   indexer_username: <user>
   indexer_password: <password>
 
-For Wazuh API users, the file must have this format:
+For Exact-Ti API users, the file must have this format:
 
 # Description
   api_username: <user>
@@ -449,7 +449,7 @@ For Wazuh API users, the file must have this format:
                 fi
             done
             if [ "${supported}" = false ] && [ -n "${indexer_installed}" ]; then
-                common_logger -e "The Wazuh API user ${fileapiusers[j]} does not exist"
+                common_logger -e "The Exact-Ti API user ${fileapiusers[j]} does not exist"
             fi
         done
     else
@@ -493,7 +493,7 @@ For Wazuh API users, the file must have this format:
                 fi
             done
             if [ ${supported} = false ] && [ -n "${indexer_installed}" ]; then
-                common_logger -e "The Wazuh API user ${fileapiusers[j]} does not exist"
+                common_logger -e "The Exact-Ti API user ${fileapiusers[j]} does not exist"
             fi
         done
 
@@ -507,16 +507,16 @@ For Wazuh API users, the file must have this format:
 
 }
 
-function installCommon_restoreWazuhrepo() {
+function installCommon_restoreExact-Tirepo() {
 
-    common_logger -d "Restoring Wazuh repository."
+    common_logger -d "Restoring Exact-Ti repository."
     if [ -n "${development}" ]; then
         if [ "${sys_type}" == "yum" ] && [ -f "/etc/yum.repos.d/wazuh.repo" ]; then
             file="/etc/yum.repos.d/wazuh.repo"
         elif [ "${sys_type}" == "apt-get" ] && [ -f "/etc/apt/sources.list.d/wazuh.list" ]; then
             file="/etc/apt/sources.list.d/wazuh.list"
         else
-            common_logger -w -d "Wazuh repository does not exists."
+            common_logger -w -d "Exact-Ti repository does not exists."
         fi
         eval "sed -i 's/-dev//g' ${file} ${debug}"
         eval "sed -i 's/pre-release/4.x/g' ${file} ${debug}"
@@ -537,7 +537,7 @@ function installCommon_removeCentOSrepositories() {
 function installCommon_rollBack() {
 
     if [ -z "${uninstall}" ]; then
-        common_logger "--- Removing existing Wazuh installation ---"
+        common_logger "--- Removing existing Exact-Ti installation ---"
     fi
 
     if [ -f "/etc/yum.repos.d/wazuh.repo" ]; then
@@ -554,25 +554,25 @@ function installCommon_rollBack() {
     fi
 
     if [[ -n "${wazuh_installed}" && ( -n "${wazuh}" || -n "${AIO}" || -n "${uninstall}" ) ]];then
-        common_logger "Removing Wazuh manager."
+        common_logger "Removing Exact-Ti manager."
         if [ "${sys_type}" == "yum" ]; then
             common_checkYumLock
             if [ "${attempt}" -ne "${max_attempts}" ]; then
-                eval "yum remove wazuh-manager -y ${debug}"
-                eval "rpm -q wazuh-manager --quiet"
+                eval "yum remove exactti-server -y ${debug}"
+                eval "rpm -q exactti-server --quiet"
             fi
         elif [ "${sys_type}" == "apt-get" ]; then
             common_checkAptLock
-            eval "apt-get remove --purge wazuh-manager -y ${debug}"
-            eval "dpkg -l wazuh-manager 2>/dev/null | grep -E '^ii\s'"
+            eval "apt-get remove --purge exactti-server -y ${debug}"
+            eval "dpkg -l exactti-server 2>/dev/null | grep -E '^ii\s'"
         fi
 
         manager_installed=${PIPESTATUS[0]}
 
         if [ "${manager_installed}" -eq 0 ]; then
-            common_logger -w "The Wazuh manager package could not be removed."
+            common_logger -w "The Exact-Ti manager package could not be removed."
         else
-            common_logger "Wazuh manager removed."
+            common_logger "Exact-Ti manager removed."
         fi
 
     fi
@@ -582,32 +582,32 @@ function installCommon_rollBack() {
     fi
 
     if [[ -n "${indexer_installed}" && ( -n "${indexer}" || -n "${AIO}" || -n "${uninstall}" ) ]]; then
-        common_logger "Removing Wazuh indexer."
+        common_logger "Removing Exact-Ti indexer."
         if [ "${sys_type}" == "yum" ]; then
             common_checkYumLock
             if [ "${attempt}" -ne "${max_attempts}" ]; then
-                eval "yum remove wazuh-indexer -y ${debug}"
-                eval "rpm -q wazuh-indexer --quiet"
+                eval "yum remove exactti-indexer -y ${debug}"
+                eval "rpm -q exactti-indexer --quiet"
             fi
         elif [ "${sys_type}" == "apt-get" ]; then
             common_checkAptLock
-            eval "apt-get remove --purge wazuh-indexer -y ${debug}"
-            eval "dpkg -l wazuh-indexer 2>/dev/null | grep -E '^ii\s'"
+            eval "apt-get remove --purge exactti-indexer -y ${debug}"
+            eval "dpkg -l exactti-indexer 2>/dev/null | grep -E '^ii\s'"
         fi
 
         indexer_installed=${PIPESTATUS[0]}
 
         if [ "${indexer_installed}" -eq 0 ]; then
-            common_logger -w "The Wazuh indexer package could not be removed."
+            common_logger -w "The Exact-Ti indexer package could not be removed."
         else
-            common_logger "Wazuh indexer removed."
+            common_logger "Exact-Ti indexer removed."
         fi
     fi
 
     if [[ ( -n "${indexer_remaining_files}" || -n "${indexer_installed}" ) && ( -n "${indexer}" || -n "${AIO}" || -n "${uninstall}" ) ]]; then
-        eval "rm -rf /var/lib/wazuh-indexer/ ${debug}"
-        eval "rm -rf /usr/share/wazuh-indexer/ ${debug}"
-        eval "rm -rf /etc/wazuh-indexer/ ${debug}"
+        eval "rm -rf /var/lib/exactti-indexer/ ${debug}"
+        eval "rm -rf /usr/share/exactti-indexer/ ${debug}"
+        eval "rm -rf /etc/exactti-indexer/ ${debug}"
     fi
 
     if [[ -n "${filebeat_installed}" && ( -n "${wazuh}" || -n "${AIO}" || -n "${uninstall}" ) ]]; then
@@ -640,44 +640,44 @@ function installCommon_rollBack() {
     fi
 
     if [[ -n "${dashboard_installed}" && ( -n "${dashboard}" || -n "${AIO}" || -n "${uninstall}" ) ]]; then
-        common_logger "Removing Wazuh dashboard."
+        common_logger "Removing Exact-Ti dashboard."
         if [ "${sys_type}" == "yum" ]; then
             common_checkYumLock
             if [ "${attempt}" -ne "${max_attempts}" ]; then
-                eval "yum remove wazuh-dashboard -y ${debug}"
-                eval "rpm -q wazuh-dashboard --quiet"
+                eval "yum remove exactti-dashboard -y ${debug}"
+                eval "rpm -q exactti-dashboard --quiet"
             fi
         elif [ "${sys_type}" == "apt-get" ]; then
             common_checkAptLock
-            eval "apt-get remove --purge wazuh-dashboard -y ${debug}"
-            eval "dpkg -l wazuh-dashboard 2>/dev/null | grep -E '^ii\s'"
+            eval "apt-get remove --purge exactti-dashboard -y ${debug}"
+            eval "dpkg -l exactti-dashboard 2>/dev/null | grep -E '^ii\s'"
         fi
 
         dashboard_installed=${PIPESTATUS[0]}
 
         if [ "${dashboard_installed}" -eq 0 ]; then
-            common_logger -w "The Wazuh dashboard package could not be removed."
+            common_logger -w "The Exact-Ti dashboard package could not be removed."
         else
-            common_logger "Wazuh dashboard removed."
+            common_logger "Exact-Ti dashboard removed."
         fi
     fi
 
     if [[ ( -n "${dashboard_remaining_files}" || -n "${dashboard_installed}" ) && ( -n "${dashboard}" || -n "${AIO}" || -n "${uninstall}" ) ]]; then
-        eval "rm -rf /var/lib/wazuh-dashboard/ ${debug}"
-        eval "rm -rf /usr/share/wazuh-dashboard/ ${debug}"
-        eval "rm -rf /etc/wazuh-dashboard/ ${debug}"
-        eval "rm -rf /run/wazuh-dashboard/ ${debug}"
+        eval "rm -rf /var/lib/exactti-dashboard/ ${debug}"
+        eval "rm -rf /usr/share/exactti-dashboard/ ${debug}"
+        eval "rm -rf /etc/exactti-dashboard/ ${debug}"
+        eval "rm -rf /run/exactti-dashboard/ ${debug}"
     fi
 
-    elements_to_remove=(    "/var/log/wazuh-indexer/"
+    elements_to_remove=(    "/var/log/exactti-indexer/"
                             "/var/log/filebeat/"
                             "/etc/systemd/system/opensearch.service.wants/"
                             "/securityadmin_demo.sh"
-                            "/etc/systemd/system/multi-user.target.wants/wazuh-manager.service"
+                            "/etc/systemd/system/multi-user.target.wants/exactti-server.service"
                             "/etc/systemd/system/multi-user.target.wants/filebeat.service"
                             "/etc/systemd/system/multi-user.target.wants/opensearch.service"
-                            "/etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service"
-                            "/etc/systemd/system/wazuh-dashboard.service"
+                            "/etc/systemd/system/multi-user.target.wants/exactti-dashboard.service"
+                            "/etc/systemd/system/exactti-dashboard.service"
                             "/lib/firewalld/services/dashboard.xml"
                             "/lib/firewalld/services/opensearch.xml" )
 
@@ -753,7 +753,7 @@ function installCommon_scanDependencies() {
     assistant_deps_to_install=()
     deps_to_install=()
 
-    # Get not installed dependencies of Assistant and Wazuh
+    # Get not installed dependencies of Assistant and Exact-Ti
     for dep in "${all_deps[@]}"; do
         if eval "${command}"; then
             deps_to_install+=("${dep}")

@@ -2,8 +2,8 @@
 
 set -x
 
-# Wazuh package builder
-# Copyright (C) 2021, Wazuh Inc.
+# Exact-Ti package builder
+# Copyright (C) 2021, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -13,12 +13,12 @@ set -x
 set -e
 
 # Script parameters to build the package
-target="wazuh-indexer"
+target="exactti-indexer"
 architecture=$1
 revision=$2
 future=$3
 reference=$4
-directory_base="/usr/share/wazuh-indexer"
+directory_base="/usr/share/exactti-indexer"
 
 if [ -z "${revision}" ]; then
     revision="1"

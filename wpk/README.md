@@ -4,7 +4,7 @@ In this repository, you can find the necessary tools to build a WPK package.
 
 ## Building WPK packages
 
-Please, visit the following link for the full WPK packages building documentation: [Generate Wazuh WPK packages automatically.](https://documentation.wazuh.com/current/development/packaging/generate-wpk-package.html)
+Please, visit the following link for the full WPK packages building documentation: [Generate Exact-Ti WPK packages automatically.](https://documentation.exactti.com/current/development/packaging/generate-wpk-package.html)
 
 ## More Packages
 
@@ -27,4 +27,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

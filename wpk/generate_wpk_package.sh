@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Program to build the Wazuh WPK packages
-# Wazuh package generator
-# Copyright (C) 2015, Wazuh Inc.
+# Program to build the Exact-Ti WPK packages
+# Exact-Ti package generator
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public

@@ -1,6 +1,6 @@
 """
-This script is used to bump the version of the Wazuh packages repository.
-    Copyright (C) 2015-2020, Wazuh Inc.
+This script is used to bump the version of the Exact-Ti packages repository.
+    Copyright (C) 2015-2020, Exact-Ti Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -54,14 +54,14 @@ spec_files_dict = {
     r'Revision:\s*(\d+)':'Revision:     ' + str(args.revision),
     r'%changelog':'%changelog\n' 
         + (f"* {spec_date} support <info@wazuh.com> - {version}"
-        "\n- More info: https://documentation.wazuh.com/current/release-"
+        "\n- More info: https://documentation.exactti.com/current/release-"
         f"notes/release-{version.major}-{version.minor}-"
         f"{version.micro}.html")}
 
 copyright_files_dict = {
-    (r'Wazuh, Inc <info@wazuh.com> on '
+    (r'Exact-Ti, Inc <info@wazuh.com> on '
      r'(\w+),\s(\d+)\s(\w+)\s(\d+)\s(\d+):(\d+):(\d+)\s\+(\d+)'):
-     f"Wazuh, Inc <info@wazuh.com> on {deb_changelog_date}"}
+     f"Exact-Ti, Inc <info@wazuh.com> on {deb_changelog_date}"}
 
 pkginfo_files_dict = {
     r'VERSION=\"(\d+\.\d+\.\d+)\"':f'VERSION=\"{version}\"',
@@ -70,12 +70,12 @@ pkginfo_files_dict = {
 pkgproj_files_dict = {
     r'<string>(\d+\.\d+\.\d+)-(\d+)</string>':
     f'<string>{version}-{args.revision}</string>',
-    r'<string>wazuh-agent-(\d+\.\d+\.\d+)-(\d+)':
-    f'<string>wazuh-agent-{version}-{args.revision}'}
+    r'<string>exactti-agent-(\d+\.\d+\.\d+)-(\d+)':
+    f'<string>exactti-agent-{version}-{args.revision}'}
 
 test_files_dict = {
-    r'wazuh-manager.x86_64\s+(\d+\.\d+\.\d+)-(\d+)':
-    f'wazuh-manager.x86_64 {version}-{args.revision}',
+    r'exactti-server.x86_64\s+(\d+\.\d+\.\d+)-(\d+)':
+    f'exactti-server.x86_64 {version}-{args.revision}',
     r'wazuh_version=\"(\d+\.\d+\.\d+)\"':
     f'wazuh_version=\"{version}\"'}
 
@@ -128,10 +128,10 @@ for changelog_file in changelog_files:
         install_type=re.search(r'(wazuh-(agent|manager|indexer|dashboard))',
                                filedata).group(1)
         changelog_string=(f"{install_type} ({version}-RELEASE) stable; "
-            "urgency=low\n\n  * More info: https://documentation.wazuh.com/"
+            "urgency=low\n\n  * More info: https://documentation.exactti.com/"
             f"current/release-notes/release-{version.major}-{version.minor}-"
             f"{version.micro}.html\n\n -- "
-            f"Wazuh, Inc <info@wazuh.com>  {deb_changelog_date}\n\n")
+            f"Exact-Ti, Inc <info@wazuh.com>  {deb_changelog_date}\n\n")
         # Add new version to changelog
         filedata=changelog_string + filedata
 

@@ -1,6 +1,6 @@
 #!/bin/sh
-# uninstall script for wazuh-agent
-# Wazuh, Inc 2015
+# uninstall script for exactti-agent
+# Exact-Ti, Inc 2015
 
 control_binary="wazuh-control"
 
@@ -13,12 +13,12 @@ fi
 rm -rf /var/ossec/
 
 ## stop and unload dispatcher
-#/bin/launchctl unload /Library/LaunchDaemons/com.wazuh.agent.plist
+#/bin/launchctl unload /Library/LaunchDaemons/com.exactti.agent.plist
 
 # remove launchdaemons
-rm -f /etc/init.d/wazuh-agent
-rm -rf /etc/rc2.d/S97wazuh-agent
-rm -rf /etc/rc3.d/S97wazuh-agent
+rm -f /etc/init.d/exactti-agent
+rm -rf /etc/rc2.d/S97exactti-agent
+rm -rf /etc/rc3.d/S97exactti-agent
 
 ## Remove User and Groups
 userdel wazuh 2> /dev/null

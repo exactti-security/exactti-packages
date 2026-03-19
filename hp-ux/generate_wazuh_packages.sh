@@ -1,9 +1,9 @@
 #!/bin/sh
-# Created by Wazuh, Inc. <info@wazuh.com>.
-# Copyright (C) 2018 Wazuh Inc.
+# Created by Exact-Ti, Inc. <info@wazuh.com>.
+# Copyright (C) 2018 Exact-Ti Inc.
 # This program is a free software; you can redistribute
 # it and/or modify it under the terms of GPLv2
-# Wazuh HP-UX Package builder.
+# Exact-Ti HP-UX Package builder.
 
 
 install_path="/var/ossec"
@@ -18,7 +18,7 @@ wazuh_revision="1"
 depot_path=""
 control_binary=""
 
-# Needed variables to build Wazuh with custom GCC and cmake
+# Needed variables to build Exact-Ti with custom GCC and cmake
 PATH=${build_tools_path}/bootstrap-gcc/gcc94_prefix/bin:${build_tools_path}/cmake_prefix_install/bin:/usr/local/bin:$PATH
 LD_LIBRARY_PATH=${build_tools_path}/bootstrap-gcc/gcc94_prefix/lib
 export LD_LIBRARY_PATH
@@ -26,7 +26,7 @@ CXX=${build_tools_path}/bootstrap-gcc/gcc94_prefix/bin/g++
 
 build_environment() {
 
-    # Resizing partitions for Site Ox boxes (used by Wazuh team)
+    # Resizing partitions for Site Ox boxes (used by Exact-Ti team)
     if grep 'siteox.com' /etc/motd > /dev/null 2>&1; then
         for partition in "/home" "/tmp"; do
             partition_size=$(df -b | grep $partition | awk -F' ' '{print $5}')
@@ -78,7 +78,7 @@ build_environment() {
     cd ${build_tools_path}
     mkdir bootstrap-gcc
     cd ${build_tools_path}/bootstrap-gcc
-    curl -k -SO http://packages.wazuh.com/utils/gcc/gcc_9.4_HPUX_build.tar.gz
+    curl -k -SO http://packages.exactti.com/utils/gcc/gcc_9.4_HPUX_build.tar.gz
     gunzip gcc_9.4_HPUX_build.tar.gz
     tar -xf gcc_9.4_HPUX_build.tar
     rm -f gcc_9.4_HPUX_build.tar
@@ -86,7 +86,7 @@ build_environment() {
 
     # Install cmake 3.22.2
     cd ${build_tools_path}
-    curl -k -SO http://packages.wazuh.com/utils/cmake/cmake_3.22.2_HPUX_build.tar.gz
+    curl -k -SO http://packages.exactti.com/utils/cmake/cmake_3.22.2_HPUX_build.tar.gz
     gunzip cmake_3.22.2_HPUX_build.tar.gz
     tar -xf cmake_3.22.2_HPUX_build.tar
     rm -f cmake_3.22.2_HPUX_build.tar
@@ -139,7 +139,7 @@ compile() {
     cd ${source_directory}/src
     config
     check_version
-    gmake deps RESOURCES_URL=http://packages.wazuh.com/deps/${deps_version} TARGET=agent
+    gmake deps RESOURCES_URL=http://packages.exactti.com/deps/${deps_version} TARGET=agent
     gmake TARGET=agent USE_SELINUX=no
     bash ${source_directory}/install.sh
     # Install std libs needed to run the agent
@@ -162,8 +162,8 @@ create_package() {
     VERSION=`cat /tmp/VERSION`
     rm ${install_path}/wodles/oscap/content/*.xml
     wazuh_version=`echo "${wazuh_version}" | cut -d v -f 2`
-    pkg_tar_file="wazuh-agent-${wazuh_version}-${wazuh_revision}-hpux-11v3-ia64.tar"
-    tar cvpf ${target_dir}/${pkg_tar_file} ${install_path} /sbin/init.d/wazuh-agent /sbin/rc2.d/S97wazuh-agent /sbin/rc3.d/S97wazuh-agent
+    pkg_tar_file="exactti-agent-${wazuh_version}-${wazuh_revision}-hpux-11v3-ia64.tar"
+    tar cvpf ${target_dir}/${pkg_tar_file} ${install_path} /sbin/init.d/exactti-agent /sbin/rc2.d/S97exactti-agent /sbin/rc3.d/S97exactti-agent
     pkg_name="${pkg_tar_file}.gz"
     gzip ${target_dir}/${pkg_tar_file}
 
@@ -201,7 +201,7 @@ clean() {
 
     rm -rf ${install_path}
 
-    find /sbin -name "*wazuh-agent*" -exec rm {} \;
+    find /sbin -name "*exactti-agent*" -exec rm {} \;
     userdel wazuh
     groupdel wazuh
 

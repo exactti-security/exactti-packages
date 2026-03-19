@@ -2,7 +2,7 @@
 
 # Tool to create wazuh-install.sh, wazuh-cert-tool.sh
 # and wazuh-passwords-tool.sh
-# Copyright (C) 2015, Wazuh Inc.
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -58,8 +58,8 @@ function buildInstaller() {
     ## License
     echo "#!/bin/bash
 
-# Wazuh installer
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -70,19 +70,19 @@ function buildInstaller() {
     ## Installation variables
     if [ -n "${development}" ]; then
         echo 'readonly development=1' >> "${output_script_path}"
-        echo 'readonly repogpg="https://packages-dev.wazuh.com/key/GPG-KEY-WAZUH"' >> "${output_script_path}"
-        echo 'readonly repobaseurl="https://packages-dev.wazuh.com/'${devrepo}'"' >> "${output_script_path}"
+        echo 'readonly repogpg="https://packages-dev.exactti.com/key/GPG-KEY-WAZUH"' >> "${output_script_path}"
+        echo 'readonly repobaseurl="https://packages-dev.exactti.com/'${devrepo}'"' >> "${output_script_path}"
         echo 'readonly reporelease="unstable"' >> "${output_script_path}"
         echo 'readonly filebeat_wazuh_module="${repobaseurl}/filebeat/wazuh-filebeat-0.4.tar.gz"' >> "${output_script_path}"
-        echo 'readonly bucket="packages-dev.wazuh.com"' >> "${output_script_path}"
+        echo 'readonly bucket="packages-dev.exactti.com"' >> "${output_script_path}"
         echo 'readonly repository="'"${devrepo}"'"' >> "${output_script_path}"
         sed -i 's|v${wazuh_version}|${wazuh_version}|g' "${resources_installer}/installVariables.sh"
     else
-        echo 'readonly repogpg="https://packages.wazuh.com/key/GPG-KEY-WAZUH"' >> "${output_script_path}"
-        echo 'readonly repobaseurl="https://packages.wazuh.com/4.x"' >> "${output_script_path}"
+        echo 'readonly repogpg="https://packages.exactti.com/key/GPG-KEY-WAZUH"' >> "${output_script_path}"
+        echo 'readonly repobaseurl="https://packages.exactti.com/4.x"' >> "${output_script_path}"
         echo 'readonly reporelease="stable"' >> "${output_script_path}"
         echo 'readonly filebeat_wazuh_module="${repobaseurl}/filebeat/wazuh-filebeat-0.4.tar.gz"' >> "${output_script_path}"
-        echo 'readonly bucket="packages.wazuh.com"' >> "${output_script_path}"
+        echo 'readonly bucket="packages.exactti.com"' >> "${output_script_path}"
         echo 'readonly repository="4.x"' >> "${output_script_path}"
     fi
     echo >> "${output_script_path}"
@@ -102,7 +102,7 @@ function buildInstaller() {
     echo "trap installCommon_cleanExit SIGINT" >> "${output_script_path}"
 
     ## JAVA_HOME
-    echo "export JAVA_HOME=\"/usr/share/wazuh-indexer/jdk/\"" >> "${output_script_path}"
+    echo "export JAVA_HOME=\"/usr/share/exactti-indexer/jdk/\"" >> "${output_script_path}"
 
     ## Functions for all install function modules
     install_modules=($(find "${resources_installer}" -type f))
@@ -146,8 +146,8 @@ function buildPasswordsTool() {
     ## License
     echo "#!/bin/bash
 
-# Wazuh installer
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -187,8 +187,8 @@ function buildCertsTool() {
     ## License
     echo "#!/bin/bash
 
-# Wazuh installer
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -319,7 +319,7 @@ function checkFilebeatURL() {
 
         # Display error if both URLs do not get the resource
         if [ "${response}" != "200" ]; then
-            echo -e "Error: Could not get the Filebeat Wazuh template. "
+            echo -e "Error: Could not get the Filebeat Exact-Ti template. "
         # If matches, replace the variable of installVariables to the new one
         else
             echo -e "Changing Filebeat URL..."

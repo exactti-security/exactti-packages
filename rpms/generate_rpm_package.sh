@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Wazuh package generator
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti package generator
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -43,7 +43,7 @@ RPM_MANAGER_PPC64LE_BUILDER_DOCKERFILE="${CURRENT_PATH}/CentOS/7/ppc64le"
 LEGACY_RPM_AGENT_I386_BUILDER_DOCKERFILE="${CURRENT_PATH}/CentOS/5/i386"
 LEGACY_RPM_AGENT_X86_BUILDER_DOCKERFILE="${CURRENT_PATH}/CentOS/5/x86_64"
 LEGACY_TAR_FILE="${LEGACY_RPM_BUILDER_DOCKERFILE}/i386/centos-5-i386.tar.gz"
-TAR_URL="https://packages-dev.wazuh.com/utils/centos-5-i386-build/centos-5-i386.tar.gz"
+TAR_URL="https://packages-dev.exactti.com/utils/centos-5-i386-build/centos-5-i386.tar.gz"
 INSTALLATION_PATH="/var/ossec"
 PACKAGES_BRANCH="master"
 CHECKSUMDIR=""

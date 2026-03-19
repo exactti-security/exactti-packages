@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Wazuh package generator
-# Copyright (C) 2021, Wazuh Inc.
+# Exact-Ti package generator
+# Copyright (C) 2021, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -56,9 +56,9 @@ build_deb() {
         else
             version=$(cat ${current_path}/../../../VERSION)
         fi
-        basefile="${outdir}/wazuh-indexer-base-${version}-${revision}-linux-x64.tar.xz"
+        basefile="${outdir}/exactti-indexer-base-${version}-${revision}-linux-x64.tar.xz"
         if ! test -f "${basefile}"; then
-            echo "Did not find expected Wazuh indexer base file: ${basefile} in output path. Exiting..."
+            echo "Did not find expected Exact-Ti indexer base file: ${basefile} in output path. Exiting..."
             exit 1
         fi
     fi

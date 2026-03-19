@@ -8,7 +8,7 @@ BUILDER="builder.sh"
 INSTALLER="wazuh-install.sh"
 SYSTEM_USER="wazuh-user"
 HOSTNAME="wazuh-server"
-INDEXES=("wazuh-alerts-*" "wazuh-archives-*" "wazuh-states-vulnerabilities-*" "wazuh-statistics-*" "wazuh-monitoring-*")
+INDEXES=("exact-ti-alerts-*" "wazuh-archives-*" "wazuh-states-vulnerabilities-*" "exact-ti-statistics-*" "exact-ti-monitoring-*")
 
 CURRENT_PATH="$( cd $(dirname $0) ; pwd -P )"
 ASSETS_PATH="${CURRENT_PATH}/assets"
@@ -43,7 +43,7 @@ preInstall
 # Install
 bash ${RESOURCES_PATH}/${INSTALLER} ${INSTALL_ARGS}
 
-systemctl stop filebeat wazuh-manager
+systemctl stop filebeat exactti-server
 
 # Delete indexes
 for index in "${INDEXES[@]}"; do
@@ -51,10 +51,10 @@ for index in "${INDEXES[@]}"; do
 done
 
 # Recreate empty indexes (wazuh-alerts and wazuh-archives)
-bash /usr/share/wazuh-indexer/bin/indexer-security-init.sh -ho 127.0.0.1
+bash /usr/share/exactti-indexer/bin/indexer-security-init.sh -ho 127.0.0.1
 
-systemctl stop wazuh-indexer wazuh-dashboard
-systemctl enable wazuh-manager
+systemctl stop exactti-indexer exactti-dashboard
+systemctl enable exactti-server
 
 
 clean

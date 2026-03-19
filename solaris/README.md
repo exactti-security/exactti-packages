@@ -1,13 +1,13 @@
 # Solaris packages
 
-In this repository, you can find the necessary tools to build a Wazuh package for solaris 10 and 11, using scripts or automated using vagrant, and the tools to build a solaris 10 and 11 vagrant box:
+In this repository, you can find the necessary tools to build a Exact-Ti package for solaris 10 and 11, using scripts or automated using vagrant, and the tools to build a solaris 10 and 11 vagrant box:
 
 - [Automated Solaris package generation using vagrant](/solaris/package_generation/README.md)
 - [Vagrantbox using packer](/solaris/packer/README.md)
 
 ## Building Solaris packages
 
-Please, visit the following link for the full Solaris packages building documentation: [Generate Wazuh Solaris packages.](https://documentation.wazuh.com/current/development/packaging/generate-sol-package.html)
+Please, visit the following link for the full Solaris packages building documentation: [Generate Exact-Ti Solaris packages.](https://documentation.exactti.com/current/development/packaging/generate-sol-package.html)
 
 ## More Packages
 
@@ -30,4 +30,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

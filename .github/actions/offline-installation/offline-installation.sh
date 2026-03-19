@@ -9,13 +9,13 @@ install_dependencies
 download_resources
 
 indexer_installation
-echo "INFO: Wazuh indexer installation completed."
+echo "INFO: Exact-Ti indexer installation completed."
 
 manager_installation
-echo "INFO: Wazuh manager installation completed."
+echo "INFO: Exact-Ti manager installation completed."
 
 filebeat_installation
 echo "INFO: Filebeat installation completed."
 
 dashboard_installation
-echo "INFO: Wazuh dashboard installation completed."
+echo "INFO: Exact-Ti dashboard installation completed."

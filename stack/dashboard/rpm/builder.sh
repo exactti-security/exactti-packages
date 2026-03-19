@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Wazuh package builder
-# Copyright (C) 2021, Wazuh Inc.
+# Exact-Ti package builder
+# Copyright (C) 2021, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -10,7 +10,7 @@
 
 set -e
 # Script parameters to build the package
-target="wazuh-dashboard"
+target="exactti-dashboard"
 architecture=$1
 revision=$2
 future=$3
@@ -18,7 +18,7 @@ plugin_main=$4
 plugin_updates=$5
 plugin_core=$6
 reference=$7
-directory_base="/usr/share/wazuh-dashboard"
+directory_base="/usr/share/exactti-dashboard"
 
 if [ -z "${revision}" ]; then
     revision="1"
@@ -39,34 +39,34 @@ if [ "${plugin_main}" ] && [ "${plugin_updates}" ] && [ "${plugin_core}" ] ;then
     if [[ "${plugin_main}" =~ $valid_url ]];then
         url_main="${plugin_main}"
         if ! curl --output /dev/null --silent --head --fail "${url_main}"; then
-            echo "The given URL to download the Wazuh main plugin ZIP does not exist: ${url_main}"
+            echo "The given URL to download the Exact-Ti main plugin ZIP does not exist: ${url_main}"
             exit 1
         fi
     else
-        url_main="https://packages-dev.wazuh.com/${app_url}/ui/dashboard/wazuh-${version}-${revision}.zip"
+        url_main="https://packages-dev.exactti.com/${app_url}/ui/dashboard/wazuh-${version}-${revision}.zip"
     fi
     if [[ "${plugin_updates}" =~ $valid_url ]];then
         url_updates="${plugin_updates}"
         if ! curl --output /dev/null --silent --head --fail "${url_updates}"; then
-            echo "The given URL to download the Wazuh Check Updates plugin ZIP does not exist: ${url_updates}"
+            echo "The given URL to download the Exact-Ti Check Updates plugin ZIP does not exist: ${url_updates}"
             exit 1
         fi
     else
-        url_updates="https://packages-dev.wazuh.com/${app_url}/ui/dashboard/wazuhCheckUpdates-${version}-${revision}.zip"
+        url_updates="https://packages-dev.exactti.com/${app_url}/ui/dashboard/wazuhCheckUpdates-${version}-${revision}.zip"
     fi
     if [[ "${plugin_core}" =~ $valid_url ]];then
         url_core="${plugin_core}"
         if ! curl --output /dev/null --silent --head --fail "${url_core}"; then
-            echo "The given URL to download the Wazuh Core plugin ZIP does not exist: ${url_core}"
+            echo "The given URL to download the Exact-Ti Core plugin ZIP does not exist: ${url_core}"
             exit 1
         fi
     else
-        url_core="https://packages-dev.wazuh.com/${app_url}/ui/dashboard/wazuhCore-${version}-${revision}.zip"
+        url_core="https://packages-dev.exactti.com/${app_url}/ui/dashboard/wazuhCore-${version}-${revision}.zip"
     fi
 else
-    url_main="https://packages-dev.wazuh.com/pre-release/ui/dashboard/wazuh-${version}-${revision}.zip"
-    url_updates="https://packages-dev.wazuh.com/pre-release/ui/dashboard/wazuhCheckUpdates-${version}-${revision}.zip"
-    url_core="https://packages-dev.wazuh.com/pre-release/ui/dashboard/wazuhCore-${version}-${revision}.zip"
+    url_main="https://packages-dev.exactti.com/pre-release/ui/dashboard/wazuh-${version}-${revision}.zip"
+    url_updates="https://packages-dev.exactti.com/pre-release/ui/dashboard/wazuhCheckUpdates-${version}-${revision}.zip"
+    url_core="https://packages-dev.exactti.com/pre-release/ui/dashboard/wazuhCore-${version}-${revision}.zip"
 fi
 
 # Build directories

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Wazuh dashboard base builder
-# Copyright (C) 2021, Wazuh Inc.
+# Exact-Ti dashboard base builder
+# Copyright (C) 2021, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -17,7 +17,7 @@ future="$3"
 repository="$4"
 reference="$5"
 opensearch_version="2.10.0"
-base_dir=/opt/wazuh-dashboard-base
+base_dir=/opt/exactti-dashboard-base
 
 # -----------------------------------------------------------------------------
 # Set environment
@@ -44,20 +44,20 @@ if [ "${future}" = "yes" ];then
 fi
 wazuh_minor=$(echo ${version} | cut -c1-3)
 
-# Obtain the Wazuh plugin URL
+# Obtain the Exact-Ti plugin URL
 if [ "${repository}" ];then
     valid_url='(https?|ftp|file)://[-[:alnum:]\+&@#/%?=~_|!:,.;]*[-[:alnum:]\+&@#/%=~_|]'
     if [[ $repository =~ $valid_url ]];then
         url="${repository}"
         if ! curl --output /dev/null --silent --head --fail "${url}"; then
-            echo "The given URL to download the Wazuh plugin zip does not exist: ${url}"
+            echo "The given URL to download the Exact-Ti plugin zip does not exist: ${url}"
             exit 1
         fi
     else
-        url="https://packages-dev.wazuh.com/${repository}/ui/dashboard/wazuh-${version}-${revision}.zip"
+        url="https://packages-dev.exactti.com/${repository}/ui/dashboard/wazuh-${version}-${revision}.zip"
     fi
 else
-    url="https://packages-dev.wazuh.com/pre-release/ui/dashboard/wazuh-${version}-${revision}.zip"
+    url="https://packages-dev.exactti.com/pre-release/ui/dashboard/wazuh-${version}-${revision}.zip"
 fi
 
 # Set directories
@@ -107,7 +107,7 @@ cp ./etc/template.js ./src/core/server/rendering/views/template.js
 cp ./etc/styles.js ./src/core/server/rendering/views/styles.js
 
 # -----------------------------------------------------------------------------
-# Customize OpenSearch Dashboards with Wazuh
+# Customize OpenSearch Dashboards with Exact-Ti
 # -----------------------------------------------------------------------------
 
 # Set v7 theme as default
@@ -116,7 +116,7 @@ sed -i "s|defaultValue: 'v8'|defaultValue: 'v7'|g" ./src/core/server/ui_settings
 
 
 # Replace App Title
-sed -i "s|defaultValue: ''|defaultValue: \'Wazuh\'|g" ./src/core/server/opensearch_dashboards_config.js
+sed -i "s|defaultValue: ''|defaultValue: \'Exact-Ti\'|g" ./src/core/server/opensearch_dashboards_config.js
 sed -i "90s|defaultValue: true|defaultValue: false|g" ./src/core/server/opensearch_dashboards_config.js
 
 # Remove the `home` button from the sidebar menu
@@ -146,10 +146,10 @@ sed -i 's|opensearchDashboardsDocLink,surveyLink:surveyLink}|opensearchDashboard
 
 ### Opensearch Dashboards documentation
 sed -i 's|OpenSearch Dashboards documentation|Documentation|' ./src/core/target/public/core.entry.js
-sed -i 's|href:opensearchDashboardsDocLink,|href:"https://documentation.wazuh.com/'${wazuh_minor}'", iconType:darkmode?"/ui/logos/icon_dark.svg":"/ui/logos/icon_light.svg",|' ./src/core/target/public/core.entry.js
+sed -i 's|href:opensearchDashboardsDocLink,|href:"https://documentation.exactti.com/'${wazuh_minor}'", iconType:darkmode?"/ui/logos/icon_dark.svg":"/ui/logos/icon_light.svg",|' ./src/core/target/public/core.entry.js
 
 ## Help link - Ask OpenSearch
-sed -i 's|Ask OpenSearch|Ask Wazuh|' ./src/core/target/public/core.entry.js
+sed -i 's|Ask OpenSearch|Ask Exact-Ti|' ./src/core/target/public/core.entry.js
 sed -i 's|OPENSEARCH_DASHBOARDS_ASK_OPENSEARCH_LINK="https://github.com/opensearch-project"|=="https://wazuh.com/community/join-us-on-slack"|' ./src/core/target/public/core.entry.js
 
 ## Help link - Community
@@ -283,7 +283,7 @@ do
 done
 
 # -----------------------------------------------------------------------------
-# Wazuh customizations
+# Exact-Ti customizations
 # -----------------------------------------------------------------------------
 
 # Add VERSION file
@@ -329,5 +329,5 @@ find -type f -perm 744 -exec chmod 740 {} \;
 
 # Base output
 cd /opt
-tar -cJf wazuh-dashboard-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz wazuh-dashboard-base
-cp wazuh-dashboard-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz /tmp/output/
+tar -cJf exactti-dashboard-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz exactti-dashboard-base
+cp exactti-dashboard-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz /tmp/output/

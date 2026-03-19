@@ -1,11 +1,11 @@
-Wazuh Kibana App package
+Exact-Ti Kibana App package
 ========================
 
-In this repository, you can find the necessary tools to build a Wazuh Kibana App package.
+In this repository, you can find the necessary tools to build a Exact-Ti Kibana App package.
 
-## Building Wazuh Kibana app packages
+## Building Exact-Ti Kibana app packages
 
-Please, visit the following link for the full Wazuh Kibana plugin packages building documentation: [Generate Wazuh Kibana plugin.](https://documentation.wazuh.com/current/development/packaging/generate-wazuh-kibana-app.html)
+Please, visit the following link for the full Exact-Ti Kibana plugin packages building documentation: [Generate Exact-Ti Kibana plugin.](https://documentation.exactti.com/current/development/packaging/generate-wazuh-kibana-app.html)
 
 ## More Packages
 
@@ -28,4 +28,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

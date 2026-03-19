@@ -1,6 +1,6 @@
 function installCommon_changePasswords() {
 
-    common_logger -d "Setting Wazuh indexer cluster passwords."
+    common_logger -d "Setting Exact-Ti indexer cluster passwords."
     if [ -f "${tar_file}" ]; then
         eval "tar -xf ${tar_file} -C /tmp wazuh-install-files/wazuh-passwords.txt ${debug}"
         p_file="/tmp/wazuh-install-files/wazuh-passwords.txt"

@@ -1,6 +1,6 @@
 #! /bin/bash
 # By Spransy, Derek" <DSPRANS () emory ! edu> and Charlie Scott
-# Modified by Santiago Bassett (http://www.wazuh.com) - Feb 2016
+# Modified by Santiago Bassett (http://www.exactti.com) - Feb 2016
 # alterations by bil hays 2013
 # -Switched to bash
 # -Added some sanity checks
@@ -118,7 +118,7 @@ if [ -r ${SCA_TMP_FILE} ]; then
     done
 fi
 
-# Register and configure agent if Wazuh environment variables are defined
+# Register and configure agent if Exact-Ti environment variables are defined
 if [ -z "${upgrade}" ]; then
   ${INSTALLATION_SCRIPTS_DIR}/src/init/register_configure_agent.sh ${DIR} > /dev/null || :
 fi

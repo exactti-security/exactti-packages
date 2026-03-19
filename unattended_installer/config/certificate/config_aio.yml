@@ -1,10 +1,10 @@
 nodes:
   indexer:
-    - name: wazuh-indexer
+    - name: exactti-indexer
       ip: 127.0.0.1
   server:
     - name: wazuh-server
       ip: 127.0.0.1
   dashboard:
-    - name: wazuh-dashboard
+    - name: exactti-dashboard
       ip: 127.0.0.1

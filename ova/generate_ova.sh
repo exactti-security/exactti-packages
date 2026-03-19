@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Program to build the Wazuh Virtual Machine
-# Wazuh package generator
-# Copyright (C) 2015, Wazuh Inc.
+# Program to build the Exact-Ti Virtual Machine
+# Exact-Ti package generator
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -33,7 +33,7 @@ DEBUG="no"
 help () {
     echo -e ""
     echo -e "NAME"
-    echo -e "$(basename "$0") - Build Wazuh OVA."
+    echo -e "$(basename "$0") - Build Exact-Ti OVA."
     echo -e ""
     echo -e "SYNOPSIS"
     echo -e "        $(basename "$0") -r | -s | -c | -f | -h"
@@ -101,10 +101,10 @@ build_ova() {
     # Create OVA with machine
     vboxmanage export "${VM_EXPORT}" -o "${OVA_VM}" \
     --vsys 0 \
-    --product "Wazuh v${OVA_VERSION} OVA" \
-    --producturl "https://packages.wazuh.com/vm/wazuh-${OVA_VERSION}.ova" \
-    --vendor "Wazuh, inc <info@wazuh.com>" --vendorurl "https://wazuh.com" \
-    --version "$OVA_VERSION" --description "Wazuh enhances security visibility in your infrastructure by monitoring endpoints at the operating system and application levels. Its capabilities include log analysis, file integrity monitoring, intrusion detection, and compliance monitoring." \
+    --product "Exact-Ti v${OVA_VERSION} OVA" \
+    --producturl "https://packages.exactti.com/vm/wazuh-${OVA_VERSION}.ova" \
+    --vendor "Exact-Ti, inc <info@wazuh.com>" --vendorurl "https://wazuh.com" \
+    --version "$OVA_VERSION" --description "Exact-Ti enhances security visibility in your infrastructure by monitoring endpoints at the operating system and application levels. Its capabilities include log analysis, file integrity monitoring, intrusion detection, and compliance monitoring." \
     || clean 1
 
     vagrant destroy -f

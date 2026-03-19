@@ -1,8 +1,8 @@
 #!/bin/bash
-# Created by Wazuh, Inc. <info@wazuh.com>.
-# Copyright (C) 2015, Wazuh Inc.
+# Created by Exact-Ti, Inc. <info@wazuh.com>.
+# Copyright (C) 2015, Exact-Ti Inc.
 # This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2
-# Wazuh Solaris 10 Package builder.
+# Exact-Ti Solaris 10 Package builder.
 
 
 # CONFIGURATION VARIABLES
@@ -72,15 +72,15 @@ build_environment(){
     pkgadd -d gmake-4.2.1%2cREV%3d2016.08.04-SunOS5.10-sparc-CSW.pkg -n all
 
     # Compile GCC-5.5 and CMake
-    curl -L http://packages.wazuh.com/utils/gcc/gcc-5.5.0.tar.gz | gtar xz
+    curl -L http://packages.exactti.com/utils/gcc/gcc-5.5.0.tar.gz | gtar xz
     cd gcc-5.5.0
-    curl -L http://packages.wazuh.com/utils/gcc/mpfr-2.4.2.tar.bz2 | gtar xj
+    curl -L http://packages.exactti.com/utils/gcc/mpfr-2.4.2.tar.bz2 | gtar xj
     mv mpfr-2.4.2 mpfr
-    curl -L http://packages.wazuh.com/utils/gcc/gmp-4.3.2.tar.bz2 | gtar xj
+    curl -L http://packages.exactti.com/utils/gcc/gmp-4.3.2.tar.bz2 | gtar xj
     mv gmp-4.3.2 gmp
-    curl -L http://packages.wazuh.com/utils/gcc/mpc-0.8.1.tar.gz | gtar xz
+    curl -L http://packages.exactti.com/utils/gcc/mpc-0.8.1.tar.gz | gtar xz
     mv mpc-0.8.1 mpc
-    curl -L http://packages.wazuh.com/utils/gcc/isl-0.14.tar.bz2 | gtar xj
+    curl -L http://packages.exactti.com/utils/gcc/isl-0.14.tar.bz2 | gtar xj
     mv isl-0.14 isl
     unset CPLUS_INCLUDE_PATH
     unset LD_LIBRARY_PATH
@@ -99,7 +99,7 @@ build_environment(){
     rm -rf gcc-*
     ln -sf /usr/local/gcc-5.5.0/bin/g++ /usr/bin/g++
 
-    curl -sL http://packages.wazuh.com/utils/cmake/cmake-3.18.3.tar.gz | gtar xz
+    curl -sL http://packages.exactti.com/utils/cmake/cmake-3.18.3.tar.gz | gtar xz
     cd cmake-3.18.3
     ./bootstrap
     gmake && gmake install
@@ -219,27 +219,27 @@ clone(){
 
 package(){
     cd ${CURRENT_PATH}
-    find ${install_path} | awk 'length > 0' > "wazuh-agent_$VERSION.list"
+    find ${install_path} | awk 'length > 0' > "exactti-agent_$VERSION.list"
     ver=`echo $VERSION | cut -d'v' -f 2`
     sed  "s:expected_platform=\".*\":expected_platform=\"$ARCH\":g" checkinstall.sh > checkinstall.sh.new && mv checkinstall.sh.new checkinstall.sh
     sed  "s:ARCH=\".*\":ARCH=\"$ARCH\":g" pkginfo > pkginfo.new && mv pkginfo.new pkginfo
     sed  "s:ARCH=\".*\":ARCH=\"$ARCH\":g" pkginfo > pkginfo.new && mv pkginfo.new pkginfo
     sed  "s:VERSION=\".*\":VERSION=\"$ver\":g" pkginfo > pkginfo.new && mv pkginfo.new pkginfo
-    echo "i pkginfo=pkginfo" > "wazuh-agent_$VERSION.proto"
-    echo "i checkinstall=checkinstall.sh" >> "wazuh-agent_$VERSION.proto"
-    echo "i preinstall=preinstall.sh" >> "wazuh-agent_$VERSION.proto"
-    echo "i postinstall=postinstall.sh" >> "wazuh-agent_$VERSION.proto"
-    echo "i preremove=preremove.sh" >> "wazuh-agent_$VERSION.proto"
-    echo "i postremove=postremove.sh" >> "wazuh-agent_$VERSION.proto"
-    echo "f none /etc/init.d/wazuh-agent  0755 root root" >> "wazuh-agent_$VERSION.proto"
-    echo "s none /etc/rc2.d/S97wazuh-agent=/etc/init.d/wazuh-agent" >> "wazuh-agent_$VERSION.proto"
-    echo "s none /etc/rc3.d/S97wazuh-agent=/etc/init.d/wazuh-agent" >> "wazuh-agent_$VERSION.proto"
-    cat "wazuh-agent_$VERSION.list" | pkgproto >> "wazuh-agent_$VERSION.proto"
+    echo "i pkginfo=pkginfo" > "exactti-agent_$VERSION.proto"
+    echo "i checkinstall=checkinstall.sh" >> "exactti-agent_$VERSION.proto"
+    echo "i preinstall=preinstall.sh" >> "exactti-agent_$VERSION.proto"
+    echo "i postinstall=postinstall.sh" >> "exactti-agent_$VERSION.proto"
+    echo "i preremove=preremove.sh" >> "exactti-agent_$VERSION.proto"
+    echo "i postremove=postremove.sh" >> "exactti-agent_$VERSION.proto"
+    echo "f none /etc/init.d/exactti-agent  0755 root root" >> "exactti-agent_$VERSION.proto"
+    echo "s none /etc/rc2.d/S97exactti-agent=/etc/init.d/exactti-agent" >> "exactti-agent_$VERSION.proto"
+    echo "s none /etc/rc3.d/S97exactti-agent=/etc/init.d/exactti-agent" >> "exactti-agent_$VERSION.proto"
+    cat "exactti-agent_$VERSION.list" | pkgproto >> "exactti-agent_$VERSION.proto"
 
     echo $VERSION
-    pkgmk -o -r / -d . -f "wazuh-agent_$VERSION.proto"
-    pkg_name="wazuh-agent_$VERSION-sol10-$ARCH.pkg"
-    pkgtrans -s ${CURRENT_PATH} "${pkg_name}" wazuh-agent
+    pkgmk -o -r / -d . -f "exactti-agent_$VERSION.proto"
+    pkg_name="exactti-agent_$VERSION-sol10-$ARCH.pkg"
+    pkgtrans -s ${CURRENT_PATH} "${pkg_name}" exactti-agent
 
     mkdir -p ${target_dir}
 
@@ -254,7 +254,7 @@ clean(){
     set_control_binary
     cd ${CURRENT_PATH}
     rm -rf ${SOURCE}
-    rm -rf wazuh-agent wazuh *.list *proto
+    rm -rf exactti-agent wazuh *.list *proto
     rm -f *.new
 
     ## Stop and remove application
@@ -265,9 +265,9 @@ clean(){
     rm -r ${install_path}*
 
     # remove launchdaemons
-    rm -f /etc/init.d/wazuh-agent
-    rm -f /etc/rc2.d/S97wazuh-agent
-    rm -f /etc/rc3.d/S97wazuh-agent
+    rm -f /etc/init.d/exactti-agent
+    rm -f /etc/rc2.d/S97exactti-agent
+    rm -f /etc/rc3.d/S97exactti-agent
 
     ## Remove User and Groups
     userdel wazuh

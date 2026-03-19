@@ -17,7 +17,7 @@ test-01-manager_install-apt-error() {
     sep="="
     wazuh_version=1
     wazuh_revision=1
-    @mockfalse apt-get install wazuh-manager=1-1 -y
+    @mockfalse apt-get install exactti-server=1-1 -y
     manager_install
 }
 
@@ -32,7 +32,7 @@ test-02-manager_install-yum-error() {
     sep="-"
     wazuh_version=1
     wazuh_revision=1
-    @mockfalse yum install wazuh-manager-1-1 -y
+    @mockfalse yum install exactti-server-1-1 -y
     manager_install
 }
 
@@ -53,7 +53,7 @@ test-03-manager_install-apt() {
 }
 
 test-03-manager_install-apt-assert() {
-    apt-get install wazuh-manager=1-1 -y
+    apt-get install exactti-server=1-1 -y
     @echo 1
 }
 
@@ -68,7 +68,7 @@ test-04-manager_install-yum() {
 }
 
 test-04-manager_install-yum-assert() {
-    yum install wazuh-manager-1-1 -y
+    yum install exactti-server-1-1 -y
     @echo 1
 }
 

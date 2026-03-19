@@ -1,10 +1,10 @@
-# Wazuh Splunk App package
+# Exact-Ti Splunk App package
 
-In this repository, you can find the necessary tools to build a Wazuh Splunk App package.
+In this repository, you can find the necessary tools to build a Exact-Ti Splunk App package.
 
-## Building Wazuh Splunk app packages
+## Building Exact-Ti Splunk app packages
 
-Please, visit the following link for the full Splunk App packages building documentation: [Generate Wazuh Splunk App packages.](https://documentation.wazuh.com/current/development/packaging/generate-wazuh-splunk-app.html)
+Please, visit the following link for the full Splunk App packages building documentation: [Generate Exact-Ti Splunk App packages.](https://documentation.exactti.com/current/development/packaging/generate-wazuh-splunk-app.html)
 
 ## More Packages
 
@@ -27,4 +27,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

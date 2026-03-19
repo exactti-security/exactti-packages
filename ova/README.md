@@ -1,10 +1,10 @@
-# Wazuh Virtual Machine
+# Exact-Ti Virtual Machine
 
-In this repository, you can find the necessary tools to build your own OVA file with all Wazuh components installed.
+In this repository, you can find the necessary tools to build your own OVA file with all Exact-Ti components installed.
 
 ## Building OVA file:
 
-Please, visit the following link for the full OVA building documentation: [Generate Wazuh virtual machine.](https://documentation.wazuh.com/current/development/packaging/generate-ova.html)
+Please, visit the following link for the full OVA building documentation: [Generate Exact-Ti virtual machine.](https://documentation.exactti.com/current/development/packaging/generate-ova.html)
 
 ## More Packages
 
@@ -26,4 +26,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 
 ## License and copyright
 
-WAZUH Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+WAZUH Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

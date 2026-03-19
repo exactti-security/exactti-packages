@@ -1,5 +1,5 @@
 nodes:
-  # Wazuh indexer nodes
+  # Exact-Ti indexer nodes
   indexer:
     - name: indexer-1
       ip: "<indexer-node-ip>"
@@ -8,8 +8,8 @@ nodes:
     #- name: indexer-3
     #  ip: "<indexer-node-ip>"
 
-  # Wazuh server nodes
-  # If there is more than one Wazuh server
+  # Exact-Ti server nodes
+  # If there is more than one Exact-Ti server
   # node, each one must have a node_type
   server:
     - name: server-1
@@ -22,7 +22,7 @@ nodes:
     #  ip: "<server-node-ip>"
     #  node_type: worker
 
-  # Wazuh dashboard nodes
+  # Exact-Ti dashboard nodes
   dashboard:
     - name: dashboard
       ip: "<dashboard-node-ip>"

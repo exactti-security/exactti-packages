@@ -3,9 +3,9 @@
 # check_rebrand.sh - Exact-Ti Rebrand Checker v1.0
 # ================================================
 echo "Exact-Ti Rebrand Checker"
-echo "Buscando referencias residuais ao Wazuh..."
+echo "Buscando referencias residuais ao Exact-Ti..."
 
-FOUND=$(grep -rn 'wazuh\|Wazuh\|WAZUH' . \
+FOUND=$(grep -rn 'wazuh\|Exact-Ti\|WAZUH' . \
   --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' \
   --include='*.yml' --include='*.yaml' --include='*.conf' --include='*.sh' --include='*.py' \
   --exclude-dir=node_modules --exclude-dir=.git \

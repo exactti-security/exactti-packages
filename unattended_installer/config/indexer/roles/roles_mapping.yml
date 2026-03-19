@@ -76,7 +76,7 @@ kibana_user:
   and_backend_roles: []
   description: "Maps kibanauser to kibana_user"
 
-# Wazuh monitoring and statistics index permissions
+# Exact-Ti monitoring and statistics index permissions
 manage_wazuh_index:
   reserved: true
   hidden: false

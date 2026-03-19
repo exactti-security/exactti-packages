@@ -23,7 +23,7 @@ download_sources() {
 }
 
 remove_execute_permissions() {
-    chmod -R -x+X * ./SplunkAppForWazuh/appserver
+    chmod -R -x+X * ./SplunkAppForExact-Ti/appserver
 }
 
 build_package() {
@@ -40,7 +40,7 @@ build_package() {
         wazuh_splunk_pkg_name="wazuh_splunk-${wazuh_version}_${splunk_version}-${revision}.tar.gz"
     fi
 
-    tar -zcf ${wazuh_splunk_pkg_name} SplunkAppForWazuh
+    tar -zcf ${wazuh_splunk_pkg_name} SplunkAppForExact-Ti
 
     mv ${wazuh_splunk_pkg_name} ${destination_dir}
 

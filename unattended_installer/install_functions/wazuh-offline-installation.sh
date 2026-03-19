@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Wazuh installer: offline download
-# Copyright (C) 2023, Wazuh Inc.
+# Exact-Ti installer: offline download
+# Copyright (C) 2023, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -67,9 +67,9 @@ function offline_extractFiles() {
     )
     
     if [ "${sys_type}" == "apt-get" ]; then
-        required_files+=("${offline_packages_path}/filebeat-oss-*.deb" "${offline_packages_path}/wazuh-dashboard_*.deb" "${offline_packages_path}/wazuh-indexer_*.deb" "${offline_packages_path}/wazuh-manager_*.deb")
+        required_files+=("${offline_packages_path}/filebeat-oss-*.deb" "${offline_packages_path}/exactti-dashboard_*.deb" "${offline_packages_path}/exactti-indexer_*.deb" "${offline_packages_path}/exactti-server_*.deb")
     elif [ "${sys_type}" == "rpm" ]; then
-        required_files+=("${offline_packages_path}/filebeat-oss-*.rpm" "${offline_packages_path}/wazuh-dashboard_*.rpm" "${offline_packages_path}/wazuh-indexer_*.rpm" "${offline_packages_path}/wazuh-manager_*.rpm")
+        required_files+=("${offline_packages_path}/filebeat-oss-*.rpm" "${offline_packages_path}/exactti-dashboard_*.rpm" "${offline_packages_path}/exactti-indexer_*.rpm" "${offline_packages_path}/exactti-server_*.rpm")
     fi
 
     for file in "${required_files[@]}"; do

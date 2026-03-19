@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Installing Wazuh $2."
+echo "Installing Exact-Ti $2."
 
 if [ -f /etc/os-release ]; then
     source /etc/os-release

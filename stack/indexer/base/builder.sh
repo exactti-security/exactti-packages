@@ -2,8 +2,8 @@
 
 set -x
 
-# Wazuh-indexer base builder
-# Copyright (C) 2022, Wazuh Inc.
+# Exact-Ti-indexer base builder
+# Copyright (C) 2022, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -17,7 +17,7 @@ revision="$2"
 future="$3"
 reference="$4"
 opensearch_version="2.10.0"
-base_dir=/opt/wazuh-indexer-base
+base_dir=/opt/exactti-indexer-base
 
 # -----------------------------------------------------------------------------
 
@@ -58,12 +58,12 @@ find -type l -exec rm -rf {} \;
 find -name "*.bat" -exec rm -rf {} \;
 rm -rf README.md manifest.yml opensearch-tar-install.sh logs
 sed -i 's|OPENSEARCH_DISTRIBUTION_TYPE=tar|OPENSEARCH_DISTRIBUTION_TYPE=rpm|g' bin/opensearch-env
-sed -i 's|"$OPENSEARCH_HOME"/config|/etc/wazuh-indexer|g' bin/opensearch-env
+sed -i 's|"$OPENSEARCH_HOME"/config|/etc/exactti-indexer|g' bin/opensearch-env
 cp -r /root/stack/indexer/base/files/systemd-entrypoint bin/
-mkdir -p ./etc/wazuh-indexer/
-cp -r ./config/* ./etc/wazuh-indexer/
+mkdir -p ./etc/exactti-indexer/
+cp -r ./config/* ./etc/exactti-indexer/
 rm -rf ./config
-cp -r /root/stack/indexer/base/files/etc/wazuh-indexer/* ./etc/wazuh-indexer/
+cp -r /root/stack/indexer/base/files/etc/exactti-indexer/* ./etc/exactti-indexer/
 cp -r /root/stack/indexer/base/files/etc/sysconfig ./etc/
 cp -r /root/stack/indexer/base/files/etc/init.d ./etc/
 cp -r /root/stack/indexer/base/files/usr ./
@@ -95,5 +95,5 @@ find -type f -perm 744 -exec chmod 740 {} \;
 
 # Base output
 cd /opt
-tar -Jcvf wazuh-indexer-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz wazuh-indexer-base
-cp wazuh-indexer-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz /tmp/output
+tar -Jcvf exactti-indexer-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz exactti-indexer-base
+cp exactti-indexer-base-"${version}"-"${revision}"-linux-${architecture}.tar.xz /tmp/output

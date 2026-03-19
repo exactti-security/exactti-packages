@@ -1,10 +1,10 @@
-# Wazuh DEB packages
+# Exact-Ti DEB packages
 
-In this repository, you can find the necessary tools to build a Wazuh package for Debian based OS.
+In this repository, you can find the necessary tools to build a Exact-Ti package for Debian based OS.
 
 ## Building DEB packages
 
-Please, visit the following link for the full DEB packages building documentation: [Generate Wazuh Debian packages.](https://documentation.wazuh.com/current/development/packaging/generate-deb-package.html)
+Please, visit the following link for the full DEB packages building documentation: [Generate Exact-Ti Debian packages.](https://documentation.exactti.com/current/development/packaging/generate-deb-package.html)
 
 ## More Packages
 
@@ -27,4 +27,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

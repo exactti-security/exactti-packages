@@ -1,9 +1,9 @@
-Welcome to the Wazuh Agent Installer. 
+Welcome to the Exact-Ti Agent Installer. 
 
-Wazuh is a free, open-source and enterprise-ready security monitoring solution for threat detection, integrity monitoring, incident response and compliance.
+Exact-Ti is a free, open-source and enterprise-ready security monitoring solution for threat detection, integrity monitoring, incident response and compliance.
 
-This package will install the Wazuh agent in your system.
+This package will install the Exact-Ti agent in your system.
 
-Check out our documentation to learn more about Wazuh, and join our community where our team and other users can help you.
+Check out our documentation to learn more about Exact-Ti, and join our community where our team and other users can help you.
 
 To continue, click Next. 

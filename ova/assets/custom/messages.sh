@@ -9,8 +9,8 @@ SYSTEM_USER=$3
 # OVA Welcome message
 cat > /etc/issue <<EOF
 
-Welcome to the Wazuh OVA version
-Wazuh - ${WAZUH_VERSION}
+Welcome to the Exact-Ti OVA version
+Exact-Ti - ${WAZUH_VERSION}
 Login credentials:
   User: ${SYSTEM_USER}
   Password: wazuh

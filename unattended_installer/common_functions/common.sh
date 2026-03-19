@@ -1,6 +1,6 @@
-# Common functions for Wazuh installation assistant,
+# Common functions for Exact-Ti installation assistant,
 # wazuh-passwords-tool and wazuh-cert-tool
-# Copyright (C) 2015, Wazuh Inc.
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -82,36 +82,36 @@ function common_checkRoot() {
 
 function common_checkInstalled() {
 
-    common_logger -d "Checking Wazuh installation."
+    common_logger -d "Checking Exact-Ti installation."
     wazuh_installed=""
     indexer_installed=""
     filebeat_installed=""
     dashboard_installed=""
 
     if [ "${sys_type}" == "yum" ]; then
-        eval "rpm -q wazuh-manager --quiet && wazuh_installed=1"
+        eval "rpm -q exactti-server --quiet && wazuh_installed=1"
     elif [ "${sys_type}" == "apt-get" ]; then
-        if dpkg -l wazuh-manager 2>/dev/null | grep -q -E '^ii\s'; then
+        if dpkg -l exactti-server 2>/dev/null | grep -q -E '^ii\s'; then
             wazuh_installed=1
         fi
     fi
 
     if [ -d "/var/ossec" ]; then
-        common_logger -d "There are Wazuh remaining files."
+        common_logger -d "There are Exact-Ti remaining files."
         wazuh_remaining_files=1
     fi
 
     if [ "${sys_type}" == "yum" ]; then
-        eval "rpm -q wazuh-indexer --quiet && indexer_installed=1"
+        eval "rpm -q exactti-indexer --quiet && indexer_installed=1"
 
     elif [ "${sys_type}" == "apt-get" ]; then
-        if dpkg -l wazuh-indexer 2>/dev/null | grep -q -E '^ii\s'; then
+        if dpkg -l exactti-indexer 2>/dev/null | grep -q -E '^ii\s'; then
             indexer_installed=1
         fi
     fi
 
-    if [ -d "/var/lib/wazuh-indexer/" ] || [ -d "/usr/share/wazuh-indexer" ] || [ -d "/etc/wazuh-indexer" ] || [ -f "${base_path}/search-guard-tlstool*" ]; then
-        common_logger -d "There are Wazuh indexer remaining files."
+    if [ -d "/var/lib/exactti-indexer/" ] || [ -d "/usr/share/exactti-indexer" ] || [ -d "/etc/exactti-indexer" ] || [ -f "${base_path}/search-guard-tlstool*" ]; then
+        common_logger -d "There are Exact-Ti indexer remaining files."
         indexer_remaining_files=1
     fi
 
@@ -129,15 +129,15 @@ function common_checkInstalled() {
     fi
 
     if [ "${sys_type}" == "yum" ]; then
-        eval "rpm -q wazuh-dashboard --quiet && dashboard_installed=1"
+        eval "rpm -q exactti-dashboard --quiet && dashboard_installed=1"
     elif [ "${sys_type}" == "apt-get" ]; then
-        if dpkg -l wazuh-dashboard 2>/dev/null | grep -q -E '^ii\s'; then
+        if dpkg -l exactti-dashboard 2>/dev/null | grep -q -E '^ii\s'; then
             dashboard_installed=1
         fi
     fi
 
-    if [ -d "/var/lib/wazuh-dashboard/" ] || [ -d "/usr/share/wazuh-dashboard" ] || [ -d "/etc/wazuh-dashboard" ] || [ -d "/run/wazuh-dashboard/" ]; then
-        common_logger -d "There are Wazuh dashboard remaining files."
+    if [ -d "/var/lib/exactti-dashboard/" ] || [ -d "/usr/share/exactti-dashboard" ] || [ -d "/etc/exactti-dashboard" ] || [ -d "/run/exactti-dashboard/" ]; then
+        common_logger -d "There are Exact-Ti dashboard remaining files."
         dashboard_remaining_files=1
     fi
 
@@ -160,9 +160,9 @@ function common_checkSystem() {
 
 }
 
-function common_checkWazuhConfigYaml() {
+function common_checkExact-TiConfigYaml() {
 
-    common_logger -d "Checking Wazuh YAML configuration file."
+    common_logger -d "Checking Exact-Ti YAML configuration file."
     filecorrect=$(cert_parseYaml "${config_file}" | grep -Ev '^#|^\s*$' | grep -Pzc "\A(\s*(nodes_indexer__name|nodes_indexer__ip|nodes_server__name|nodes_server__ip|nodes_server__node_type|nodes_dashboard__name|nodes_dashboard__ip)=.*?)+\Z")
     if [[ "${filecorrect}" -ne 1 ]]; then
         common_logger -e "The configuration file ${config_file} does not have a correct format."
@@ -196,18 +196,18 @@ function common_remove_gpg_key() {
 
     common_logger -d "Removing GPG key from system."
     if [ "${sys_type}" == "yum" ]; then
-        if { rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n' | grep "Wazuh"; } >/dev/null ; then
-            key=$(rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n' | grep "Wazuh Signing Key" | awk '{print $1}' )
+        if { rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n' | grep "Exact-Ti"; } >/dev/null ; then
+            key=$(rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n' | grep "Exact-Ti Signing Key" | awk '{print $1}' )
             rpm -e "${key}"
         else
-            common_logger "Wazuh GPG key not found in the system"
+            common_logger "Exact-Ti GPG key not found in the system"
             return 1
         fi
     elif [ "${sys_type}" == "apt-get" ]; then
         if [ -f "/usr/share/keyrings/wazuh.gpg" ]; then
             rm -rf "/usr/share/keyrings/wazuh.gpg" "${debug}"
         else
-            common_logger "Wazuh GPG key not found in the system"
+            common_logger "Exact-Ti GPG key not found in the system"
             return 1
         fi
     fi

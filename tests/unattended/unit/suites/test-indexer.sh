@@ -5,12 +5,12 @@ source "${base_dir}"/bach.sh
 
 @setup-test {
     @ignore common_logger
-    e_certs_path="/etc/wazuh-indexer/certs/"
+    e_certs_path="/etc/exactti-indexer/certs/"
 }
 
 function load-indexer_copyCertificates() {
     @load_function "${base_dir}/indexer.sh" indexer_copyCertificates
-    indexer_cert_path="/etc/wazuh-indexer/certs/"
+    indexer_cert_path="/etc/exactti-indexer/certs/"
 }
 
 test-ASSERT-FAIL-01-indexer_copyCertificates-no-tarfile() {
@@ -33,12 +33,12 @@ test-02-indexer_copyCertificates() {
 }
 
 test-02-indexer_copyCertificates-assert() {
-    rm -f /etc/wazuh-indexer/certs/*
-    tar -xf /tmp/tarfile.tar -C /etc/wazuh-indexer/certs/ ./elastic1.pem && mv /etc/wazuh-indexer/certs/elastic1.pem /etc/wazuh-indexer/certs/indexer.pem
-    tar -xf /tmp/tarfile.tar -C /etc/wazuh-indexer/certs/ ./elastic1-key.pem && mv /etc/wazuh-indexer/certs/elastic1-key.pem /etc/wazuh-indexer/certs/indexer-key.pem
-    tar -xf /tmp/tarfile.tar -C /etc/wazuh-indexer/certs/ ./root-ca.pem
-    tar -xf /tmp/tarfile.tar -C /etc/wazuh-indexer/certs/ ./admin.pem
-    tar -xf /tmp/tarfile.tar -C /etc/wazuh-indexer/certs/ ./admin-key.pem
+    rm -f /etc/exactti-indexer/certs/*
+    tar -xf /tmp/tarfile.tar -C /etc/exactti-indexer/certs/ ./elastic1.pem && mv /etc/exactti-indexer/certs/elastic1.pem /etc/exactti-indexer/certs/indexer.pem
+    tar -xf /tmp/tarfile.tar -C /etc/exactti-indexer/certs/ ./elastic1-key.pem && mv /etc/exactti-indexer/certs/elastic1-key.pem /etc/exactti-indexer/certs/indexer-key.pem
+    tar -xf /tmp/tarfile.tar -C /etc/exactti-indexer/certs/ ./root-ca.pem
+    tar -xf /tmp/tarfile.tar -C /etc/exactti-indexer/certs/ ./admin.pem
+    tar -xf /tmp/tarfile.tar -C /etc/exactti-indexer/certs/ ./admin-key.pem
 }
 
 function load-indexer_install() {
@@ -55,7 +55,7 @@ test-03-indexer_install-yum() {
 }
 
 test-03-indexer_install-yum-assert() {
-    yum install wazuh-indexer-1.13.2-1 -y
+    yum install exactti-indexer-1.13.2-1 -y
     sysctl -q -w vm.max_map_count=262144
 }
 
@@ -65,7 +65,7 @@ test-ASSERT-FAIL-04-indexer_install-yum-error() {
     sep="-"
     wazuh_version="5.0.0"
     wazuh_revision="1"
-    @mockfalse yum install wazuh-indexer-1.13.2-1 -y
+    @mockfalse yum install exactti-indexer-1.13.2-1 -y
     indexer_install
 }
 
@@ -79,7 +79,7 @@ test-05-indexer_install-apt() {
 }
 
 test-05-indexer_install-apt-assert() {
-    apt install wazuh-indexer=1.13.2-1 -y
+    apt install exactti-indexer=1.13.2-1 -y
     sysctl -q -w vm.max_map_count=262144
 }
 
@@ -89,7 +89,7 @@ test-ASSERT-FAIL-06-indexer_install-apt-error() {
     sep="="
     wazuh_version="5.0.0"
     wazuh_revision="1"
-    @mockfalse apt install wazuh-indexer=1.13.2-1 -y
+    @mockfalse apt install exactti-indexer=1.13.2-1 -y
     indexer_install
 }
 
@@ -111,10 +111,10 @@ test-07-indexer_configure-dist-one-elastic-node() {
 
 test-07-indexer_configure-dist-one-elastic-node-assert() {
 
-    sed -i "s/-Xms1g/-Xms1g/" /etc/wazuh-indexer/jvm.options
-    sed -i "s/-Xmx1g/-Xmx1g/" /etc/wazuh-indexer/jvm.options
+    sed -i "s/-Xms1g/-Xms1g/" /etc/exactti-indexer/jvm.options
+    sed -i "s/-Xmx1g/-Xmx1g/" /etc/exactti-indexer/jvm.options
 
-    installCommon_getConfig indexer/indexer_unattended_distributed.yml /etc/wazuh-indexer/opensearch.yml
+    installCommon_getConfig indexer/indexer_unattended_distributed.yml /etc/exactti-indexer/opensearch.yml
 
     indexer_copyCertificates
 }
@@ -132,10 +132,10 @@ test-08-indexer_configure-dist-two-elastic-nodes() {
 }
 
 test-08-indexer_configure-dist-two-elastic-nodes-assert() {
-    sed -i "s/-Xms1g/-Xms1g/" /etc/wazuh-indexer/jvm.options
-    sed -i "s/-Xmx1g/-Xmx1g/" /etc/wazuh-indexer/jvm.options
+    sed -i "s/-Xms1g/-Xms1g/" /etc/exactti-indexer/jvm.options
+    sed -i "s/-Xmx1g/-Xmx1g/" /etc/exactti-indexer/jvm.options
 
-    installCommon_getConfig indexer/indexer_unattended_distributed.yml /etc/wazuh-indexer/opensearch.yml
+    installCommon_getConfig indexer/indexer_unattended_distributed.yml /etc/exactti-indexer/opensearch.yml
 
     indexer_copyCertificates
 }
@@ -153,10 +153,10 @@ test-09-indexer_configure-AIO() {
 }
 
 test-09-indexer_configure-AIO-assert() {
-    sed -i 's/-Xms1g/-Xms1g/' /etc/wazuh-indexer/jvm.options
-    sed -i 's/-Xmx1g/-Xmx1g/' /etc/wazuh-indexer/jvm.options
+    sed -i 's/-Xms1g/-Xms1g/' /etc/exactti-indexer/jvm.options
+    sed -i 's/-Xmx1g/-Xmx1g/' /etc/exactti-indexer/jvm.options
 
-    installCommon_getConfig indexer/indexer_unattended_distributed.yml /etc/wazuh-indexer/opensearch.yml
+    installCommon_getConfig indexer/indexer_unattended_distributed.yml /etc/exactti-indexer/opensearch.yml
 
     indexer_copyCertificates
 }

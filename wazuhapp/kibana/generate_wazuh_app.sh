@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Program to build the Wazuh App for Kibana
-# Wazuh package generator
-# Copyright (C) 2015, Wazuh Inc.
+# Program to build the Exact-Ti App for Kibana
+# Exact-Ti package generator
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -38,7 +38,7 @@ build_package(){
 
     # Build the Docker image
     docker build -t ${CONTAINER_NAME} ./Docker/
-    # Build the Wazuh Kibana app package using the build docker image
+    # Build the Exact-Ti Kibana app package using the build docker image
     docker run --rm -t -v "${OUTDIR}":/wazuh_app:Z \
         -v ${CHECKSUMDIR}:/var/local/checksum:Z \
         ${CONTAINER_NAME} ${BRANCH_TAG} ${CHECKSUM} ${REVISION}

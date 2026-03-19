@@ -1,6 +1,6 @@
 #! /bin/bash
 # By Spransy, Derek" <DSPRANS () emory ! edu> and Charlie Scott
-# Modified by Wazuh, Inc. <info@wazuh.com>.
+# Modified by Exact-Ti, Inc. <info@wazuh.com>.
 # This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2
 
 #####
@@ -50,8 +50,8 @@ if [ -n "${upgrade}" ]; then
 fi
 
 if [ -n "${upgrade}" ]; then
-    if pkgutil --pkgs | grep -i wazuh-agent-etc > /dev/null 2>&1 ; then
-        pkgutil --forget com.wazuh.pkg.wazuh-agent-etc
+    if pkgutil --pkgs | grep -i exactti-agent-etc > /dev/null 2>&1 ; then
+        pkgutil --forget com.exactti.pkg.exactti-agent-etc
     fi
 fi
 

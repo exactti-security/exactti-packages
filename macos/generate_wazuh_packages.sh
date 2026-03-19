@@ -1,8 +1,8 @@
 #!/bin/bash
 set -x
-# Program to build and package OSX wazuh-agent
-# Wazuh package generator
-# Copyright (C) 2015, Wazuh Inc.
+# Program to build and package OSX exactti-agent
+# Exact-Ti package generator
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -41,7 +41,7 @@ trap ctrl_c INT
 function clean_and_exit() {
     exit_code=$1
     rm -rf "${SOURCES_DIRECTORY}"
-    rm "${CURRENT_PATH}"/specs/wazuh-agent.pkgproj-e
+    rm "${CURRENT_PATH}"/specs/exactti-agent.pkgproj-e
     ${CURRENT_PATH}/uninstall.sh
     exit ${exit_code}
 }
@@ -81,7 +81,7 @@ function notarize_pkg() {
 function sign_binaries() {
     if [ ! -z "${KEYCHAIN}" ] && [ ! -z "${CERT_APPLICATION_ID}" ] ; then
         security -v unlock-keychain -p "${KC_PASS}" "${KEYCHAIN}" > /dev/null
-        # Sign every single binary in Wazuh's installation. This also includes library files.
+        # Sign every single binary in Exact-Ti's installation. This also includes library files.
         for bin in $(find ${INSTALLATION_PATH} -exec file {} \; | grep bit | cut -d: -f1); do
             codesign -f --sign "${CERT_APPLICATION_ID}" --entitlements ${ENTITLEMENTS_PATH} --deep --timestamp  --options=runtime --verbose=4 "${bin}"
         done
@@ -130,7 +130,7 @@ function build_package() {
     # create package
     if packagesbuild ${AGENT_PKG_FILE} --build-folder ${DESTINATION} ; then
         echo "The wazuh agent package for macOS has been successfully built."
-        pkg_name="wazuh-agent-${VERSION}-${REVISION}.${ARCH}.pkg"
+        pkg_name="exactti-agent-${VERSION}-${REVISION}.${ARCH}.pkg"
         sign_pkg
         if [[ "${CHECKSUM}" == "yes" ]]; then
             mkdir -p ${CHECKSUMDIR}
@@ -177,7 +177,7 @@ function get_pkgproj_specs() {
 
     VERSION=$(< "${WAZUH_PATH}/src/VERSION"  cut -d "-" -f1 | cut -c 2-)
 
-    pkg_file="specs/wazuh-agent-${ARCH}.pkgproj"
+    pkg_file="specs/exactti-agent-${ARCH}.pkgproj"
 
     if [ ! -f "${pkg_file}" ]; then
         echo "Warning: the file ${pkg_file} does not exists. Check the version selected."
@@ -403,13 +403,13 @@ function main() {
 
     if [[ "${BUILD}" != "no" ]]; then
         check_root
-        AGENT_PKG_FILE="${CURRENT_PATH}/package_files/wazuh-agent-${ARCH}.pkgproj"
+        AGENT_PKG_FILE="${CURRENT_PATH}/package_files/exactti-agent-${ARCH}.pkgproj"
         build_package
         "${CURRENT_PATH}/uninstall.sh"
     fi
     if [ "${NOTARIZE}" = "yes" ]; then
         if [ "${BUILD}" = "yes" ]; then
-            pkg_name="wazuh-agent-${VERSION}-${REVISION}.${ARCH}.pkg"
+            pkg_name="exactti-agent-${VERSION}-${REVISION}.${ARCH}.pkg"
             notarization_path="${DESTINATION}/${pkg_name}"
         fi
         if [ -z "${notarization_path}" ]; then

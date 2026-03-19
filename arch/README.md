@@ -1,6 +1,6 @@
-# Wazuh Pacman packages
+# Exact-Ti Pacman packages
 
-In this repository, you can find the necessary tools to build a Wazuh package for Arch based OS.
+In this repository, you can find the necessary tools to build a Exact-Ti package for Arch based OS.
 
 ## More Packages
 

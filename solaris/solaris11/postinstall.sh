@@ -1,6 +1,6 @@
 #!/bin/sh
-# postinst script for wazuh-agent
-# Wazuh, Inc 2015
+# postinst script for exactti-agent
+# Exact-Ti, Inc 2015
 
 install_path="<INSTALL_PATH>"
 osversion=$(uname -v)

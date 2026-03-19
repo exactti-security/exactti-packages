@@ -1,5 +1,5 @@
-# Wazuh installer - checks.sh functions.
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer - checks.sh functions.
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -23,7 +23,7 @@ function checks_arguments() {
 
     if [ -n "${port_specified}" ]; then
         if [ -z "${AIO}" ] && [ -z "${dashboard}" ]; then
-            common_logger -e "The argument -p|--port can only be used with -a|--all-in-one or -wd|--wazuh-dashboard."
+            common_logger -e "The argument -p|--port can only be used with -a|--all-in-one or -wd|--exactti-dashboard."
             exit 1
         fi
     fi
@@ -50,14 +50,14 @@ function checks_arguments() {
     fi
 
     if [[ -n "${configurations}" && ( -n "${AIO}" || -n "${indexer}" || -n "${dashboard}" || -n "${wazuh}" || -n "${overwrite}" || -n "${start_indexer_cluster}" || -n "${tar_conf}" || -n "${uninstall}" ) ]]; then
-        common_logger -e "The argument -g|--generate-config-files can't be used with -a|--all-in-one, -o|--overwrite, -s|--start-cluster, -t|--tar, -u|--uninstall, -wd|--wazuh-dashboard, -wi|--wazuh-indexer, or -ws|--wazuh-server."
+        common_logger -e "The argument -g|--generate-config-files can't be used with -a|--all-in-one, -o|--overwrite, -s|--start-cluster, -t|--tar, -u|--uninstall, -wd|--exactti-dashboard, -wi|--exactti-indexer, or -ws|--wazuh-server."
         exit 1
     fi
 
     # -------------- Overwrite --------------------------------------
 
     if [ -n "${overwrite}" ] && [ -z "${AIO}" ] && [ -z "${indexer}" ] && [ -z "${dashboard}" ] && [ -z "${wazuh}" ]; then
-        common_logger -e "The argument -o|--overwrite must be used in conjunction with -a|--all-in-one, -wd|--wazuh-dashboard, -wi|--wazuh-indexer, or -ws|--wazuh-server."
+        common_logger -e "The argument -o|--overwrite must be used in conjunction with -a|--all-in-one, -wd|--exactti-dashboard, -wi|--exactti-indexer, or -ws|--wazuh-server."
         exit 1
     fi
 
@@ -71,7 +71,7 @@ function checks_arguments() {
         fi
 
         if [ -z "${wazuh_installed}" ] && [ -z "${wazuh_remaining_files}" ]; then
-            common_logger "Wazuh manager not found in the system so it was not uninstalled."
+            common_logger "Exact-Ti manager not found in the system so it was not uninstalled."
         fi
 
         if [ -z "${filebeat_installed}" ] && [ -z "${filebeat_remaining_files}" ]; then
@@ -79,11 +79,11 @@ function checks_arguments() {
         fi
 
         if [ -z "${indexer_installed}" ] && [ -z "${indexer_remaining_files}" ]; then
-            common_logger "Wazuh indexer not found in the system so it was not uninstalled."
+            common_logger "Exact-Ti indexer not found in the system so it was not uninstalled."
         fi
 
         if [ -z "${dashboard_installed}" ] && [ -z "${dashboard_remaining_files}" ]; then
-            common_logger "Wazuh dashboard not found in the system so it was not uninstalled."
+            common_logger "Exact-Ti dashboard not found in the system so it was not uninstalled."
         fi
 
     fi
@@ -93,7 +93,7 @@ function checks_arguments() {
     if [ -n "${AIO}" ]; then
 
         if [ -n "$indexer" ] || [ -n "$dashboard" ] || [ -n "$wazuh" ]; then
-            common_logger -e "Argument -a|--all-in-one is not compatible with -wi|--wazuh-indexer, -wd|--wazuh-dashboard or -ws|--wazuh-server."
+            common_logger -e "Argument -a|--all-in-one is not compatible with -wi|--exactti-indexer, -wd|--exactti-dashboard or -ws|--wazuh-server."
             exit 1
         fi
 
@@ -102,15 +102,15 @@ function checks_arguments() {
         fi
 
         if  [ -z "${overwrite}" ] && { [ -n "${wazuh_installed}" ] || [ -n "${wazuh_remaining_files}" ]; }; then
-            common_logger -e "Wazuh manager already installed."
+            common_logger -e "Exact-Ti manager already installed."
             installedComponent=1
         fi
         if [ -z "${overwrite}" ] && { [ -n "${indexer_installed}" ] || [ -n "${indexer_remaining_files}" ]; };then
-            common_logger -e "Wazuh indexer already installed."
+            common_logger -e "Exact-Ti indexer already installed."
             installedComponent=1
         fi
         if [ -z "${overwrite}" ] && { [ -n "${dashboard_installed}" ] || [ -n "${dashboard_remaining_files}" ]; }; then
-            common_logger -e "Wazuh dashboard already installed."
+            common_logger -e "Exact-Ti dashboard already installed."
             installedComponent=1
         fi
         if [ -z "${overwrite}" ] && { [ -n "${filebeat_installed}" ] || [ -n "${filebeat_remaining_files}" ]; }; then
@@ -132,33 +132,33 @@ function checks_arguments() {
             if [ -n "${overwrite}" ]; then
                 installCommon_rollBack
             else
-                common_logger -e "Wazuh indexer is already installed in this node or some of its files have not been removed. Use option -o|--overwrite to overwrite all components."
+                common_logger -e "Exact-Ti indexer is already installed in this node or some of its files have not been removed. Use option -o|--overwrite to overwrite all components."
                 exit 1
             fi
         fi
     fi
 
-    # -------------- Wazuh dashboard --------------------------------
+    # -------------- Exact-Ti dashboard --------------------------------
 
     if [ -n "${dashboard}" ]; then
         if [ -n "${dashboard_installed}" ] || [ -n "${dashboard_remaining_files}" ]; then
             if [ -n "${overwrite}" ]; then
                 installCommon_rollBack
             else
-                common_logger -e "Wazuh dashboard is already installed in this node or some of its files have not been removed. Use option -o|--overwrite to overwrite all components."
+                common_logger -e "Exact-Ti dashboard is already installed in this node or some of its files have not been removed. Use option -o|--overwrite to overwrite all components."
                 exit 1
             fi
         fi
     fi
 
-    # -------------- Wazuh ------------------------------------------
+    # -------------- Exact-Ti ------------------------------------------
 
     if [ -n "${wazuh}" ]; then
         if [ -n "${wazuh_installed}" ] || [ -n "${wazuh_remaining_files}" ] || [ -n "${filebeat_installed}" ] || [ -n "${filebeat_remaining_files}" ]; then
             if [ -n "${overwrite}" ]; then
                 installCommon_rollBack
             else
-                common_logger -e "Wazuh server components (wazuh-manager and filebeat) are already installed in this node or some of their files have not been removed. Use option -o|--overwrite to overwrite all components."
+                common_logger -e "Exact-Ti server components (exactti-server and filebeat) are already installed in this node or some of their files have not been removed. Use option -o|--overwrite to overwrite all components."
                 exit 1
             fi
         fi
@@ -167,19 +167,19 @@ function checks_arguments() {
     # -------------- Cluster start ----------------------------------
 
     if [[ -n "${start_indexer_cluster}" && ( -n "${AIO}" || -n "${indexer}" || -n "${dashboard}" || -n "${wazuh}" || -n "${overwrite}" || -n "${configurations}" || -n "${tar_conf}" || -n "${uninstall}") ]]; then
-        common_logger -e "The argument -s|--start-cluster can't be used with -a|--all-in-one, -g|--generate-config-files,-o|--overwrite , -u|--uninstall, -wi|--wazuh-indexer, -wd|--wazuh-dashboard, -s|--start-cluster, -ws|--wazuh-server."
+        common_logger -e "The argument -s|--start-cluster can't be used with -a|--all-in-one, -g|--generate-config-files,-o|--overwrite , -u|--uninstall, -wi|--exactti-indexer, -wd|--exactti-dashboard, -s|--start-cluster, -ws|--wazuh-server."
         exit 1
     fi
 
     # -------------- Global -----------------------------------------
 
     if [ -z "${AIO}" ] && [ -z "${indexer}" ] && [ -z "${dashboard}" ] && [ -z "${wazuh}" ] && [ -z "${start_indexer_cluster}" ] && [ -z "${configurations}" ] && [ -z "${uninstall}" ] && [ -z "${download}" ]; then
-        common_logger -e "At least one of these arguments is necessary -a|--all-in-one, -g|--generate-config-files, -wi|--wazuh-indexer, -wd|--wazuh-dashboard, -s|--start-cluster, -ws|--wazuh-server, -u|--uninstall, -dw|--download-wazuh."
+        common_logger -e "At least one of these arguments is necessary -a|--all-in-one, -g|--generate-config-files, -wi|--exactti-indexer, -wd|--exactti-dashboard, -s|--start-cluster, -ws|--wazuh-server, -u|--uninstall, -dw|--download-wazuh."
         exit 1
     fi
 
     if [ -n "${force}" ] && [ -z  "${dashboard}" ]; then
-        common_logger -e "The -fd|--force-install-dashboard argument needs to be used alongside -wd|--wazuh-dashboard."
+        common_logger -e "The -fd|--force-install-dashboard argument needs to be used alongside -wd|--exactti-dashboard."
         exit 1
     fi
 
@@ -294,32 +294,32 @@ function checks_names() {
 
     common_logger -d "Checking node names in the configuration file."
     if [ -n "${indxname}" ] && [ -n "${dashname}" ] && [ "${indxname}" == "${dashname}" ]; then
-        common_logger -e "The node names for Wazuh indexer and Wazuh dashboard must be different."
+        common_logger -e "The node names for Exact-Ti indexer and Exact-Ti dashboard must be different."
         exit 1
     fi
 
     if [ -n "${indxname}" ] && [ -n "${winame}" ] && [ "${indxname}" == "${winame}" ]; then
-        common_logger -e "The node names for Elastisearch and Wazuh must be different."
+        common_logger -e "The node names for Elastisearch and Exact-Ti must be different."
         exit 1
     fi
 
     if [ -n "${winame}" ] && [ -n "${dashname}" ] && [ "${winame}" == "${dashname}" ]; then
-        common_logger -e "The node names for Wazuh server and Wazuh indexer must be different."
+        common_logger -e "The node names for Exact-Ti server and Exact-Ti indexer must be different."
         exit 1
     fi
 
     if [ -n "${winame}" ] && ! echo "${server_node_names[@]}" | grep -w -q "${winame}"; then
-        common_logger -e "The Wazuh server node name ${winame} does not appear on the configuration file."
+        common_logger -e "The Exact-Ti server node name ${winame} does not appear on the configuration file."
         exit 1
     fi
 
     if [ -n "${indxname}" ] && ! echo "${indexer_node_names[@]}" | grep -w -q "${indxname}"; then
-        common_logger -e "The Wazuh indexer node name ${indxname} does not appear on the configuration file."
+        common_logger -e "The Exact-Ti indexer node name ${indxname} does not appear on the configuration file."
         exit 1
     fi
 
     if [ -n "${dashname}" ] && ! echo "${dashboard_node_names[@]}" | grep -w -q "${dashname}"; then
-        common_logger -e "The Wazuh dashboard node name ${dashname} does not appear on the configuration file."
+        common_logger -e "The Exact-Ti dashboard node name ${dashname} does not appear on the configuration file."
         exit 1
     fi
 
@@ -347,7 +347,7 @@ function checks_previousCertificate() {
 
     if [ -n "${dashname}" ]; then
         if ! tar -tf "${tar_file}" | grep -q -E ^wazuh-install-files/"${dashname}".pem || ! tar -tf "${tar_file}" | grep -q -E ^wazuh-install-files/"${dashname}"-key.pem; then
-            common_logger -e "There is no certificate for the Wazuh dashboard node ${dashname} in ${tar_file}."
+            common_logger -e "There is no certificate for the Exact-Ti dashboard node ${dashname} in ${tar_file}."
             exit 1
         fi
     fi
@@ -397,7 +397,7 @@ function checks_ports() {
     for i in "${!ports[@]}"; do
         if eval "${port_command}""${ports[i]}" > /dev/null; then
             used_port=1
-            common_logger -e "Port ${ports[i]} is being used by another process. Please, check it before installing Wazuh."
+            common_logger -e "Port ${ports[i]} is being used by another process. Please, check it before installing Exact-Ti."
         fi
     done
 
@@ -427,7 +427,7 @@ function checks_available_port() {
     if [ "$chosen_port" -ne "${http_port}" ]; then
         for port in "${ports_list[@]}"; do
             if [ "$chosen_port" -eq "$port" ]; then
-                common_logger -e "Port ${chosen_port} is reserved by Wazuh. Please, choose another port."
+                common_logger -e "Port ${chosen_port} is reserved by Exact-Ti. Please, choose another port."
                 exit 1
             fi
         done

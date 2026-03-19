@@ -10,27 +10,27 @@ cluster.name: "wazuh-cluster"
 #  - "node-2-ip"
 #  - "node-3-ip"
 node.max_local_storage_nodes: "3"
-path.data: /var/lib/wazuh-indexer
-path.logs: /var/log/wazuh-indexer
+path.data: /var/lib/exactti-indexer
+path.logs: /var/log/exactti-indexer
 
-plugins.security.ssl.http.pemcert_filepath: /etc/wazuh-indexer/certs/indexer.pem
-plugins.security.ssl.http.pemkey_filepath: /etc/wazuh-indexer/certs/indexer-key.pem
-plugins.security.ssl.http.pemtrustedcas_filepath: /etc/wazuh-indexer/certs/root-ca.pem
-plugins.security.ssl.transport.pemcert_filepath: /etc/wazuh-indexer/certs/indexer.pem
-plugins.security.ssl.transport.pemkey_filepath: /etc/wazuh-indexer/certs/indexer-key.pem
-plugins.security.ssl.transport.pemtrustedcas_filepath: /etc/wazuh-indexer/certs/root-ca.pem
+plugins.security.ssl.http.pemcert_filepath: /etc/exactti-indexer/certs/indexer.pem
+plugins.security.ssl.http.pemkey_filepath: /etc/exactti-indexer/certs/indexer-key.pem
+plugins.security.ssl.http.pemtrustedcas_filepath: /etc/exactti-indexer/certs/root-ca.pem
+plugins.security.ssl.transport.pemcert_filepath: /etc/exactti-indexer/certs/indexer.pem
+plugins.security.ssl.transport.pemkey_filepath: /etc/exactti-indexer/certs/indexer-key.pem
+plugins.security.ssl.transport.pemtrustedcas_filepath: /etc/exactti-indexer/certs/root-ca.pem
 plugins.security.ssl.http.enabled: true
 plugins.security.ssl.transport.enforce_hostname_verification: false
 plugins.security.ssl.transport.resolve_hostname: false
 
 plugins.security.authcz.admin_dn:
-- "CN=admin,OU=Wazuh,O=Wazuh,L=California,C=US"
+- "CN=admin,OU=Exact-Ti,O=Exact-Ti,L=California,C=US"
 plugins.security.check_snapshot_restore_write_privileges: true
 plugins.security.enable_snapshot_restore_privilege: true
 plugins.security.nodes_dn:
-- "CN=node-1,OU=Wazuh,O=Wazuh,L=California,C=US"
-#- "CN=node-2,OU=Wazuh,O=Wazuh,L=California,C=US"
-#- "CN=node-3,OU=Wazuh,O=Wazuh,L=California,C=US"
+- "CN=node-1,OU=Exact-Ti,O=Exact-Ti,L=California,C=US"
+#- "CN=node-2,OU=Exact-Ti,O=Exact-Ti,L=California,C=US"
+#- "CN=node-3,OU=Exact-Ti,O=Exact-Ti,L=California,C=US"
 plugins.security.restapi.roles_enabled:
 - "all_access"
 - "security_rest_api_access"

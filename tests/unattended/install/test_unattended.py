@@ -52,13 +52,13 @@ def get_wazuh_version():
 
 def get_indexer_ip():
 
-    with open("/etc/wazuh-indexer/opensearch.yml", 'r') as stream:
+    with open("/etc/exactti-indexer/opensearch.yml", 'r') as stream:
         dictionary = yaml.safe_load(stream)
     return (dictionary.get('network.host'))
 
 def get_dashboard_ip():
 
-    with open("/etc/wazuh-dashboard/opensearch_dashboards.yml", 'r') as stream:
+    with open("/etc/exactti-dashboard/opensearch_dashboards.yml", 'r') as stream:
         dictionary = yaml.safe_load(stream)
     return (dictionary.get('server.host'))
 
@@ -133,61 +133,61 @@ def get_wazuh_api_status():
 
 # ----------------------------- Tests -----------------------------
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_authd():
     assert check_call("ps -xa | grep wazuh-authd | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_db():
     assert check_call("ps -xa | grep wazuh-db | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_execd():
     assert check_call("ps -xa | grep wazuh-execd | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_analysisd():
     assert check_call("ps -xa | grep wazuh-analysisd | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_syscheckd():
     assert check_call("ps -xa | grep wazuh-syscheckd | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_remoted():
     assert check_call("ps -xa | grep wazuh-remoted | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_logcollec():
     assert check_call("ps -xa | grep wazuh-logcollec | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_monitord():
     assert check_call("ps -xa | grep wazuh-monitord | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_modulesd():
     assert check_call("ps -xa | grep wazuh-modulesd | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_manager_apid():
     assert check_call("ps -xa | grep wazuh_apid | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh_cluster
+@pytest.mark.exactti_cluster
 def test_check_wazuh_manager_clusterd():
     assert check_call("ps -xa | grep clusterd.py | grep -v grep", shell=True) != ""
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_filebeat_process():
     assert check_call("ps -xa | grep \"/usr/share/filebeat/bin/filebeat\" | grep -v grep", shell=True) != ""
 
 @pytest.mark.indexer
 def test_check_indexer_process():
-    assert check_call("ps -xa | grep wazuh-indexer | grep -v grep | cut -d \" \" -f15", shell=True) != ""
+    assert check_call("ps -xa | grep exactti-indexer | grep -v grep | cut -d \" \" -f15", shell=True) != ""
 
 @pytest.mark.dashboard
 def test_check_dashboard_process():
-    assert check_call("ps -xa | grep wazuh-dashboard | grep -v grep", shell=True) != ""
+    assert check_call("ps -xa | grep exactti-dashboard | grep -v grep", shell=True) != ""
 
 @pytest.mark.indexer
 def test_check_indexer_cluster_status_not_red():
@@ -201,11 +201,11 @@ def test_check_indexer_cluster_status_not_yellow():
 def test_check_dashboard_status():
     assert get_dashboard_status() == 200
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_wazuh_api_status():
-    assert get_wazuh_api_status() == "Wazuh API REST"
+    assert get_wazuh_api_status() == "Exact-Ti API REST"
 
-@pytest.mark.wazuh
+@pytest.mark.exactti
 def test_check_log_errors():
     found_error = False
     exceptions = [
@@ -223,7 +223,7 @@ def test_check_log_errors():
                     break
     assert found_error == False, line
 
-@pytest.mark.wazuh_cluster
+@pytest.mark.exactti_cluster
 def test_check_cluster_log_errors():
     found_error = False
     with open('/var/ossec/logs/cluster.log', 'r') as f:
@@ -233,7 +233,7 @@ def test_check_cluster_log_errors():
                 break
     assert found_error == False, line
 
-@pytest.mark.wazuh_worker
+@pytest.mark.exactti_worker
 def test_check_cluster_log_errors():
     found_error = False
     with open('/var/ossec/logs/cluster.log', 'r') as f:
@@ -244,7 +244,7 @@ def test_check_cluster_log_errors():
                     break
     assert found_error == False, line
 
-@pytest.mark.wazuh_cluster
+@pytest.mark.exactti_cluster
 def test_check_api_log_errors():
     found_error = False
     with open('/var/ossec/logs/api.log', 'r') as f:

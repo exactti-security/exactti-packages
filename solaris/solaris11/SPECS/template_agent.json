@@ -287,7 +287,7 @@
         "type": "file",
         "user": "root"
     },
-    "/var/ossec/bin/wazuh-agentd": {
+    "/var/ossec/bin/exactti-agentd": {
         "class": "static",
         "group": "root",
         "mode": "0750",
@@ -1695,7 +1695,7 @@
         "type": "file",
         "user": "wazuh"
     },
-    "/var/ossec/var/run/wazuh-agentd.state": {
+    "/var/ossec/var/run/exactti-agentd.state": {
         "class": "static",
         "group": "wazuh",
         "mode": "0644",
@@ -1703,7 +1703,7 @@
         "type": "file",
         "user": "wazuh"
     },
-    "/var/ossec/var/run/wazuh-agentd-*.pid": {
+    "/var/ossec/var/run/exactti-agentd-*.pid": {
         "class": "dynamic",
         "group": "wazuh",
         "mode": "0640",

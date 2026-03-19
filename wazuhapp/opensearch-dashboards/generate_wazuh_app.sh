@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Program to build the Wazuh App for OpenSearch Dashboards
-# Wazuh package generator
-# Copyright (C) 2015, Wazuh Inc.
+# Program to build the Exact-Ti App for OpenSearch Dashboards
+# Exact-Ti package generator
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -23,7 +23,7 @@ trap ctrl_c INT
 help() {
     echo -e ""
     echo -e "NAME"
-    echo -e "        $(basename "$0") - Build Wazuh plugin files."
+    echo -e "        $(basename "$0") - Build Exact-Ti plugin files."
     echo -e ""
     echo -e "SYNOPSIS"
     echo -e "        $(basename "$0") -b | -s | -r | -c | -h"
@@ -51,7 +51,7 @@ build_package(){
 
     # Build the Docker image
     docker build -t ${CONTAINER_NAME} ./Docker/
-    # Build the Wazuh plugin for OpenSearch Dashboards package using the build docker image
+    # Build the Exact-Ti plugin for OpenSearch Dashboards package using the build docker image
     docker run --rm -t -v "${OUTDIR}":/wazuh_app:Z \
         -v ${CHECKSUMDIR}:/var/local/checksum:Z \
         ${CONTAINER_NAME} ${BRANCH_TAG} ${CHECKSUM} ${REVISION}

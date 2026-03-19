@@ -5,20 +5,20 @@
   %define __strip /bin/true
 %endif
 
-Summary:     Wazuh helps you to gain security visibility into your infrastructure by monitoring hosts at an operating system and application level. It provides the following capabilities: log analysis, file integrity monitoring, intrusions detection and policy and compliance monitoring
-Name:        wazuh-agent
+Summary:     Exact-Ti helps you to gain security visibility into your infrastructure by monitoring hosts at an operating system and application level. It provides the following capabilities: log analysis, file integrity monitoring, intrusions detection and policy and compliance monitoring
+Name:        exactti-agent
 Version:     5.0.0
 Release:     %{_release}
 License:     GPL
 Group:       System Environment/Daemons
 Source0:     %{name}-%{version}.tar.gz
-URL:         https://www.wazuh.com/
+URL:         https://www.exactti.com/
 BuildRoot:   %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Vendor:      Wazuh, Inc <info@wazuh.com>
-Packager:    Wazuh, Inc <info@wazuh.com>
+Vendor:      Exact-Ti, Inc <info@wazuh.com>
+Packager:    Exact-Ti, Inc <info@wazuh.com>
 Requires(pre):    /usr/sbin/groupadd /usr/sbin/useradd
 Requires(postun): /usr/sbin/groupdel /usr/sbin/userdel
-Conflicts:   ossec-hids ossec-hids-agent wazuh-manager wazuh-local
+Conflicts:   ossec-hids ossec-hids-agent exactti-server wazuh-local
 AutoReqProv: no
 
 Requires: coreutils
@@ -31,7 +31,7 @@ BuildRequires: coreutils glibc-devel automake autoconf libtool policycoreutils p
 ExclusiveOS: linux
 
 %description
-Wazuh helps you to gain security visibility into your infrastructure by monitoring
+Exact-Ti helps you to gain security visibility into your infrastructure by monitoring
 hosts at an operating system and application level. It provides the following capabilities:
 log analysis, file integrity monitoring, intrusions detection and policy and compliance monitoring
 
@@ -53,7 +53,7 @@ make clean
       MSGPACK="USE_MSGPACK_OPT=no"
     %endif
     deps_version=`cat Makefile | grep "DEPS_VERSION =" | cut -d " " -f 3`
-    make deps RESOURCES_URL=http://packages.wazuh.com/deps/${deps_version} TARGET=agent
+    make deps RESOURCES_URL=http://packages.exactti.com/deps/${deps_version} TARGET=agent
     make -j%{_threads} TARGET=agent USE_AUDIT=no USE_SELINUX=yes USE_EXEC_ENVIRON=no DEBUG=%{_debugenabled} ${MSGPACK}
 
 %endif
@@ -94,9 +94,9 @@ mkdir -p ${RPM_BUILD_ROOT}%{_localstatedir}/.ssh
 cp -pr %{_localstatedir}/* ${RPM_BUILD_ROOT}%{_localstatedir}/
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/systemd/system/
 sed -i "s:WAZUH_HOME_TMP:%{_localstatedir}:g" src/init/templates/ossec-hids-rh.init
-install -m 0755 src/init/templates/ossec-hids-rh.init ${RPM_BUILD_ROOT}%{_initrddir}/wazuh-agent
-sed -i "s:WAZUH_HOME_TMP:%{_localstatedir}:g" src/init/templates/wazuh-agent.service
-install -m 0644 src/init/templates/wazuh-agent.service ${RPM_BUILD_ROOT}/usr/lib/systemd/system/
+install -m 0755 src/init/templates/ossec-hids-rh.init ${RPM_BUILD_ROOT}%{_initrddir}/exactti-agent
+sed -i "s:WAZUH_HOME_TMP:%{_localstatedir}:g" src/init/templates/exactti-agent.service
+install -m 0644 src/init/templates/exactti-agent.service ${RPM_BUILD_ROOT}/usr/lib/systemd/system/
 
 # Clean the preinstalled configuration assesment files
 rm -f ${RPM_BUILD_ROOT}%{_localstatedir}/ruleset/sca/*
@@ -205,12 +205,12 @@ fi
 
 # Stop the services to upgrade the package
 if [ $1 = 2 ]; then
-  if command -v systemctl > /dev/null 2>&1 && systemctl > /dev/null 2>&1 && systemctl is-active --quiet wazuh-agent > /dev/null 2>&1; then
-    systemctl stop wazuh-agent.service > /dev/null 2>&1
+  if command -v systemctl > /dev/null 2>&1 && systemctl > /dev/null 2>&1 && systemctl is-active --quiet exactti-agent > /dev/null 2>&1; then
+    systemctl stop exactti-agent.service > /dev/null 2>&1
     touch %{_localstatedir}/tmp/wazuh.restart
   # Check for SysV
-  elif command -v service > /dev/null 2>&1 && service wazuh-agent status 2>/dev/null | grep "is running" > /dev/null 2>&1; then
-    service wazuh-agent stop > /dev/null 2>&1
+  elif command -v service > /dev/null 2>&1 && service exactti-agent status 2>/dev/null | grep "is running" > /dev/null 2>&1; then
+    service exactti-agent stop > /dev/null 2>&1
     touch %{_localstatedir}/tmp/wazuh.restart
   elif %{_localstatedir}/bin/wazuh-control status 2>/dev/null | grep "is running" > /dev/null 2>&1; then
     touch %{_localstatedir}/tmp/wazuh.restart
@@ -251,12 +251,12 @@ if [ $1 = 1 ]; then
   %{_localstatedir}/packages_files/agent_installation_scripts/add_localfiles.sh %{_localstatedir} >> %{_localstatedir}/etc/ossec.conf
 
 
-  # Register and configure agent if Wazuh environment variables are defined
+  # Register and configure agent if Exact-Ti environment variables are defined
   %{_localstatedir}/packages_files/agent_installation_scripts/src/init/register_configure_agent.sh %{_localstatedir} > /dev/null || :
 fi
 
 if [[ -d /run/systemd/system ]]; then
-  rm -f %{_initrddir}/wazuh-agent
+  rm -f %{_initrddir}/exactti-agent
 fi
 
 # Delete the installation files used to configure the agent
@@ -408,11 +408,11 @@ if [ $1 = 0 ]; then
 
   # Stop the services before uninstall the package
   # Check for systemd
-  if command -v systemctl > /dev/null 2>&1 && systemctl > /dev/null 2>&1 && systemctl is-active --quiet wazuh-agent > /dev/null 2>&1; then
-    systemctl stop wazuh-agent.service > /dev/null 2>&1
+  if command -v systemctl > /dev/null 2>&1 && systemctl > /dev/null 2>&1 && systemctl is-active --quiet exactti-agent > /dev/null 2>&1; then
+    systemctl stop exactti-agent.service > /dev/null 2>&1
   # Check for SysV
-  elif command -v service > /dev/null 2>&1 && service wazuh-agent status 2>/dev/null | grep "is running" > /dev/null 2>&1; then
-    service wazuh-agent stop > /dev/null 2>&1
+  elif command -v service > /dev/null 2>&1 && service exactti-agent status 2>/dev/null | grep "is running" > /dev/null 2>&1; then
+    service exactti-agent stop > /dev/null 2>&1
   fi
   %{_localstatedir}/bin/wazuh-control stop > /dev/null 2>&1
 
@@ -431,7 +431,7 @@ if [ $1 = 0 ]; then
     sles=$(grep "SUSE Linux Enterprise Server" /etc/SuSE-release)
   fi
   if [ ! -z "$sles" ]; then
-    rm -f /etc/init.d/wazuh-agent
+    rm -f /etc/init.d/exactti-agent
   fi
 
   # Remove SCA files
@@ -472,8 +472,8 @@ fi
 
 # posttrans code is the last thing executed in a install/upgrade
 %posttrans
-if [ -f %{_sysconfdir}/systemd/system/wazuh-agent.service ]; then
-  rm -rf %{_sysconfdir}/systemd/system/wazuh-agent.service
+if [ -f %{_sysconfdir}/systemd/system/exactti-agent.service ]; then
+  rm -rf %{_sysconfdir}/systemd/system/exactti-agent.service
   systemctl daemon-reload > /dev/null 2>&1
 fi
 
@@ -481,9 +481,9 @@ if [ -f %{_localstatedir}/tmp/wazuh.restart ]; then
   rm -f %{_localstatedir}/tmp/wazuh.restart
   if command -v systemctl > /dev/null 2>&1 && systemctl > /dev/null 2>&1 ; then
     systemctl daemon-reload > /dev/null 2>&1
-    systemctl restart wazuh-agent.service > /dev/null 2>&1
+    systemctl restart exactti-agent.service > /dev/null 2>&1
   elif command -v service > /dev/null 2>&1; then
-    service wazuh-agent restart > /dev/null 2>&1
+    service exactti-agent restart > /dev/null 2>&1
   else
     %{_localstatedir}/bin/wazuh-control restart > /dev/null 2>&1
   fi
@@ -507,9 +507,9 @@ rm -fr %{buildroot}
 
 %files
 %defattr(-,root,root)
-%config(missingok) %{_initrddir}/wazuh-agent
+%config(missingok) %{_initrddir}/exactti-agent
 %attr(640, root, wazuh) %verify(not md5 size mtime) %ghost %{_sysconfdir}/ossec-init.conf
-/usr/lib/systemd/system/wazuh-agent.service
+/usr/lib/systemd/system/exactti-agent.service
 %dir %attr(750, root, wazuh) %{_localstatedir}
 %attr(750, root, wazuh) %{_localstatedir}/agentless
 %dir %attr(770, root, wazuh) %{_localstatedir}/.ssh
@@ -641,195 +641,195 @@ rm -fr %{buildroot}
 
 %changelog
 * Thu Dec 12 2024 support <info@wazuh.com> - 5.0.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-5-0-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-5-0-0.html
 * Tue Oct 01 2024 support <info@wazuh.com> - 4.10.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-10-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-10-0.html
 * Thu Aug 15 2024 support <info@wazuh.com> - 4.9.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-9-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-9-0.html
 * Thu Jul 18 2024 support <info@wazuh.com> - 4.8.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-8-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-8-1.html
 * Wed Jun 12 2024 support <info@wazuh.com> - 4.8.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-8-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-8-0.html
 * Thu May 30 2024 support <info@wazuh.com> - 4.7.5
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-7-5.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-7-5.html
 * Thu Apr 25 2024 support <info@wazuh.com> - 4.7.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-7-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-7-4.html
 * Tue Feb 27 2024 support <info@wazuh.com> - 4.7.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-7-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-7-3.html
 * Tue Jan 09 2024 support <info@wazuh.com> - 4.7.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-7-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-7-2.html
 * Wed Dec 13 2023 support <info@wazuh.com> - 4.7.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-7-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-7-1.html
 * Tue Nov 21 2023 support <info@wazuh.com> - 4.7.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-7-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-7-0.html
 * Tue Oct 31 2023 support <info@wazuh.com> - 4.6.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-6-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-6-0.html
 * Tue Oct 24 2023 support <info@wazuh.com> - 4.5.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-5-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-5-4.html
 * Tue Oct 10 2023 support <info@wazuh.com> - 4.5.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-5-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-5-3.html
 * Thu Aug 31 2023 support <info@wazuh.com> - 4.5.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-5-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-5-2.html
 * Thu Aug 24 2023 support <info@wazuh.com> - 4.5.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-5.1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-5.1.html
 * Thu Aug 10 2023 support <info@wazuh.com> - 4.5.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-5-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-5-0.html
 * Mon Jul 10 2023 support <info@wazuh.com> - 4.4.5
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-4-5.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-4-5.html
 * Tue Jun 13 2023 support <info@wazuh.com> - 4.4.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-4-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-4-4.html
 * Thu May 25 2023 support <info@wazuh.com> - 4.4.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-4-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-4-3.html
 * Mon May 08 2023 support <info@wazuh.com> - 4.4.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-4-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-4-2.html
 * Mon Apr 24 2023 support <info@wazuh.com> - 4.3.11
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3.11.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3.11.html
 * Mon Apr 17 2023 support <info@wazuh.com> - 4.4.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-4-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-4-1.html
 * Wed Jan 18 2023 support <info@wazuh.com> - 4.4.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-4-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-4-0.html
 * Thu Nov 10 2022 support <info@wazuh.com> - 4.3.10
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-10.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-10.html
 * Mon Oct 03 2022 support <info@wazuh.com> - 4.3.9
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-9.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-9.html
 * Wed Sep 21 2022 support <info@wazuh.com> - 3.13.6
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-13-6.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-13-6.html
 * Mon Sep 19 2022 support <info@wazuh.com> - 4.3.8
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-8.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-8.html
 * Wed Aug 24 2022 support <info@wazuh.com> - 3.13.5
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-13-5.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-13-5.html
 * Mon Aug 08 2022 support <info@wazuh.com> - 4.3.7
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-7.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-7.html
 * Thu Jul 07 2022 support <info@wazuh.com> - 4.3.6
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-6.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-6.html
 * Wed Jun 29 2022 support <info@wazuh.com> - 4.3.5
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-5.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-5.html
 * Tue Jun 07 2022 support <info@wazuh.com> - 4.3.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-4.html
 * Tue May 31 2022 support <info@wazuh.com> - 4.3.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-3.html
 * Mon May 30 2022 support <info@wazuh.com> - 4.3.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-2.html
 * Mon May 30 2022 support <info@wazuh.com> - 3.13.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-13-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-13-4.html
 * Sun May 29 2022 support <info@wazuh.com> - 4.2.7
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-7.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-7.html
 * Wed May 18 2022 support <info@wazuh.com> - 4.3.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-1.html
 * Thu May 05 2022 support <info@wazuh.com> - 4.3.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-3-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-3-0.html
 * Fri Mar 25 2022 support <info@wazuh.com> - 4.2.6
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-6.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-6.html
 * Mon Nov 15 2021 support <info@wazuh.com> - 4.2.5
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-5.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-5.html
 * Thu Oct 21 2021 support <info@wazuh.com> - 4.2.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-4.html
 * Wed Oct 06 2021 support <info@wazuh.com> - 4.2.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-3.html
 * Tue Sep 28 2021 support <info@wazuh.com> - 4.2.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-2.html
 * Sat Sep 25 2021 support <info@wazuh.com> - 4.2.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-1.html
 * Mon Apr 26 2021 support <info@wazuh.com> - 4.2.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-2-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-2-0.html
 * Sat Apr 24 2021 support <info@wazuh.com> - 3.13.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-13-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-13-3.html
 * Thu Apr 22 2021 support <info@wazuh.com> - 4.1.5
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-1-5.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-1-5.html
 * Mon Mar 29 2021 support <info@wazuh.com> - 4.1.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-1-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-1-4.html
 * Sat Mar 20 2021 support <info@wazuh.com> - 4.1.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-1-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-1-3.html
 * Mon Mar 08 2021 support <info@wazuh.com> - 4.1.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-1-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-1-2.html
 * Fri Mar 05 2021 support <info@wazuh.com> - 4.1.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-1-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-1-1.html
 * Tue Jan 19 2021 support <info@wazuh.com> - 4.1.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-1-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-1-0.html
 * Mon Nov 30 2020 support <info@wazuh.com> - 4.0.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-0-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-0-3.html
 * Mon Nov 23 2020 support <info@wazuh.com> - 4.0.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-0-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-0-2.html
 * Sat Oct 31 2020 support <info@wazuh.com> - 4.0.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-0-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-0-1.html
 * Mon Oct 19 2020 support <info@wazuh.com> - 4.0.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-4-0-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-4-0-0.html
 * Fri Aug 21 2020 support <info@wazuh.com> - 3.13.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-13-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-13-2.html
 * Tue Jul 14 2020 support <info@wazuh.com> - 3.13.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-13-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-13-1.html
 * Mon Jun 29 2020 support <info@wazuh.com> - 3.13.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-13-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-13-0.html
 * Wed May 13 2020 support <info@wazuh.com> - 3.12.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-12-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-12-3.html
 * Thu Apr 9 2020 support <info@wazuh.com> - 3.12.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-12-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-12-2.html
 * Wed Apr 8 2020 support <info@wazuh.com> - 3.12.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-12-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-12-1.html
 * Wed Mar 25 2020 support <info@wazuh.com> - 3.12.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-12-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-12-0.html
 * Mon Feb 24 2020 support <info@wazuh.com> - 3.11.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-11-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-11-4.html
 * Wed Jan 22 2020 support <info@wazuh.com> - 3.11.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-11-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-11-3.html
 * Tue Jan 7 2020 support <info@wazuh.com> - 3.11.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-11-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-11-2.html
 * Thu Dec 26 2019 support <info@wazuh.com> - 3.11.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-11-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-11-1.html
 * Mon Oct 7 2019 support <info@wazuh.com> - 3.11.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-11-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-11-0.html
 * Mon Sep 23 2019 support <support@wazuh.com> - 3.10.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-10-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-10-2.html
 * Thu Sep 19 2019 support <support@wazuh.com> - 3.10.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-10-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-10-1.html
 * Mon Aug 26 2019 support <support@wazuh.com> - 3.10.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-10-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-10-0.html
 * Thu Aug 8 2019 support <support@wazuh.com> - 3.9.5
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-9-5.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-9-5.html
 * Fri Jul 12 2019 support <support@wazuh.com> - 3.9.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-9-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-9-4.html
 * Tue Jul 02 2019 support <support@wazuh.com> - 3.9.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-9-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-9-3.html
 * Tue Jun 11 2019 support <support@wazuh.com> - 3.9.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-9-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-9-2.html
 * Sat Jun 01 2019 support <support@wazuh.com> - 3.9.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-9-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-9-1.html
 * Mon Feb 25 2019 support <support@wazuh.com> - 3.9.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-9-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-9-0.html
 * Wed Jan 30 2019 support <support@wazuh.com> - 3.8.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-8-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-8-2.html
 * Thu Jan 24 2019 support <support@wazuh.com> - 3.8.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-8-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-8-1.html
 * Fri Jan 18 2019 support <support@wazuh.com> - 3.8.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-8-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-8-0.html
 * Wed Nov 7 2018 support <support@wazuh.com> - 3.7.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-7-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-7-0.html
 * Mon Sep 10 2018 support <info@wazuh.com> - 3.6.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-6-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-6-1.html
 * Fri Sep 7 2018 support <support@wazuh.com> - 3.6.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-6-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-6-0.html
 * Wed Jul 25 2018 support <support@wazuh.com> - 3.5.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-5-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-5-0.html
 * Wed Jul 11 2018 support <support@wazuh.com> - 3.4.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-4-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-4-0.html
 * Mon Jun 18 2018 support <support@wazuh.com> - 3.3.1
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-3-1.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-3-1.html
 * Mon Jun 11 2018 support <support@wazuh.com> - 3.3.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-3-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-3-0.html
 * Wed May 30 2018 support <support@wazuh.com> - 3.2.4
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-2-4.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-2-4.html
 * Thu May 10 2018 support <support@wazuh.com> - 3.2.3
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-2-3.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-2-3.html
 * Mon Apr 09 2018 support <support@wazuh.com> - 3.2.2
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-2-2.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-2-2.html
 * Wed Feb 21 2018 support <support@wazuh.com> - 3.2.1
-- More info: https://documentation.wazuh.com/current/release-notes/rerlease-3-2-1.html
+- More info: https://documentation.exactti.com/current/release-notes/rerlease-3-2-1.html
 * Wed Feb 07 2018 support <support@wazuh.com> - 3.2.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-2-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-2-0.html
 * Thu Dec 21 2017 support <support@wazuh.com> - 3.1.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-1-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-1-0.html
 * Mon Nov 06 2017 support <support@wazuh.com> - 3.0.0
-- More info: https://documentation.wazuh.com/current/release-notes/release-3-0-0.html
+- More info: https://documentation.exactti.com/current/release-notes/release-3-0-0.html
 * Tue Jun 06 2017 support <support@wazuh.com> - 2.0.1
 - Changed random data generator for a secure OS-provided generator.
 - Changed Windows installer file name (depending on version).

@@ -58,7 +58,7 @@ test-04-cert_generateAdmincertificate() {
 test-04-cert_generateAdmincertificate-assert() {
     openssl genrsa -out /tmp/wazuh-cert-tool/certs/admin-key-temp.pem 2048
     openssl pkcs8 -inform PEM -outform PEM -in /tmp/wazuh-cert-tool/certs/admin-key-temp.pem -topk8 -nocrypt -v1 PBE-SHA1-3DES -out /tmp/wazuh-cert-tool/certs/admin-key.pem
-    openssl req -new -key /tmp/wazuh-cert-tool/certs/admin-key.pem -out /tmp/wazuh-cert-tool/certs/admin.csr -batch -subj '/C=US/L=California/O=Wazuh/OU=Docu/CN=admin'
+    openssl req -new -key /tmp/wazuh-cert-tool/certs/admin-key.pem -out /tmp/wazuh-cert-tool/certs/admin.csr -batch -subj '/C=US/L=California/O=Exact-Ti/OU=Docu/CN=admin'
     openssl x509 -days 3650 -req -in /tmp/wazuh-cert-tool/certs/admin.csr -CA /tmp/wazuh-cert-tool/certs/root-ca.pem -CAkey /tmp/wazuh-cert-tool/certs/root-ca.key -CAcreateserial -sha256 -out /tmp/wazuh-cert-tool/certs/admin.pem
 }
 
@@ -140,7 +140,7 @@ test-08-cert_generateRootCAcertificate() {
 }
 
 test-08-cert_generateRootCAcertificate-assert() {
-    openssl req -x509 -new -nodes -newkey rsa:2048 -keyout /tmp/wazuh-cert-tool/certs/root-ca.key -out /tmp/wazuh-cert-tool/certs/root-ca.pem -batch -subj '/OU=Docu/O=Wazuh/L=California/' -days 3650
+    openssl req -x509 -new -nodes -newkey rsa:2048 -keyout /tmp/wazuh-cert-tool/certs/root-ca.key -out /tmp/wazuh-cert-tool/certs/root-ca.pem -batch -subj '/OU=Docu/O=Exact-Ti/L=California/' -days 3650
 }
 
 function load-generateElasticsearchcertificates() {

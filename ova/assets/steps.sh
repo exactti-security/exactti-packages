@@ -18,7 +18,7 @@ systemConfig() {
   chmod 755 /tmp/enable_fips.sh
   bash /tmp/enable_fips.sh
 
-  # Update Wazuh indexer jvm heap
+  # Update Exact-Ti indexer jvm heap
   mv ${CUSTOM_PATH}/automatic_set_ram.sh /etc/
   chmod 755 /etc/automatic_set_ram.sh
   mv ${CUSTOM_PATH}/updateIndexerHeap.service /etc/systemd/system/

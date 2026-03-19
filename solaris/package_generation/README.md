@@ -1,11 +1,11 @@
-Automated Wazuh Solaris packages using vagrant
+Automated Exact-Ti Solaris packages using vagrant
 ==============================================
 
-In this repository, you can find the necessary tools to build a Wazuh package for Solaris 10 and 11 using vagrant.
+In this repository, you can find the necessary tools to build a Exact-Ti package for Solaris 10 and 11 using vagrant.
 
 ## Tools needed to build the package
 
-To build a Wazuh package you need to install the following tools:
+To build a Exact-Ti package you need to install the following tools:
 - `Virtual Box`: [installation guide](https://www.virtualbox.org/manual/UserManual.html#installation)
 - `Vagrant`: [installation guide](https://www.vagrantup.com/docs/installation/)
 - `Git`:  [installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
@@ -88,7 +88,7 @@ To build a Solaris package using vagrant, you need to download this repository c
         winrm-config    outputs WinRM configuration to connect to the machine
 
     ```
-    * To build a wazuh-agent package for Solaris 10 from branch v3.9.0 sources:
+    * To build a exactti-agent package for Solaris 10 from branch v3.9.0 sources:
         `# vagrant --branch-tag=v3.9.0 up solaris10`.
 
 3. After the virtual machine finishes generating the package you can find it in `src`.
@@ -116,4 +116,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

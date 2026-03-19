@@ -1,5 +1,5 @@
-# Wazuh installer - filebeat.sh functions.
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer - filebeat.sh functions.
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public

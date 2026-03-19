@@ -1,6 +1,6 @@
 #!/bin/sh
-# preinstall script for wazuh-agent
-# Wazuh, Inc 2015
+# preinstall script for exactti-agent
+# Exact-Ti, Inc 2015
 
 if [ ! -f /etc/ossec-init.conf ]; then
     DIR="/var/ossec"
@@ -20,7 +20,7 @@ fi
 
 USER="wazuh"
 GROUP="wazuh"
-OSSEC_HIDS_TMP_DIR="/tmp/wazuh-agent"
+OSSEC_HIDS_TMP_DIR="/tmp/exactti-agent"
 OSMYSHELL="/sbin/nologin"
 
 # environment configuration
@@ -59,8 +59,8 @@ case $type in
         fi
     fi
     # Delete old service
-    if [ -f /etc/init.d/wazuh-agent ]; then
-        rm /etc/init.d/wazuh-agent
+    if [ -f /etc/init.d/exactti-agent ]; then
+        rm /etc/init.d/exactti-agent
     fi
     # back up the current user rules
     if [ -f ${DIR}/etc/client.keys ]; then

@@ -102,30 +102,30 @@ test-08-installCommon_installPrerequisites-apt-assert() {
     apt install apt-transport-https curl unzip wget libcap2-bin tar software-properties-common gnupg -y
 }
 
-function load-installCommon_addWazuhRepo() {
-    @load_function "${base_dir}/installCommon.sh" installCommon_addWazuhRepo
+function load-installCommon_addExact-TiRepo() {
+    @load_function "${base_dir}/installCommon.sh" installCommon_addExact-TiRepo
 }
 
-test-09-installCommon_addWazuhRepo-yum() {
-    load-installCommon_addWazuhRepo
+test-09-installCommon_addExact-TiRepo-yum() {
+    load-installCommon_addExact-TiRepo
     development=1
     sys_type="yum"
     debug=""
     repogpg=""
     releasever=""
-    @mocktrue echo -e '[wazuh]\ngpgcheck=1\ngpgkey=\nenabled=1\nname=EL-${releasever} - Wazuh\nbaseurl=/yum/\nprotect=1'
+    @mocktrue echo -e '[wazuh]\ngpgcheck=1\ngpgkey=\nenabled=1\nname=EL-${releasever} - Exact-Ti\nbaseurl=/yum/\nprotect=1'
     @mocktrue tee /etc/yum.repos.d/wazuh.repo
-    installCommon_addWazuhRepo
+    installCommon_addExact-TiRepo
 }
 
-test-09-installCommon_addWazuhRepo-yum-assert() {
+test-09-installCommon_addExact-TiRepo-yum-assert() {
     rm -f /etc/yum.repos.d/wazuh.repo
     rpm --import
 }
 
 
-test-10-installCommon_addWazuhRepo-apt() {
-    load-installCommon_addWazuhRepo
+test-10-installCommon_addExact-TiRepo-apt() {
+    load-installCommon_addExact-TiRepo
     development=1
     sys_type="apt-get"
     debug=""
@@ -138,99 +138,99 @@ test-10-installCommon_addWazuhRepo-apt() {
     @mocktrue apt-key add -
     @mocktrue echo "deb /apt/  main"
     @mocktrue tee /etc/apt/sources.list.d/wazuh.list
-    installCommon_addWazuhRepo
+    installCommon_addExact-TiRepo
 }
 
-test-10-installCommon_addWazuhRepo-apt-assert() {
+test-10-installCommon_addExact-TiRepo-apt-assert() {
     rm -f /etc/apt/sources.list.d/wazuh.list
     apt-get update -q
 }
 
-test-11-installCommon_addWazuhRepo-apt-file-present() {
-    load-installCommon_addWazuhRepo
+test-11-installCommon_addExact-TiRepo-apt-file-present() {
+    load-installCommon_addExact-TiRepo
     development=""
     @mkdir -p /etc/yum.repos.d
     @touch /etc/yum.repos.d/wazuh.repo
-    installCommon_addWazuhRepo
+    installCommon_addExact-TiRepo
     @assert-success
     @rm /etc/yum.repos.d/wazuh.repo
 }
 
-test-12-installCommon_addWazuhRepo-yum-file-present() {
-    load-installCommon_addWazuhRepo
+test-12-installCommon_addExact-TiRepo-yum-file-present() {
+    load-installCommon_addExact-TiRepo
     development=""
     @mkdir -p /etc/apt/sources.list.d/
     @touch /etc/apt/sources.list.d/wazuh.list
-    installCommon_addWazuhRepo
+    installCommon_addExact-TiRepo
     @assert-success
     @rm /etc/apt/sources.list.d/wazuh.list
 }
 
-function load-installCommon_restoreWazuhrepo() {
-    @load_function "${base_dir}/installCommon.sh" installCommon_restoreWazuhrepo
+function load-installCommon_restoreExact-Tirepo() {
+    @load_function "${base_dir}/installCommon.sh" installCommon_restoreExact-Tirepo
 }
 
-test-13-installCommon_restoreWazuhrepo-no-dev() {
-    load-installCommon_restoreWazuhrepo
+test-13-installCommon_restoreExact-Tirepo-no-dev() {
+    load-installCommon_restoreExact-Tirepo
     development=""
-    installCommon_restoreWazuhrepo
+    installCommon_restoreExact-Tirepo
     @assert-success
 }
 
-test-14-installCommon_restoreWazuhrepo-yum() {
-    load-installCommon_restoreWazuhrepo
+test-14-installCommon_restoreExact-Tirepo-yum() {
+    load-installCommon_restoreExact-Tirepo
     development="1"
     sys_type="yum"
     @mkdir -p /etc/yum.repos.d
     @touch /etc/yum.repos.d/wazuh.repo
-    installCommon_restoreWazuhrepo
+    installCommon_restoreExact-Tirepo
     @rm /etc/yum.repos.d/wazuh.repo
 }
 
-test-14-installCommon_restoreWazuhrepo-yum-assert() {
+test-14-installCommon_restoreExact-Tirepo-yum-assert() {
     sed -i 's/-dev//g' /etc/yum.repos.d/wazuh.repo
     sed -i 's/pre-release/4.x/g' /etc/yum.repos.d/wazuh.repo
     sed -i 's/unstable/stable/g' /etc/yum.repos.d/wazuh.repo
 }
 
-test-15-installCommon_restoreWazuhrepo-apt() {
-    load-installCommon_restoreWazuhrepo
+test-15-installCommon_restoreExact-Tirepo-apt() {
+    load-installCommon_restoreExact-Tirepo
     development="1"
     sys_type="apt-get"
     @mkdir -p /etc/apt/sources.list.d/
     @touch /etc/apt/sources.list.d/wazuh.list
-    installCommon_restoreWazuhrepo
+    installCommon_restoreExact-Tirepo
     @rm /etc/apt/sources.list.d/wazuh.list
 }
 
-test-15-installCommon_restoreWazuhrepo-apt-assert() {
+test-15-installCommon_restoreExact-Tirepo-apt-assert() {
     sed -i 's/-dev//g' /etc/apt/sources.list.d/wazuh.list
     sed -i 's/pre-release/4.x/g' /etc/apt/sources.list.d/wazuh.list
     sed -i 's/unstable/stable/g' /etc/apt/sources.list.d/wazuh.list
 }
 
 
-test-16-installCommon_restoreWazuhrepo-yum-no-file() {
-    load-installCommon_restoreWazuhrepo
+test-16-installCommon_restoreExact-Tirepo-yum-no-file() {
+    load-installCommon_restoreExact-Tirepo
     development="1"
     sys_type="yum"
-    installCommon_restoreWazuhrepo
+    installCommon_restoreExact-Tirepo
 }
 
-test-16-installCommon_restoreWazuhrepo-yum-no-file-assert() {
+test-16-installCommon_restoreExact-Tirepo-yum-no-file-assert() {
     sed -i 's/-dev//g'
     sed -i 's/pre-release/4.x/g'
     sed -i 's/unstable/stable/g'
 }
 
-test-17-installCommon_restoreWazuhrepo-apt-no-file() {
-    load-installCommon_restoreWazuhrepo
+test-17-installCommon_restoreExact-Tirepo-apt-no-file() {
+    load-installCommon_restoreExact-Tirepo
     development="1"
     sys_type="yum"
-    installCommon_restoreWazuhrepo
+    installCommon_restoreExact-Tirepo
 }
 
-test-17-installCommon_restoreWazuhrepo-apt-no-file-assert() {
+test-17-installCommon_restoreExact-Tirepo-apt-no-file-assert() {
     sed -i 's/-dev//g'
     sed -i 's/pre-release/4.x/g'
     sed -i 's/unstable/stable/g'
@@ -273,15 +273,15 @@ test-19-installCommon_rollBack-aio-all-installed-yum() {
 
 test-19-installCommon_rollBack-aio-all-installed-yum-assert() {
 
-    yum remove wazuh-manager -y
+    yum remove exactti-server -y
 
     rm -rf /var/ossec/
 
-    yum remove wazuh-indexer -y
+    yum remove exactti-indexer -y
 
-    rm -rf /var/lib/wazuh-indexer/
-    rm -rf /usr/share/wazuh-indexer/
-    rm -rf /etc/wazuh-indexer/
+    rm -rf /var/lib/exactti-indexer/
+    rm -rf /usr/share/exactti-indexer/
+    rm -rf /etc/exactti-indexer/
 
     yum remove filebeat -y
 
@@ -289,14 +289,14 @@ test-19-installCommon_rollBack-aio-all-installed-yum-assert() {
     rm -rf /usr/share/filebeat/
     rm -rf /etc/filebeat/
 
-    yum remove wazuh-dashboard -y
+    yum remove exactti-dashboard -y
 
-    rm -rf /var/lib/wazuh-dashboard/
-    rm -rf /usr/share/wazuh-dashboard/
-    rm -rf /etc/wazuh-dashboard/
-    rm -rf /run/wazuh-dashboard/
+    rm -rf /var/lib/exactti-dashboard/
+    rm -rf /usr/share/exactti-dashboard/
+    rm -rf /etc/exactti-dashboard/
+    rm -rf /run/exactti-dashboard/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-20-installCommon_rollBack-aio-all-installed-apt() {
@@ -316,15 +316,15 @@ test-20-installCommon_rollBack-aio-all-installed-apt() {
 }
 
 test-20-installCommon_rollBack-aio-all-installed-apt-assert() {
-    apt remove --purge wazuh-manager -y
+    apt remove --purge exactti-server -y
 
     rm -rf /var/ossec/
 
-    apt remove --purge ^wazuh-indexer -y
+    apt remove --purge ^exactti-indexer -y
 
-    rm -rf /var/lib/wazuh-indexer/
-    rm -rf /usr/share/wazuh-indexer/
-    rm -rf /etc/wazuh-indexer/
+    rm -rf /var/lib/exactti-indexer/
+    rm -rf /usr/share/exactti-indexer/
+    rm -rf /etc/exactti-indexer/
 
     apt remove --purge filebeat -y
 
@@ -332,14 +332,14 @@ test-20-installCommon_rollBack-aio-all-installed-apt-assert() {
     rm -rf /usr/share/filebeat/
     rm -rf /etc/filebeat/
 
-    apt remove --purge wazuh-dashboard -y
+    apt remove --purge exactti-dashboard -y
 
-    rm -rf /var/lib/wazuh-dashboard/
-    rm -rf /usr/share/wazuh-dashboard/
-    rm -rf /etc/wazuh-dashboard/
-    rm -rf /run/wazuh-dashboard/
+    rm -rf /var/lib/exactti-dashboard/
+    rm -rf /usr/share/exactti-dashboard/
+    rm -rf /etc/exactti-dashboard/
+    rm -rf /run/exactti-dashboard/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-21-installCommon_rollBack-indexer-installation-all-installed-yum() {
@@ -359,13 +359,13 @@ test-21-installCommon_rollBack-indexer-installation-all-installed-yum() {
 }
 
 test-21-installCommon_rollBack-indexer-installation-all-installed-yum-assert() {
-    yum remove wazuh-indexer -y
+    yum remove exactti-indexer -y
 
-    rm -rf /var/lib/wazuh-indexer/
-    rm -rf /usr/share/wazuh-indexer/
-    rm -rf /etc/wazuh-indexer/
+    rm -rf /var/lib/exactti-indexer/
+    rm -rf /usr/share/exactti-indexer/
+    rm -rf /etc/exactti-indexer/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-22-installCommon_rollBack-indexer-installation-all-installed-apt() {
@@ -385,13 +385,13 @@ test-22-installCommon_rollBack-indexer-installation-all-installed-apt() {
 }
 
 test-22-installCommon_rollBack-indexer-installation-all-installed-apt-assert() {
-    apt remove --purge ^wazuh-indexer -y
+    apt remove --purge ^exactti-indexer -y
 
-    rm -rf /var/lib/wazuh-indexer/
-    rm -rf /usr/share/wazuh-indexer/
-    rm -rf /etc/wazuh-indexer/
+    rm -rf /var/lib/exactti-indexer/
+    rm -rf /usr/share/exactti-indexer/
+    rm -rf /etc/exactti-indexer/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-23-installCommon_rollBack-wazuh-installation-all-installed-yum() {
@@ -411,7 +411,7 @@ test-23-installCommon_rollBack-wazuh-installation-all-installed-yum() {
 }
 
 test-23-installCommon_rollBack-wazuh-installation-all-installed-yum-assert() {
-    yum remove wazuh-manager -y
+    yum remove exactti-server -y
 
     rm -rf /var/ossec/
 
@@ -421,7 +421,7 @@ test-23-installCommon_rollBack-wazuh-installation-all-installed-yum-assert() {
     rm -rf /usr/share/filebeat/
     rm -rf /etc/filebeat/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-24-installCommon_rollBack-wazuh-installation-all-installed-apt() {
@@ -441,7 +441,7 @@ test-24-installCommon_rollBack-wazuh-installation-all-installed-apt() {
 }
 
 test-24-installCommon_rollBack-wazuh-installation-all-installed-apt-assert() {
-    apt remove --purge wazuh-manager -y
+    apt remove --purge exactti-server -y
 
     rm -rf /var/ossec/
 
@@ -451,7 +451,7 @@ test-24-installCommon_rollBack-wazuh-installation-all-installed-apt-assert() {
     rm -rf /usr/share/filebeat/
     rm -rf /etc/filebeat/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-25-installCommon_rollBack-dashboard-installation-all-installed-yum() {
@@ -471,14 +471,14 @@ test-25-installCommon_rollBack-dashboard-installation-all-installed-yum() {
 }
 
 test-25-installCommon_rollBack-dashboard-installation-all-installed-yum-assert() {
-    yum remove wazuh-dashboard -y
+    yum remove exactti-dashboard -y
 
-    rm -rf /var/lib/wazuh-dashboard/
-    rm -rf /usr/share/wazuh-dashboard/
-    rm -rf /etc/wazuh-dashboard/
-    rm -rf /run/wazuh-dashboard/
+    rm -rf /var/lib/exactti-dashboard/
+    rm -rf /usr/share/exactti-dashboard/
+    rm -rf /etc/exactti-dashboard/
+    rm -rf /run/exactti-dashboard/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-26-installCommon_rollBack-dashboard-installation-all-installed-apt() {
@@ -498,14 +498,14 @@ test-26-installCommon_rollBack-dashboard-installation-all-installed-apt() {
 }
 
 test-26-installCommon_rollBack-dashboard-installation-all-installed-apt-assert() {
-    apt remove --purge wazuh-dashboard -y
+    apt remove --purge exactti-dashboard -y
 
-    rm -rf /var/lib/wazuh-dashboard/
-    rm -rf /usr/share/wazuh-dashboard/
-    rm -rf /etc/wazuh-dashboard/
-    rm -rf /run/wazuh-dashboard/
+    rm -rf /var/lib/exactti-dashboard/
+    rm -rf /usr/share/exactti-dashboard/
+    rm -rf /etc/exactti-dashboard/
+    rm -rf /run/exactti-dashboard/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-27-installCommon_rollBack-aio-nothing-installed() {
@@ -544,20 +544,20 @@ test-28-installCommon_rollBack-aio-all-remaining-files-yum() {
 test-28-installCommon_rollBack-aio-all-remaining-files-yum-assert() {
     rm -rf /var/ossec/
 
-    rm -rf /var/lib/wazuh-indexer/
-    rm -rf /usr/share/wazuh-indexer/
-    rm -rf /etc/wazuh-indexer/
+    rm -rf /var/lib/exactti-indexer/
+    rm -rf /usr/share/exactti-indexer/
+    rm -rf /etc/exactti-indexer/
 
     rm -rf /var/lib/filebeat/
     rm -rf /usr/share/filebeat/
     rm -rf /etc/filebeat/
 
-    rm -rf /var/lib/wazuh-dashboard/
-    rm -rf /usr/share/wazuh-dashboard/
-    rm -rf /etc/wazuh-dashboard/
-    rm -rf /run/wazuh-dashboard/
+    rm -rf /var/lib/exactti-dashboard/
+    rm -rf /usr/share/exactti-dashboard/
+    rm -rf /etc/exactti-dashboard/
+    rm -rf /run/exactti-dashboard/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-29-installCommon_rollBack-aio-all-remaining-files-apt() {
@@ -579,20 +579,20 @@ test-29-installCommon_rollBack-aio-all-remaining-files-apt() {
 test-29-installCommon_rollBack-aio-all-remaining-files-apt-assert() {
     rm -rf /var/ossec/
 
-    rm -rf /var/lib/wazuh-indexer/
-    rm -rf /usr/share/wazuh-indexer/
-    rm -rf /etc/wazuh-indexer/
+    rm -rf /var/lib/exactti-indexer/
+    rm -rf /usr/share/exactti-indexer/
+    rm -rf /etc/exactti-indexer/
 
     rm -rf /var/lib/filebeat/
     rm -rf /usr/share/filebeat/
     rm -rf /etc/filebeat/
 
-    rm -rf /var/lib/wazuh-dashboard/
-    rm -rf /usr/share/wazuh-dashboard/
-    rm -rf /etc/wazuh-dashboard/
-    rm -rf /run/wazuh-dashboard/
+    rm -rf /var/lib/exactti-dashboard/
+    rm -rf /usr/share/exactti-dashboard/
+    rm -rf /etc/exactti-dashboard/
+    rm -rf /run/exactti-dashboard/
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-30-installCommon_rollBack-nothing-installed-remove-yum-repo() {
@@ -606,7 +606,7 @@ test-30-installCommon_rollBack-nothing-installed-remove-yum-repo() {
 test-30-installCommon_rollBack-nothing-installed-remove-yum-repo-assert() {
     rm /etc/yum.repos.d/wazuh.repo
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-31-installCommon_rollBack-nothing-installed-remove-apt-repo() {
@@ -620,7 +620,7 @@ test-31-installCommon_rollBack-nothing-installed-remove-apt-repo() {
 test-31-installCommon_rollBack-nothing-installed-remove-apt-repo-assert() {
     rm /etc/apt/sources.list.d/wazuh.list
 
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 test-32-installCommon_rollBack-nothing-installed-remove-files() {
@@ -631,7 +631,7 @@ test-32-installCommon_rollBack-nothing-installed-remove-files() {
 }
 
 test-32-installCommon_rollBack-nothing-installed-remove-files-assert() {
-    rm  -rf /var/log/wazuh-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/wazuh-manager.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/wazuh-dashboard.service /etc/systemd/system/wazuh-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
+    rm  -rf /var/log/exactti-indexer/ /var/log/filebeat/ /etc/systemd/system/opensearch.service.wants/ /securityadmin_demo.sh /etc/systemd/system/multi-user.target.wants/exactti-server.service /etc/systemd/system/multi-user.target.wants/filebeat.service /etc/systemd/system/multi-user.target.wants/opensearch.service /etc/systemd/system/multi-user.target.wants/exactti-dashboard.service /etc/systemd/system/exactti-dashboard.service /lib/firewalld/services/dashboard.xml /lib/firewalld/services/opensearch.xml
 }
 
 function load-installCommon_createCertificates() {
@@ -802,7 +802,7 @@ test-ASSERT-FAIL-42-installCommon_startService-no-service-manager() {
     @mockfalse grep -E -q "^\ *1\ .*systemd$"
     @mockfalse grep -E -q "^\ *1\ .*init$"
     @rm /etc/init.d/wazuh
-    installCommon_startService wazuh-manager
+    installCommon_startService exactti-server
 }
 
 test-43-installCommon_startService-systemd() {
@@ -810,13 +810,13 @@ test-43-installCommon_startService-systemd() {
     @mockfalse ps -e === @out
     @mocktrue grep -E -q "^\ *1\ .*systemd$"
     @mockfalse grep -E -q "^\ *1\ .*init$"
-    installCommon_startService wazuh-manager
+    installCommon_startService exactti-server
 }
 
 test-43-installCommon_startService-systemd-assert() {
     systemctl daemon-reload
-    systemctl enable wazuh-manager.service
-    systemctl start wazuh-manager.service
+    systemctl enable exactti-server.service
+    systemctl start exactti-server.service
 }
 
 test-44-installCommon_startService-systemd-error() {
@@ -824,13 +824,13 @@ test-44-installCommon_startService-systemd-error() {
     @mock ps -e === @out
     @mocktrue grep -E -q "^\ *1\ .*systemd$"
     @mockfalse grep -E -q "^\ *1\ .*init$"
-    @mockfalse systemctl start wazuh-manager.service
-    installCommon_startService wazuh-manager
+    @mockfalse systemctl start exactti-server.service
+    installCommon_startService exactti-server
 }
 
 test-44-installCommon_startService-systemd-error-assert() {
     systemctl daemon-reload
-    systemctl enable wazuh-manager.service
+    systemctl enable exactti-server.service
     installCommon_rollBack
     exit 1
 }
@@ -841,19 +841,19 @@ test-45-installCommon_startService-initd() {
     @mockfalse grep -E -q "^\ *1\ .*systemd$"
     @mocktrue grep -E -q "^\ *1\ .*init$"
     @mkdir -p /etc/init.d
-    @touch /etc/init.d/wazuh-manager
-    @chmod +x /etc/init.d/wazuh-manager
-    installCommon_startService wazuh-manager
-    @rm /etc/init.d/wazuh-manager
+    @touch /etc/init.d/exactti-server
+    @chmod +x /etc/init.d/exactti-server
+    installCommon_startService exactti-server
+    @rm /etc/init.d/exactti-server
 }
 
 test-45-installCommon_startService-initd-assert() {
     @mkdir -p /etc/init.d
-    @touch /etc/init.d/wazuh-manager
-    chkconfig wazuh-manager on
-    service wazuh-manager start
-    /etc/init.d/wazuh-manager start
-    @rm /etc/init.d/wazuh-manager
+    @touch /etc/init.d/exactti-server
+    chkconfig exactti-server on
+    service exactti-server start
+    /etc/init.d/exactti-server start
+    @rm /etc/init.d/exactti-server
 }
 
 test-46-installCommon_startService-initd-error() {
@@ -862,22 +862,22 @@ test-46-installCommon_startService-initd-error() {
     @mockfalse grep -E -q "^\ *1\ .*systemd$"
     @mocktrue grep -E -q "^\ *1\ .*init$"
     @mkdir -p /etc/init.d
-    @touch /etc/init.d/wazuh-manager
-    #/etc/init.d/wazuh-manager is not executable -> It will fail
-    installCommon_startService wazuh-manager
-    @rm /etc/init.d/wazuh-manager
+    @touch /etc/init.d/exactti-server
+    #/etc/init.d/exactti-server is not executable -> It will fail
+    installCommon_startService exactti-server
+    @rm /etc/init.d/exactti-server
 }
 
 test-46-installCommon_startService-initd-error-assert() {
     @mkdir -p /etc/init.d
-    @touch /etc/init.d/wazuh-manager
-    @chmod +x /etc/init.d/wazuh-manager
-    chkconfig wazuh-manager on
-    service wazuh-manager start
-    /etc/init.d/wazuh-manager start
+    @touch /etc/init.d/exactti-server
+    @chmod +x /etc/init.d/exactti-server
+    chkconfig exactti-server on
+    service exactti-server start
+    /etc/init.d/exactti-server start
     installCommon_rollBack
     exit 1
-    @rm /etc/init.d/wazuh-manager
+    @rm /etc/init.d/exactti-server
 }
 
 test-47-installCommon_startService-rc.d/init.d() {
@@ -887,19 +887,19 @@ test-47-installCommon_startService-rc.d/init.d() {
     @mockfalse grep -E -q "^\ *1\ .*init$"
 
     @mkdir -p /etc/rc.d/init.d
-    @touch /etc/rc.d/init.d/wazuh-manager
-    @chmod +x /etc/rc.d/init.d/wazuh-manager
+    @touch /etc/rc.d/init.d/exactti-server
+    @chmod +x /etc/rc.d/init.d/exactti-server
 
-    installCommon_startService wazuh-manager
-    @rm /etc/rc.d/init.d/wazuh-manager
+    installCommon_startService exactti-server
+    @rm /etc/rc.d/init.d/exactti-server
 }
 
 test-47-installCommon_startService-rc.d/init.d-assert() {
     @mkdir -p /etc/rc.d/init.d
-    @touch /etc/rc.d/init.d/wazuh-manager
-    @chmod +x /etc/rc.d/init.d/wazuh-manager
-    /etc/rc.d/init.d/wazuh-manager start
-    @rm /etc/rc.d/init.d/wazuh-manager
+    @touch /etc/rc.d/init.d/exactti-server
+    @chmod +x /etc/rc.d/init.d/exactti-server
+    /etc/rc.d/init.d/exactti-server start
+    @rm /etc/rc.d/init.d/exactti-server
 }
 
 function load-installCommon_readPasswordFileUsers() {

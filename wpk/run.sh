@@ -137,7 +137,7 @@ main() {
 
 
     NO_COMPILE=false
-    # Get Wazuh
+    # Get Exact-Ti
     curl -sL ${REPOSITORY}/tarball/${REFERENCE} | tar zx
     cd ${DIRECTORY}
 

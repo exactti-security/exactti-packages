@@ -1,4 +1,4 @@
-# Wazuh - Filebeat configuration file
+# Exact-Ti - Filebeat configuration file
 output.elasticsearch:
   protocol: https
   username: ${username}

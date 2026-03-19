@@ -1,5 +1,5 @@
-# Wazuh installer - variables
-# Copyright (C) 2015, Wazuh Inc.
+# Exact-Ti installer - variables
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -24,9 +24,9 @@ tar_file="${base_path}/${tar_file_name}"
 
 readonly filebeat_wazuh_template="https://raw.githubusercontent.com/wazuh/wazuh/${source_branch}/extensions/elasticsearch/7.x/wazuh-template.json"
 
-readonly dashboard_cert_path="/etc/wazuh-dashboard/certs"
+readonly dashboard_cert_path="/etc/exactti-dashboard/certs"
 readonly filebeat_cert_path="/etc/filebeat/certs"
-readonly indexer_cert_path="/etc/wazuh-indexer/certs"
+readonly indexer_cert_path="/etc/exactti-indexer/certs"
 
 readonly logfile="/var/log/wazuh-install.log"
 debug=">> ${logfile} 2>&1"
@@ -35,11 +35,11 @@ readonly apt_lockfile="/var/lib/dpkg/lock"
 
 ## Offline Installation vars
 readonly base_dest_folder="wazuh-offline"
-readonly manager_deb_base_url="${base_url}/apt/pool/main/w/wazuh-manager"
+readonly manager_deb_base_url="${base_url}/apt/pool/main/w/exactti-server"
 readonly filebeat_deb_base_url="${base_url}/apt/pool/main/f/filebeat"
 readonly filebeat_deb_package="filebeat-oss-${filebeat_version}-amd64.deb"
-readonly indexer_deb_base_url="${base_url}/apt/pool/main/w/wazuh-indexer"
-readonly dashboard_deb_base_url="${base_url}/apt/pool/main/w/wazuh-dashboard"
+readonly indexer_deb_base_url="${base_url}/apt/pool/main/w/exactti-indexer"
+readonly dashboard_deb_base_url="${base_url}/apt/pool/main/w/exactti-dashboard"
 readonly manager_rpm_base_url="${base_url}/yum"
 readonly filebeat_rpm_base_url="${base_url}/yum"
 readonly filebeat_rpm_package="filebeat-oss-${filebeat_version}-x86_64.rpm"

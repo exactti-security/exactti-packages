@@ -5,7 +5,7 @@ In this repository, you can find the necessary tools to build a Vagrant box for 
 
 ## Tools needed to build the package
 
-To build a Wazuh package you need to install the following tools:
+To build a Exact-Ti package you need to install the following tools:
 - `Virtual Box`: [installation guide](https://www.virtualbox.org/manual/UserManual.html#installation)
 - `Vagrant`: [installation guide](https://www.vagrantup.com/docs/installation/)
 - `Git`:  [installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
@@ -42,4 +42,4 @@ If you want to contribute to our project please don't hesitate to send a pull re
 ## License and copyright
 
 WAZUH
-Copyright (C) 2015 Wazuh Inc.  (License GPLv2)
+Copyright (C) 2015 Exact-Ti Inc.  (License GPLv2)

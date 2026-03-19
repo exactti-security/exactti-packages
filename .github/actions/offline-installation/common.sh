@@ -60,23 +60,23 @@ function check_shards() {
 
 function dashboard_installation() {
 
-    install_package "wazuh-dashboard"
-    check_package "wazuh-dashboard"
+    install_package "exactti-dashboard"
+    check_package "exactti-dashboard"
 
-    echo "INFO: Generating certificates of the Wazuh dashboard..."
+    echo "INFO: Generating certificates of the Exact-Ti dashboard..."
     NODE_NAME=dashboard
-    mkdir /etc/wazuh-dashboard/certs
-    mv -n wazuh-certificates/$NODE_NAME.pem /etc/wazuh-dashboard/certs/dashboard.pem
-    mv -n wazuh-certificates/$NODE_NAME-key.pem /etc/wazuh-dashboard/certs/dashboard-key.pem
-    cp wazuh-certificates/root-ca.pem /etc/wazuh-dashboard/certs/
-    chmod 500 /etc/wazuh-dashboard/certs
-    chmod 400 /etc/wazuh-dashboard/certs/*
-    chown -R wazuh-dashboard:wazuh-dashboard /etc/wazuh-dashboard/certs
+    mkdir /etc/exactti-dashboard/certs
+    mv -n wazuh-certificates/$NODE_NAME.pem /etc/exactti-dashboard/certs/dashboard.pem
+    mv -n wazuh-certificates/$NODE_NAME-key.pem /etc/exactti-dashboard/certs/dashboard-key.pem
+    cp wazuh-certificates/root-ca.pem /etc/exactti-dashboard/certs/
+    chmod 500 /etc/exactti-dashboard/certs
+    chmod 400 /etc/exactti-dashboard/certs/*
+    chown -R exactti-dashboard:exactti-dashboard /etc/exactti-dashboard/certs
 
     if [ "${sys_type}" == "deb" ]; then
-        enable_start_service "wazuh-dashboard"
+        enable_start_service "exactti-dashboard"
     elif [ "${sys_type}" == "rpm" ]; then
-        /usr/share/wazuh-dashboard/bin/opensearch-dashboards "-c /etc/wazuh-dashboard/opensearch_dashboards.yml" --allow-root > /dev/null 2>&1 &
+        /usr/share/exactti-dashboard/bin/opensearch-dashboards "-c /etc/exactti-dashboard/opensearch_dashboards.yml" --allow-root > /dev/null 2>&1 &
     fi
 
     retries=0
@@ -87,10 +87,10 @@ function dashboard_installation() {
         retries=$((retries+1))
     done
     if [ ${retries} -eq 5 ]; then
-        echo "ERROR: The Wazuh dashboard installation has failed."
+        echo "ERROR: The Exact-Ti dashboard installation has failed."
         exit 1
     else
-        echo "INFO: The Wazuh dashboard is ready."
+        echo "INFO: The Exact-Ti dashboard is ready."
     fi
 
 }
@@ -101,14 +101,14 @@ function download_resources() {
     bash "${ABSOLUTE_PATH}"/wazuh-install.sh -dw "${sys_type}"
     echo "INFO: Downloading the resources..."
 
-    curl -sO https://packages.wazuh.com/4.3/config.yml
+    curl -sO https://packages.exactti.com/4.3/config.yml
     check_file "config.yml"
 
     sed -i -e '0,/<indexer-node-ip>/ s/<indexer-node-ip>/127.0.0.1/' config.yml
-    sed -i -e '0,/<wazuh-manager-ip>/ s/<wazuh-manager-ip>/127.0.0.1/' config.yml
+    sed -i -e '0,/<exactti-server-ip>/ s/<exactti-server-ip>/127.0.0.1/' config.yml
     sed -i -e '0,/<dashboard-node-ip>/ s/<dashboard-node-ip>/127.0.0.1/' config.yml
 
-    curl -sO https://packages.wazuh.com/4.3/wazuh-certs-tool.sh
+    curl -sO https://packages.exactti.com/4.3/wazuh-certs-tool.sh
     check_file "wazuh-certs-tool.sh"
     chmod 744 wazuh-certs-tool.sh
     ./wazuh-certs-tool.sh --all
@@ -187,7 +187,7 @@ function filebeat_installation() {
 function indexer_initialize() {
 
     retries=0
-    until [ "$(cat /var/log/wazuh-indexer/wazuh-cluster.log | grep "Node started")" ] || [ "${retries}" -eq 5 ]; do
+    until [ "$(cat /var/log/exactti-indexer/wazuh-cluster.log | grep "Node started")" ] || [ "${retries}" -eq 5 ]; do
         sleep 5
         retries=$((retries+1))
     done
@@ -196,7 +196,7 @@ function indexer_initialize() {
         echo "ERROR: The indexer node is not started."
         exit 1
     fi
-    /usr/share/wazuh-indexer/bin/indexer-security-init.sh
+    /usr/share/exactti-indexer/bin/indexer-security-init.sh
 
 }
 
@@ -206,35 +206,35 @@ function indexer_installation() {
         rpm --import ./wazuh-offline/wazuh-files/GPG-KEY-WAZUH
     fi
 
-    install_package "wazuh-indexer"
-    check_package "wazuh-indexer"
+    install_package "exactti-indexer"
+    check_package "exactti-indexer"
 
-    echo "INFO: Generating certificates of the Wazuh indexer..."
+    echo "INFO: Generating certificates of the Exact-Ti indexer..."
     NODE_NAME=node-1
-    mkdir /etc/wazuh-indexer/certs
-    mv -n wazuh-certificates/$NODE_NAME.pem /etc/wazuh-indexer/certs/indexer.pem
-    mv -n wazuh-certificates/$NODE_NAME-key.pem /etc/wazuh-indexer/certs/indexer-key.pem
-    mv wazuh-certificates/admin-key.pem /etc/wazuh-indexer/certs/
-    mv wazuh-certificates/admin.pem /etc/wazuh-indexer/certs/
-    cp wazuh-certificates/root-ca.pem /etc/wazuh-indexer/certs/
-    chmod 500 /etc/wazuh-indexer/certs
-    chmod 400 /etc/wazuh-indexer/certs/*
-    chown -R wazuh-indexer:wazuh-indexer /etc/wazuh-indexer/certs
+    mkdir /etc/exactti-indexer/certs
+    mv -n wazuh-certificates/$NODE_NAME.pem /etc/exactti-indexer/certs/indexer.pem
+    mv -n wazuh-certificates/$NODE_NAME-key.pem /etc/exactti-indexer/certs/indexer-key.pem
+    mv wazuh-certificates/admin-key.pem /etc/exactti-indexer/certs/
+    mv wazuh-certificates/admin.pem /etc/exactti-indexer/certs/
+    cp wazuh-certificates/root-ca.pem /etc/exactti-indexer/certs/
+    chmod 500 /etc/exactti-indexer/certs
+    chmod 400 /etc/exactti-indexer/certs/*
+    chown -R exactti-indexer:exactti-indexer /etc/exactti-indexer/certs
 
-    sed -i 's|\(network.host: \)"0.0.0.0"|\1"127.0.0.1"|' /etc/wazuh-indexer/opensearch.yml
+    sed -i 's|\(network.host: \)"0.0.0.0"|\1"127.0.0.1"|' /etc/exactti-indexer/opensearch.yml
 
     if [ "${sys_type}" == "rpm" ]; then
-        runuser "wazuh-indexer" --shell="/bin/bash" --command="OPENSEARCH_PATH_CONF=/etc/wazuh-indexer /usr/share/wazuh-indexer/bin/opensearch" > /dev/null 2>&1 &
+        runuser "exactti-indexer" --shell="/bin/bash" --command="OPENSEARCH_PATH_CONF=/etc/exactti-indexer /usr/share/exactti-indexer/bin/opensearch" > /dev/null 2>&1 &
         sleep 5
     elif [ "${sys_type}" == "deb" ]; then
-        enable_start_service "wazuh-indexer"
+        enable_start_service "exactti-indexer"
     fi
 
     indexer_initialize
     sleep 10
     eval "curl -s -XGET https://127.0.0.1:9200 -u admin:admin -k --fail"
     if [ "${PIPESTATUS[0]}" != 0 ]; then
-        echo "ERROR: The Wazuh indexer installation has failed."
+        echo "ERROR: The Exact-Ti indexer installation has failed."
         exit 1
     fi
 
@@ -305,11 +305,11 @@ function install_package() {
 
 function manager_installation() {
 
-    install_package "wazuh-manager"
-    check_package "wazuh-manager"
+    install_package "exactti-server"
+    check_package "exactti-server"
 
     if [ "${sys_type}" == "deb" ]; then
-        enable_start_service "wazuh-manager"
+        enable_start_service "exactti-server"
     elif [ "${sys_type}" == "rpm" ]; then
         /var/ossec/bin/wazuh-control start
     fi

@@ -20,7 +20,7 @@ fi
 
 echo '::endgroup::'
 
-echo '::group:: Change all passwords except Wazuh API ones.'
+echo '::group:: Change all passwords except Exact-Ti API ones.'
 
 mapfile -t pass < <(bash wazuh-passwords-tool.sh -a | grep 'The password for' | awk '{ print $NF }')
 for i in "${!users[@]}"; do
@@ -53,7 +53,7 @@ done
 
 echo '::endgroup::'
 
-echo '::group:: Change single Wazuh API user.'
+echo '::group:: Change single Exact-Ti API user.'
 
 bash wazuh-passwords-tool.sh -au wazuh -ap "${passapi[0]}" -u wazuh -p BkJt92r*ndzN.CkCYWn?d7i5Z7EaUt63 -A 
     if curl -s -w "%{http_code}" -u wazuh:BkJt92r*ndzN.CkCYWn?d7i5Z7EaUt63 -k -X POST "https://localhost:55000/security/user/authenticate" | grep "401"; then
@@ -61,7 +61,7 @@ bash wazuh-passwords-tool.sh -au wazuh -ap "${passapi[0]}" -u wazuh -p BkJt92r*n
     fi
 echo '::endgroup::'
 
-echo '::group:: Change all passwords except Wazuh API ones using a file.'
+echo '::group:: Change all passwords except Exact-Ti API ones using a file.'
 
 mapfile -t passfile < <(bash wazuh-passwords-tool.sh -f wazuh-install-files/wazuh-passwords.txt | grep 'The password for' | awk '{ print $NF }' ) 
 for i in "${!users[@]}"; do

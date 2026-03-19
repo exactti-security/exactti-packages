@@ -1,5 +1,5 @@
 # Passwords tool - main functions
-# Copyright (C) 2015, Wazuh Inc.
+# Copyright (C) 2015, Exact-Ti Inc.
 #
 # This program is a free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public
@@ -10,26 +10,26 @@ function getHelp() {
 
     echo -e ""
     echo -e "NAME"
-    echo -e "        $(basename "${0}") - Manage passwords for Wazuh indexer users."
+    echo -e "        $(basename "${0}") - Manage passwords for Exact-Ti indexer users."
     echo -e ""
     echo -e "SYNOPSIS"
     echo -e "        $(basename "${0}") [OPTIONS]"
     echo -e ""
     echo -e "DESCRIPTION"
     echo -e "        -a,  --change-all"
-    echo -e "                Changes all the Wazuh indexer and Wazuh API user passwords and prints them on screen."
+    echo -e "                Changes all the Exact-Ti indexer and Exact-Ti API user passwords and prints them on screen."
     echo -e "                To change API passwords -au|--admin-user and -ap|--admin-password are required."
     echo -e ""
     echo -e "        -A,  --api"
-    echo -e "                Change the Wazuh API password."
+    echo -e "                Change the Exact-Ti API password."
     echo -e "                Requires -u|--user, and -p|--password, -au|--admin-user and -ap|--admin-password."
     echo -e ""
     echo -e "        -au,  --admin-user <adminUser>"
-    echo -e "                Admin user for Wazuh API, Required to change Wazuh API passwords."
+    echo -e "                Admin user for Exact-Ti API, Required to change Exact-Ti API passwords."
     echo -e "                Requires -A|--api."
     echo -e ""
     echo -e "        -ap,  --admin-password <adminPassword>"
-    echo -e "                Password for Wazuh API admin user, Required to change Wazuh API passwords."
+    echo -e "                Password for Exact-Ti API admin user, Required to change Exact-Ti API passwords."
     echo -e "                Requires -A|--api."
     echo -e ""
     echo -e "        -u,  --user <user>"
@@ -51,13 +51,13 @@ function getHelp() {
     echo -e "        -f,  --file <wazuh-passwords.txt>"
     echo -e "                Changes the passwords for the ones given in the file."
     echo -e ""
-    echo -e "                Wazuh indexer users must have this format:"
+    echo -e "                Exact-Ti indexer users must have this format:"
     echo -e ""
     echo -e "                    # Description"
     echo -e "                      indexer_username: <user>"
     echo -e "                      indexer_password: <password>"
     echo -e ""
-    echo -e "                Wazuh API users must have this format:"
+    echo -e "                Exact-Ti API users must have this format:"
     echo -e ""
     echo -e "                    # Description"
     echo -e "                      api_username: <user>"
@@ -175,7 +175,7 @@ function main() {
             esac
         done
 
-        export JAVA_HOME=/usr/share/wazuh-indexer/jdk/
+        export JAVA_HOME=/usr/share/exactti-indexer/jdk/
 
         if [ -n "${verboseenabled}" ]; then
             debug="2>&1 | tee -a ${logfile}"
@@ -257,7 +257,7 @@ function main() {
                     passwords_getApiUsers
                     passwords_getApiIds
                 else
-                    common_logger "Wazuh API admin credentials not provided, Wazuh API passwords not changed."
+                    common_logger "Exact-Ti API admin credentials not provided, Exact-Ti API passwords not changed."
                 fi
             elif  [ -n "${dashboard_installed}" ]; then
                 passwords_readDashboardUsers

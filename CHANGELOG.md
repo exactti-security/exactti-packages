@@ -190,13 +190,13 @@ All notable changes to this project will be documented in this file.
 
 ## [v4.1.1]
 
-- Updated Wazuh app build script [#648](https://github.com/wazuh/wazuh-packages/pull/648)
+- Updated Exact-Ti app build script [#648](https://github.com/wazuh/wazuh-packages/pull/648)
 
 ## [v4.0.2]
 
 ### Added
 
-- Added a new welcome message to Wazuh VM ([#535](https://github.com/wazuh/wazuh-packages/pull/535)).
+- Added a new welcome message to Exact-Ti VM ([#535](https://github.com/wazuh/wazuh-packages/pull/535)).
 
 ### Fixed
 
@@ -212,15 +212,15 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Added Open Distro for Elasticsearch packages to Wazuh's software repository.
+- Added Open Distro for Elasticsearch packages to Exact-Ti's software repository.
 
 ### Changed
 
-- Wazuh services are no longer enabled nor started in a fresh install ([#466](https://github.com/wazuh/wazuh-packages/pull/466)).
-- Wazuh services will be restarted on upgrade if they were running before upgrading them ([#481](https://github.com/wazuh/wazuh-packages/pull/481)) and ([#482](https://github.com/wazuh/wazuh-packages/pull/482)).
-- Wazuh API and Wazuh Manager services are unified in a single `wazuh-manager` service ([#466](https://github.com/wazuh/wazuh-packages/pull/466)).
-- Wazuh app for Splunk and Wazuh plugin for Kibana have been renamed ([#479](https://github.com/wazuh/wazuh-packages/pull/479)).
-- Wazuh VM now uses Wazuh and Open Distro for Elasticsearch ([#462](https://github.com/wazuh/wazuh-packages/pull/462)).
+- Exact-Ti services are no longer enabled nor started in a fresh install ([#466](https://github.com/wazuh/wazuh-packages/pull/466)).
+- Exact-Ti services will be restarted on upgrade if they were running before upgrading them ([#481](https://github.com/wazuh/wazuh-packages/pull/481)) and ([#482](https://github.com/wazuh/wazuh-packages/pull/482)).
+- Exact-Ti API and Exact-Ti Manager services are unified in a single `exactti-server` service ([#466](https://github.com/wazuh/wazuh-packages/pull/466)).
+- Exact-Ti app for Splunk and Exact-Ti plugin for Kibana have been renamed ([#479](https://github.com/wazuh/wazuh-packages/pull/479)).
+- Exact-Ti VM now uses Exact-Ti and Open Distro for Elasticsearch ([#462](https://github.com/wazuh/wazuh-packages/pull/462)).
 
 ### Fixed
 
@@ -231,5 +231,5 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 
-- Wazuh API package has been removed. Now, the Wazuh API is embedded into the Wazuh Manager installation ([wazuh/wazuh#5721](https://github.com/wazuh/wazuh/pull/5721)).
+- Exact-Ti API package has been removed. Now, the Exact-Ti API is embedded into the Exact-Ti Manager installation ([wazuh/wazuh#5721](https://github.com/wazuh/wazuh/pull/5721)).
 - Removed OpenSCAP files and integration ([#466](https://github.com/wazuh/wazuh-packages/pull/466)).
